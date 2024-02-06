@@ -1,9 +1,14 @@
 #include "minishell.h"
+
+
 #include <stdio.h>
 
 int main()
 {
-	printf("hello\n");
+	char *s;
+
+	s = readline(PROMPT);
+	printf("|%s|",s);
 
 	return 0;
 }
