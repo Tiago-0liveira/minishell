@@ -1,14 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
+/*   Updated: 2024/02/06 21:43:24 by tiagoliv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-
-#include <stdio.h>
-
-int main()
+int	main(int ac, char **av, char **env)
 {
-	char *s;
+	char	*line;
 
-	s = readline(PROMPT);
-	printf("|%s|",s);
+	(void)av;
+	(void)ac;
+	(void)env;
 
-	return 0;
+	while (1)
+	{
+		ft_putstr_fd("minishell$ ", STDOUT_FILENO);
+		line = get_next_line(STDIN_FILENO);
+		// process line
+		free(line);
+	}
+	return (0);
 }

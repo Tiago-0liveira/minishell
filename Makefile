@@ -1,20 +1,29 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread #-g -fsanitize=address -static-libsan 
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) #-g -fsanitize=address -static-libsan 
 
 SRC = main.c
 
-includefolder = includes
-INCLUDES = -I $(includefolder) -I $(LIBFT_DIR)
-LIBFT_DIR = libft
+includefolder = includes/
+LIBFT_DIR = libft/
 LIBFT = $(LIBFT_DIR)/libft.a
 LINK_FLAGS = -L $(LIBFT_DIR) -lft -lreadline
-OBJ_DIR = obj
-SRCS = $(addprefix src/, $(SRC))
-OBJS = $(patsubst src/%, $(OBJ_DIR)/%, $(SRCS:%.c=%.o))
+INCLUDES = -I $(includefolder) -I $(LIBFT_DIR)
+
+SRC_FOLDER = src/
+OBJ_DIR = obj/
+
+SRC_ROOT_FILES = main.c
+PARSER_LEXER_FILES = lexer.c parser.c
+
+FILES = \
+	$(SRC_ROOT_FILES) \
+	$(addprefix pl/, $(PARSER_LEXER_FILES))
+
+OBJS = $(addprefix $(OBJ_DIR), $(FILES:%.c=%.o))
+
 
 # Reset
-
 Color_Off='\033[0m'       # Text Reset
 
 IRed='\033[0;91m'         # Red
@@ -29,13 +38,13 @@ MSG3 = @echo ${ICyan}"Cleaned ${NAME} Successfully ✔︎"${Color_Off}
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDES) $(LINK_FLAGS) $(SRCS) -o $(NAME)
+$(NAME): $(LIBFT) $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LINK_FLAGS)
 	$(MSG1)
 
-$(OBJ_DIR)/%.o: $(SRCS) $(LIBFT)
-	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
+$(OBJS): $(OBJ_DIR)%.o: $(SRC_FOLDER)%.c
+	@mkdir -p $(OBJ_DIR) $(dir $@)
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(LIBFT):
 	@make -s -C $(LIBFT_DIR)
