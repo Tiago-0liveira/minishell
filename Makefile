@@ -8,6 +8,7 @@ includefolder = includes
 INCLUDES = -I $(includefolder) -I $(LIBFT_DIR)
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
+LINK_FLAGS = -L $(LIBFT_DIR) -lft -lreadline
 OBJ_DIR = obj
 SRCS = $(addprefix src/, $(SRC))
 OBJS = $(patsubst src/%, $(OBJ_DIR)/%, $(SRCS:%.c=%.o))
@@ -29,7 +30,7 @@ MSG3 = @echo ${ICyan}"Cleaned ${NAME} Successfully ✔︎"${Color_Off}
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(CFLAGS) $(INCLUDES) -L $(LIBFT_DIR) -lft $(SRCS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(LINK_FLAGS) $(SRCS) -o $(NAME)
 	$(MSG1)
 
 $(OBJ_DIR)/%.o: $(SRCS) $(LIBFT)
@@ -37,7 +38,6 @@ $(OBJ_DIR)/%.o: $(SRCS) $(LIBFT)
 	@$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
 $(LIBFT):
-	@echo hello
 	@make -s -C $(LIBFT_DIR)
 	$(MSG4)
 
