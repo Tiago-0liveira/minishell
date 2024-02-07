@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) #-g -fsanitize=address -static-libsan 
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g# -fsanitize=address -static-libsan 
 
 SRC = main.c
 
@@ -13,8 +13,8 @@ INCLUDES = -I $(includefolder) -I $(LIBFT_DIR)
 SRC_FOLDER = src/
 OBJ_DIR = obj/
 
-SRC_ROOT_FILES = main.c
-PARSER_LEXER_FILES = lexer.c parser.c
+SRC_ROOT_FILES = main.c input.c mini.c utils.c
+PARSER_LEXER_FILES = lexer.c parser.c parser_helpers.c
 
 FILES = \
 	$(SRC_ROOT_FILES) \
