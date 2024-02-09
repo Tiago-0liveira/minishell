@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/07 18:08:35 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/08 20:10:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 int	main(int ac, char **av, char **env)
 {
+	//char	**s;
+
 	(void)av;
 	(void)ac;
 	(void)env;
@@ -25,15 +27,24 @@ int	main(int ac, char **av, char **env)
 		if (!input_error_check(mini()))
 		{
 			mini()->command_ret = false;
+			printf("minishell: syntax error\n");
 		}
 		else
 		{
-			parse_input(mini());
+			// size_t i = 0;
+			parse(mini()->input.raw_line);
+			/*while (s[i])
+			{
+				printf("s[%zu]: |%s|\n", i, s[i]);
+				i++;
+			}*/
+			free(mini()->input.raw_line);
+			mini()->input.raw_line = NULL;
+			// parse_input(mini());
 		}
-		
 		// process line
-		//free(mini()->input.raw_line); /* TODO: maybe create a mini.input free function */
+		// free(mini()->input.raw_line);
+		/* TODO: maybe create a mini.input free function */
 	}
 	return (0);
 }
-

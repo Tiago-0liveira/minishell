@@ -6,83 +6,75 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/07 18:11:53 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/09 20:21:27 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char **split_by_redirs(char *line)
+size_t	redir_size(char *line)
 {
-	size_t	redirs_c;
-	size_t	i;
-	size_t	j;
-	char *next_redir;
-	char **words;
+	if (redir_type(line) == RED_AIN || redir_type(line) == RED_AOUT)
+		return (2);
+	if (redir_type(line) == RED_IN || redir_type(line) == RED_OUT)
+		return (1);
+	return (0);
+}
 
-	redirs_c = count_redirs(line);
-	j = ft_strlen(line);
-	words = malloc(sizeof(char *) * (redirs_c + 2));
-	if (!words)
-		return (NULL);
-	words[redirs_c + 1] = NULL;
-	i = 0;
-	printf("here2|%s|\n", line);
+size_t	count_args(char *line)
+{
+	size_t	c;
+	bool	quotes;
+
+	c = 0;
+	quotes = false;
 	while (*line)
-	{	
-		next_redir = find_next_redir(line);
-		if (next_redir)
+	{
+		skip_spaces(&line);
+		if (redir_size(line))
 		{
-			words[i] = ft_strtrim(ft_substr(line, 0, next_redir - line), " ");
-			line += ft_strlen(next_redir);
+			c++;
+			line += redir_size(line);
 		}
 		else
-			words[i] = ft_strtrim(line, " ");
-		printf("word: %s\n", words[i]);
-		i++;
+		{
+			while (*line && ((!(*line == ' ') && !is_redir(line + 1)) || quotes))
+			{
+				if (*line == QUOTE || *line == DQUOTE)
+					quotes = !quotes;
+				line++;
+			}
+			c++;
+		}
 	}
-	exit(1);
-	return (words);
+	return (c);
 }
 
-size_t	count_redirs(char *line)
+char	*get_next_arg(char **line)
 {
-	size_t count;
+	size_t	i;
+	char	*arg;
+	bool	quotes;
 
-	count = 0;
-	while (*line)
+	i = 0;
+	quotes = false;
+	if (redir_size(*line))
 	{
-		if (is_redir(line))
-			count++;
-		line++;
+		arg = ft_substr(*line, 0, redir_size(*line));
+		(*line) += redir_size(*line);
+		return (arg);
 	}
-	return (count);
-}
-
-char **split_by_pipes(char *line)
-{
-	(void)line;
-	return (NULL);
-}
-
-char *find_next_redir(char *line)
-{
-	while (*line)
+	else
 	{
-		if (is_redir(line))
-			return (line);
-		line++;
+		while ((*line)[i] && ((!((*line)[i] == ' ') && !is_redir(*line + i))
+				|| quotes))
+		{
+			if ((*line)[i] == QUOTE || (*line)[i] == DQUOTE)
+				quotes = !quotes;
+			i++;
+		}
+		arg = ft_substr(*line, 0, i);
+		(*line) += i;
 	}
-	return (NULL);
-}
-
-char *find_next_pipe(char *line)
-{
-	while (*line)
-	{
-		if (*line == PIPE)
-			return (line);
-		line++;
-	}
-	return (NULL);
+	return (arg);
 }

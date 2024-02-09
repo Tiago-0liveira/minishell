@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/07 18:08:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/07 19:44:27 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 bool	input_error_check(t_mini *mini)
 {
 	/* TODO: check for all types of semantic errors */
-	char *line_cursor;
-	bool open_quotes;
-	bool open_dquotes;
-	
+	char	*line_cursor;
+	bool	open_quotes;
+	bool	open_dquotes;
+
 	line_cursor = mini->input.raw_line;
 	open_quotes = false;
 	open_dquotes = false;

@@ -6,17 +6,35 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/07 18:06:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/08 18:08:51 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *get_input(bool prompt)
+char	*get_input(bool prompt)
 {
+	char	*line;
+	char	*tmp;
+
 	if (prompt)
 		display_prompt();
-	return (get_next_line(STDIN_FILENO));
+	// return ("cat aaa> b$ABCbb < tt");
+#ifdef DEBUG
+	printf("-------------------------------------------\n");
+#endif
+	line = get_next_line(STDIN_FILENO);
+#ifdef DEBUG
+	printf("%s", line);
+#endif
+	if (!line)
+	{
+		ft_putstr_fd("exit\n", STDOUT_FILENO); /* TODO: what to do here? */
+		exit(0);
+	}
+	tmp = ft_strtrim(line, " \n");
+	free(line);
+	return (tmp);
 }
 
 void	display_prompt(void)

@@ -1,0 +1,13 @@
+cat aaa >> bbb < ttt
+
+wc -c bbb
+echo -n hello
+export HELLO=123
+export HELLO="beautiful <  world"
+echo $PWD $OLDPWD
+echo "hi" | cat | cat | cat | cat | cat | cat | cat
+/bin/ls
+ls >outfile01
+env | grep USER
+env | < USER
+env >< USER
