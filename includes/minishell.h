@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/09 16:51:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/10 05:32:15 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <readline/readline.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <signal.h>
 
 # define PROMPT " > "
 # define HEREDOC_PROMPT "heredoc>"
@@ -57,7 +58,7 @@ typedef struct s_redir
 
 typedef struct s_redirs
 {
-	t_redir				*redirs;
+	t_redir				redirs;
 	size_t				redir_c;
 }						t_redirs;
 
@@ -65,7 +66,9 @@ typedef struct s_command
 {
 	char				*cmd_name;
 	char				*raw_command;
+	int					pipes; // poe nesta variavel o nr de pipes encontrados pfv
 	char				**args;
+	int					pipe[2];
 	t_redirs			redirs;
 	struct s_command	*next;
 }						t_command;
@@ -79,6 +82,12 @@ typedef struct s_mini
 
 // main.c
 int						main(int ac, char **av, char **env);
+
+// free.c
+void    				free_shell(t_mini *mini, char *err, int status);
+
+// signal_handle.c
+void    				sig_init(void);
 
 // input.c
 char					*get_input(bool prompt);
