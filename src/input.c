@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/08 18:08:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:19:11 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	*get_input(bool prompt)
 
 	if (prompt)
 		display_prompt();
-	// return ("cat aaa> b$ABCbb < tt");
+		// return ("cat aaa> b$ABCbb < tt");
 #ifdef DEBUG
 	printf("-------------------------------------------\n");
 #endif

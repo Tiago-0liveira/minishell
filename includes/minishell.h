@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/09 16:51:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/14 19:24:39 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,16 @@ typedef struct s_input
 typedef struct s_redir
 {
 	char				*file;
+	int					fd;
 	enum e_redir_type	type;
 }						t_redir;
-
-typedef struct s_redirs
-{
-	t_redir				*redirs;
-	size_t				redir_c;
-}						t_redirs;
 
 typedef struct s_command
 {
 	char				*cmd_name;
-	char				*raw_command;
 	char				**args;
-	t_redirs			redirs;
+	t_redir				in;
+	t_redir				out;
 	struct s_command	*next;
 }						t_command;
 
@@ -87,28 +82,35 @@ void					display_prompt(void);
 // mini.c
 void					init_mini(t_mini *mini);
 t_mini					*mini(void);
+void					reset_mini(t_mini *mini);
 
 // utils.c
-bool					is_redir(char *line);
 enum e_redir_type		redir_type(char *line);
-bool					ft_isspace(char c);
-char					*ft_strtrim2(char *s1, char const *set);
+void					free_commands(t_command *commands);
+void					t_redir_init(t_redir *redir);
+void					print_command(t_command *command);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
-void					command_add_back(t_command **command,
-							t_command *new_command);
-t_command				*parse_command(char *raw_command);
-void					command_add_redir(t_command *command, char *redir);
-char					**parse(char *line);
 size_t					parse_size(char *line);
-bool					should_split(char *line);
 char					*get_next_section(char **line);
+char					**parse(t_mini *mini);
+t_command				*construct_command(char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
-size_t					count_args(char *line);
-char					*get_next_arg(char **line);
+bool					should_split(char *line);
+void					command_add_back(t_command **command,
+							t_command *new_command);
+void					assign_redir(t_command *command, char *redir_file,
+							enum e_redir_type type);
+void					assign_args(t_command *command, char **raw_commands,
+							size_t *i, size_t end);
+// free.c
+void					free_commands(t_command *commands);
+void					free_list(char **list);
+void					free_mini(t_mini *mini);
+
 #endif

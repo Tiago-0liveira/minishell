@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/08 20:10:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/14 19:58:31 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,14 @@
 
 int	main(int ac, char **av, char **env)
 {
-	//char	**s;
+	t_command	*cmd;
 
+	// char	**s;
 	(void)av;
 	(void)ac;
 	(void)env;
 	/* TODO: Load env? */
+	cmd = NULL;
 	init_mini(mini());
 	while (1)
 	{
@@ -31,20 +33,18 @@ int	main(int ac, char **av, char **env)
 		}
 		else
 		{
-			// size_t i = 0;
-			parse(mini()->input.raw_line);
-			/*while (s[i])
+			parse_input(mini());
+			cmd = mini()->commands;
+			while (cmd->next != NULL)
 			{
-				printf("s[%zu]: |%s|\n", i, s[i]);
-				i++;
-			}*/
-			free(mini()->input.raw_line);
-			mini()->input.raw_line = NULL;
-			// parse_input(mini());
+				print_command(cmd->next);
+				cmd = cmd->next;
+				if (cmd->next != NULL)
+					printf("will pipe to: \n");
+			}
 		}
-		// process line
-		// free(mini()->input.raw_line);
-		/* TODO: maybe create a mini.input free function */
+		reset_mini(mini());
 	}
+	free_mini(mini());
 	return (0);
 }
