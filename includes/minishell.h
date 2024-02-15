@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/14 19:24:39 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:53:20 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@
 # include <readline/readline.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include <signal.h>
+# include <limits.h>
 
 # define PROMPT " > "
 # define HEREDOC_PROMPT "heredoc>"
@@ -70,6 +72,7 @@ typedef struct s_mini
 	t_input				input;
 	t_command			*commands;
 	bool				command_ret;
+	t_list				*env_list;
 }						t_mini;
 
 // main.c
@@ -83,6 +86,7 @@ void					display_prompt(void);
 void					init_mini(t_mini *mini);
 t_mini					*mini(void);
 void					reset_mini(t_mini *mini);
+t_list					*set_env(char **env);
 
 // utils.c
 enum e_redir_type		redir_type(char *line);
@@ -112,5 +116,36 @@ void					assign_args(t_command *command, char **raw_commands,
 void					free_commands(t_command *commands);
 void					free_list(char **list);
 void					free_mini(t_mini *mini);
+// signal_handle.c
+void					prmpt_ctrlc(int signal);
+void					sig_init(void);
+// ex
+// \ execution.c
+void					ft_execution(t_mini *mini);
+void					child_process(t_mini *mini, t_command *cmd,
+							char *first_cmd, char *lst_cmd);
+void					parent_process(t_mini *mini, t_command *cmd,
+							char *first_cmd, char *lst_cmd);
+// \ execute.c
+void					execution(t_mini *mini, t_command *cmd);
+char					*get_path(char *cmd, char **ev);
+char					*cmd_path(char **ev);
+// b-ins
+// \ built-ins_utils.c
+int						if_builtin(char *s);
+void					built_in(t_mini *mini, t_command *cmd);
+// \ cd
+void					bi_cd(t_mini *mini, char **av);
+// \ echo
+void					bi_echo(t_mini *mini, char **av);
+// \ env
+void					bi_env(t_list *env_list);
+// \ export
+int						ft_strlen_eq(char *s);
+void					free_content(void *content);
+void					delete_var(t_list **head, t_list node_to_del);
+void					bi_export(t_mini *mini, char **av);
+// \ pwd
+// \ unset
 
 #endif

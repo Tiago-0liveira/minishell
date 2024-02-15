@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/14 19:58:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:34:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,9 @@ int	main(int ac, char **av, char **env)
 	/* TODO: Load env? */
 	cmd = NULL;
 	init_mini(mini());
+	mini()->env_list = set_env(env);
+	if (!(mini()->env_list))
+		free_shell(mini(), "Error\nMalloc failed!\n", 1);
 	while (1)
 	{
 		mini()->input.raw_line = get_input(true);
