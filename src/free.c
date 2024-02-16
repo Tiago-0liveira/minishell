@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/14 19:54:24 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:55:09 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,27 @@ void	free_mini(t_mini *mini)
 {
 	reset_mini(mini);
 	free(mini);
+}
+
+// adicionei este free para os frees que ja tenho na execution. pode se manter os dois
+void    free_shell(t_mini *mini, char *err, int status)
+{
+	if (mini->input.raw_line)
+		free(mini->input.raw_line);
+	if (mini->commands)
+        free_commands(mini->commands);
+	if (mini->input.pipe_c)
+	{
+		close(mini->input.pipe_c[0]);
+		close(mini->input.pipe_c[1]);
+	}
+	if (mini->env_list)
+		ft_lstclear(&(mini->env_list), free_content);
+	free(mini);
+	rl_clear_history();
+    if (err)
+        write(2, err, ft_strlen(err));
+    close(0);
+    close(1);
+    exit(status);
 }

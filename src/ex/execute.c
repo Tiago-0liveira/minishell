@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/15 14:57:24 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/16 05:17:29 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,11 @@ void	execution(t_mini *mini, t_command *cmd)
 {
 	char	**path;
 
-	redirection();
 	if (if_builtin(cmd->cmd_name))
 		built_in(mini, cmd);
 	else
 	{
 		path = get_path(cmd->args[0], mini->env_list);
-			// extrai directories da PATH var, add env
 		if (execve(path, cmd->args[0], mini->env_list) < 0)
 		{
 			free_commands(&cmd);

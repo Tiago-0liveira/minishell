@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/15 14:53:20 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/16 04:51:22 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ void					assign_args(t_command *command, char **raw_commands,
 void					free_commands(t_command *commands);
 void					free_list(char **list);
 void					free_mini(t_mini *mini);
+void    				free_shell(t_mini *mini, char *err, int status);
 // signal_handle.c
 void					prmpt_ctrlc(int signal);
 void					sig_init(void);
@@ -146,6 +147,7 @@ void					free_content(void *content);
 void					delete_var(t_list **head, t_list node_to_del);
 void					bi_export(t_mini *mini, char **av);
 // \ pwd
+void					bi_pwd(t_mini *mini);
 // \ unset
-
+void					bi_unset(t_mini *mini, char **av);
 #endif

@@ -6,11 +6,11 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/14 01:19:22 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/16 05:18:39 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#include "minishell.h"
 
 void    ft_execution(t_mini *mini)
 {
@@ -47,26 +47,47 @@ void    ft_execution(t_mini *mini)
 	else
 		free_cmds(&mini->commands);
 	free(l_cmd);
+	// tratar sinais
 }
 
 void	child_process(t_mini *mini, t_command *cmd, char *f_cmd, char *l_cmd)
 {
 	// sinal caso o pipe quebre
 	close(mini->input.pipe_c[0]);
-	if (!ft_strncmp(f_cmd, mini->commands->cmd_name, ft_strlen(f_cmd)))
+	if (!ft_strncmp(f_cmd, cmd->cmd_name, ft_strlen(f_cmd)))
 	{
 		dup2(mini->input.cmd_input, STDIN_FILENO);
 		close(mini->input.cmd_input);
 	}
 	if (!ft_strncmp(f_cmd, l_cmd, ft_strlen(f_cmd)))
 		dup2(mini->input.pipe_c[1], STDOUT_FILENO);
+	if (cmd->in.type == RED_IN)
+	{
+		cmd->in.fd = open(cmd->in.file, O_RDONLY);
+		if (!(cmd->in.fd))
+			free_shell(mini, "Error\nFile open failed!\n", 1); //checar o que deve acontecer se ficheiro nao existir
+		dup2(cmd->in.fd, STDIN_FILENO);
+		close(cmd->in.fd);
+	}
+	if (cmd->out.type == RED_OUT || cmd->out.type == RED_AOUT)
+	{
+		if (cmd->out.type == RED_OUT)
+			cmd->out.fd = open(cmd->out.file, O_CREAT | O_RDWR | O_TRUNC);
+		else if (cmd->out.type == RED_AOUT)
+			cmd->out.fd = open(cmd->out.file, O_CREAT | O_RDWR | O_APPEND);
+		if (!(cmd->in.fd))
+			free_shell(mini, "Error\nFile open failed!\n", 1);
+		dup2(cmd->in.fd, STDOUT_FILENO);
+		close(cmd->in.fd);
+	}
 	close(mini->input.pipe_c[1]);
 	execute(mini, cmd);
 }
 
 void	parent_process(t_mini *mini, t_command *cmd, char *f_cmd, char *l_cmd)
 {
-	if (ft_strncmp(f_cmd, mini->commands->cmd_name, ft_strlen(f_cmd)))
+	wait(0);
+	if (ft_strncmp(f_cmd, cmd->cmd_name, ft_strlen(f_cmd)))
 		close(mini->input.cmd_input);
 	if (!ft_strncmp(f_cmd, l_cmd, ft_strlen(f_cmd)))
 		mini->input.cmd_input = mini->input.pipe_c[0];
@@ -74,5 +95,4 @@ void	parent_process(t_mini *mini, t_command *cmd, char *f_cmd, char *l_cmd)
 		close(mini->input.pipe_c[0]);
 	close(mini->input.pipe_c[1]);
 	// sigint??
-	wait(0);
 }
