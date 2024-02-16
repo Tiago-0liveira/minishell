@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/15 14:43:48 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:31:35 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	env_update(t_mini *mini, char *pwd)
 void	bi_cd(t_mini *mini, char **av)
 {
 	char	*pwd;
-	char	*tmp;
+	t_list	*tmp;
 
 	tmp = mini->env_list;
 	if (!av[1])

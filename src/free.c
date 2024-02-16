@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/16 04:55:09 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/16 19:25:13 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,10 @@ void    free_shell(t_mini *mini, char *err, int status)
 		free(mini->input.raw_line);
 	if (mini->commands)
         free_commands(mini->commands);
-	if (mini->input.pipe_c)
+	if (mini->input.pip)
 	{
-		close(mini->input.pipe_c[0]);
-		close(mini->input.pipe_c[1]);
+		close(mini->input.pip[0]);
+		close(mini->input.pip[1]);
 	}
 	if (mini->env_list)
 		ft_lstclear(&(mini->env_list), free_content);

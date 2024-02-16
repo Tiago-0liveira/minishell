@@ -16,7 +16,7 @@ void	bi_env(t_list *env_list)
 {
 	while (env_list)
 	{
-		printf("%s\n", env_list->content);
+		printf("%p\n", env_list->content);
 		env_list = env_list->next;
 	}
 }

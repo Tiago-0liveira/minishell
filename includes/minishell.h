@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/16 04:51:22 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/16 21:00:25 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # include <stdio.h>
 # include <signal.h>
 # include <limits.h>
+# include <linux/limits.h>
+# include <sys/wait.h>
 
 # define PROMPT " > "
 # define HEREDOC_PROMPT "heredoc>"
@@ -49,6 +51,8 @@ typedef struct s_input
 	char				*raw_line;
 	size_t				len;
 	size_t				pipe_c;
+	int					pip[2];
+	int					cmd_input;
 }						t_input;
 
 typedef struct s_redir
@@ -122,13 +126,13 @@ void					prmpt_ctrlc(int signal);
 void					sig_init(void);
 // ex
 // \ execution.c
-void					ft_execution(t_mini *mini);
+void					ft_execution(t_mini *mini, char **ev);
 void					child_process(t_mini *mini, t_command *cmd,
-							char *first_cmd, char *lst_cmd);
+							char *lst_cmd, char **ev);
 void					parent_process(t_mini *mini, t_command *cmd,
-							char *first_cmd, char *lst_cmd);
+										char *lst_cmd);
 // \ execute.c
-void					execution(t_mini *mini, t_command *cmd);
+void					execution(t_mini *mini, t_command *cmd, char **ev);
 char					*get_path(char *cmd, char **ev);
 char					*cmd_path(char **ev);
 // b-ins
@@ -138,13 +142,13 @@ void					built_in(t_mini *mini, t_command *cmd);
 // \ cd
 void					bi_cd(t_mini *mini, char **av);
 // \ echo
-void					bi_echo(t_mini *mini, char **av);
+void					bi_echo(char **av);
 // \ env
 void					bi_env(t_list *env_list);
 // \ export
 int						ft_strlen_eq(char *s);
 void					free_content(void *content);
-void					delete_var(t_list **head, t_list node_to_del);
+void					delete_var(t_list **head, void *node_to_del);
 void					bi_export(t_mini *mini, char **av);
 // \ pwd
 void					bi_pwd(t_mini *mini);

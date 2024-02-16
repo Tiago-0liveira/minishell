@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/16 05:17:29 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/16 20:55:52 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,18 @@ char	*get_path(char *cmd, char **ev)
 	return (0);
 }
 
-void	execution(t_mini *mini, t_command *cmd)
+void	execution(t_mini *mini, t_command *cmd, char **ev)
 {
-	char	**path;
+	char	*path;
 
 	if (if_builtin(cmd->cmd_name))
 		built_in(mini, cmd);
 	else
 	{
-		path = get_path(cmd->args[0], mini->env_list);
-		if (execve(path, cmd->args[0], mini->env_list) < 0)
+		path = get_path(cmd->args[0], ev);
+		if (execve(path, cmd->args, ev) < 0)
 		{
-			free_commands(&cmd);
+			free_commands(cmd);
 			return ;
 		}
 		free(path);
