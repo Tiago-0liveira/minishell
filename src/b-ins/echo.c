@@ -19,15 +19,17 @@ void    bi_echo(char **av)
 
 	i = 0;
 	flag = 0;
-	printf("%s\n", av[0]);
 	if (!av[0])
+	{
 		printf("\n");
-	if (!ft_strncmp(av[1], "-n", 2))
+		return ;
+	}
+	if (!ft_strncmp(av[0], "-n", 2))
 	{
 		flag = 1;
 		i++;
 	}
-	while (av[i] && av[i][0])
+	while (av[i])
 	{
 		printf("%s", av[i]);
 		i++;

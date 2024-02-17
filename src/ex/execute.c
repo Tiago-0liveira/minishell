@@ -6,11 +6,39 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/17 00:16:12 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 01:42:55 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	ft_atoi_exit(const char *nptr)
+{
+	int		r;
+	int		s;
+	char	*d;
+
+	d = (char *) nptr;
+	r = 0;
+	s = 1;
+	if (!nptr)
+		return (0);
+	while (*d == ' ' || *d == '\n' || *d == '\t' || *d == '\v'
+		|| *d == '\f' || *d == '\r')
+		d++;
+	if (*d == '-' || *d == '+')
+	{
+		if (*d == '-')
+			s = -1;
+		d++;
+	}
+	while (*d >= '0' && *d <= '9')
+	{
+		r = r * 10 + *d - '0';
+		d++;
+	}
+	return (r * s);
+}
 
 char	*cmd_path(char **ev)
 {
@@ -47,6 +75,9 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 {
 	char	*path;
 
+	if (!(mini->commands->next) && !ft_strncmp(mini->commands->cmd_name,
+		"exit", 4))
+		free_shell(mini, NULL, ft_atoi_exit(mini->commands->args[0])); // executar built-in direto se for so 1 comando exit
 	if (if_builtin(cmd->cmd_name))
 		built_in(mini, cmd);
 	else

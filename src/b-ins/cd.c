@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/17 00:13:14 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 01:44:39 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,13 @@ void	bi_cd(t_mini *mini, char **av)
 			tmp = tmp->next;
 		}
 		pwd = tmp->content;
-		if (chdir(tmp->content) != 0)
+		if (!chdir(tmp->content))
 			free_shell(mini, "Error\nDirectory change failure!\n", 1);
 	}
 	else
 	{
 		pwd = av[1];
-		if (chdir(av[1]))
+		if (!chdir(av[1]))
 			free_shell(mini, "Error\nDirectory change failure!\n", 1);
 	}
 	env_update(mini, pwd);
