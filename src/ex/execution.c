@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/17 01:42:49 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 02:53:56 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	child_process(t_mini *mini, t_command *cmd, char *l_cmd, char **ev)
 	{
 		cmd->in.fd = open(cmd->in.file, O_RDONLY);
 		if (!(cmd->in.fd))
-			free_shell(mini, "Error\nFile open failed!\n", 1); //checar o que deve acontecer se ficheiro nao existir
+			free_shell(mini, "Error\nFile open failed!\n", 1); // checar o que deve acontecer se ficheiro nao existir
 		dup2(cmd->in.fd, STDIN_FILENO);
 		close(cmd->in.fd);
 	}
