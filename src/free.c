@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/16 19:25:13 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 00:19:15 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,8 @@ void	free_commands(t_command *commands)
 			free_list(tmp->args);
 		commands = tmp;
 		tmp = tmp->next;
-		free(commands);
 	}
-	// free(commands);
+	free(commands);
 }
 
 void	free_list(char **list)
@@ -72,7 +71,6 @@ void    free_shell(t_mini *mini, char *err, int status)
 	}
 	if (mini->env_list)
 		ft_lstclear(&(mini->env_list), free_content);
-	free(mini);
 	rl_clear_history();
     if (err)
         write(2, err, ft_strlen(err));

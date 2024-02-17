@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/16 20:55:52 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 00:16:12 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 		built_in(mini, cmd);
 	else
 	{
-		path = get_path(cmd->args[0], ev);
+		path = get_path(cmd->cmd_name, ev);
 		if (execve(path, cmd->args, ev) < 0)
 		{
 			free_commands(cmd);

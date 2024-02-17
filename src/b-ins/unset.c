@@ -18,7 +18,7 @@ void	bi_unset(t_mini *mini, char **av)
 	int		j;
 	t_list	*tmp;
 
-	i = 0;
+	i = -1;
 	j = 0;
 	tmp = mini->env_list;
 	while (av[++i])

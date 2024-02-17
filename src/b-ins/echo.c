@@ -17,11 +17,12 @@ void    bi_echo(char **av)
 	int	i;
 	int	flag;
 
-	i = 1;
+	i = 0;
 	flag = 0;
-	if (!av[1])
+	printf("%s\n", av[0]);
+	if (!av[0])
 		printf("\n");
-	if (!ft_strncmp(av[1], "-n\0", 3))
+	if (!ft_strncmp(av[1], "-n", 2))
 	{
 		flag = 1;
 		i++;

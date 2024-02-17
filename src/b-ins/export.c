@@ -56,9 +56,9 @@ void	bi_export(t_mini *mini, char **av)
 	int		i;
 	t_list	*tmp;
 
-	i = 0;
+	i = -1;
 	tmp = mini->env_list;
-	if (!av[1])
+	if (!av[0])
 	{
 		while (tmp)
 		{

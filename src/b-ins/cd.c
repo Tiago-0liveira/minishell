@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/16 19:31:35 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 00:13:14 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	bi_cd(t_mini *mini, char **av)
 	t_list	*tmp;
 
 	tmp = mini->env_list;
-	if (!av[1])
+	if (!av[0])
 	{
 		while (tmp)
 		{
@@ -46,7 +46,7 @@ void	bi_cd(t_mini *mini, char **av)
 			tmp = tmp->next;
 		}
 		pwd = tmp->content;
-		if (chdir(tmp->content))
+		if (chdir(tmp->content) != 0)
 			free_shell(mini, "Error\nDirectory change failure!\n", 1);
 	}
 	else

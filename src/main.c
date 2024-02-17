@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/16 20:51:36 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/16 23:00:12 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int	main(int ac, char **av, char **env)
 					printf("will pipe to: \n");
 			}
 			ft_execution(mini(), env);
+			free_commands(mini()->commands);
 		}
-		reset_mini(mini());
 	}
 	free_mini(mini());
 	return (0);
