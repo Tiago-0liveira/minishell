@@ -1,13 +1,13 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g -fsanitize=address -static-libasan 
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g #-fsanitize=address -static-libasan 
 
 SRC = main.c
 
 includefolder = includes/
 LIBFT_DIR = libft/
 LIBFT = $(LIBFT_DIR)/libft.a
-LINK_FLAGS = -L $(LIBFT_DIR) -lft -lreadline
+LINK_FLAGS = -L $(LIBFT_DIR) -lft -lreadline #TODO: podemos remover -lreadline ja que estamos a usar o gnl
 INCLUDES = -I $(includefolder) -I $(LIBFT_DIR)
 
 SRC_FOLDER = src/

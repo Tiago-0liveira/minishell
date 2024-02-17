@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/14 19:58:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:59:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 enum e_redir_type	redir_type(char *line)
 {
+	if (line == NULL || ft_strlen(line) < 2)
+		return (RED_NULL);
 	if (strncmp(line, REDIR_APPEND_IN, 2) == 0)
 		return (RED_AIN);
 	if (strncmp(line, REDIR_APPEND_OUT, 2) == 0)

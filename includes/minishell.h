@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 14:50:16 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:20:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define MINISHELL_H
 
 # include "libft.h"
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include <signal.h>
 # include <limits.h>
 # include <linux/limits.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdbool.h>
+# include <stdio.h>
 # include <sys/wait.h>
 
 # define PROMPT " > "
@@ -34,6 +34,10 @@
 # define REDIR_APPEND_IN "<<"
 # define REDIR_OUT '>'
 # define REDIR_APPEND_OUT ">>"
+
+# define ESCAPE_CHAR '\\'
+# define ENV_VAR '$'
+# define SPACE ' '
 
 # define DEBUG
 
@@ -101,6 +105,7 @@ void					print_command(t_command *command);
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
+bool					escaping(char c, bool *escaping);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
@@ -110,8 +115,8 @@ t_command				*construct_command(char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 bool					should_split(char *line);
-void					command_add_back(t_command **command,
-							t_command *new_command);
+void	command_add_back(/*t_command **command,*/
+						t_command *new_command);
 void					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 void					assign_args(t_command *command, char **raw_commands,

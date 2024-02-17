@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/14 19:26:16 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/17 20:23:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,19 @@ void	assign_args(t_command *command, char **raw_commands, size_t *i,
 	command->args = args;
 }
 
-void	command_add_back(t_command **command, t_command *new_command)
+void	command_add_back(t_command *new_command)
 {
+	t_mini		*mi;
 	t_command	*last_command;
 
-	if (!*command)
+	mi = mini();
+	if (mi->commands == NULL)
 	{
-		*command = new_command;
+		mi->commands = new_command;
 		return ;
 	}
-	last_command = *command;
-	while (last_command && last_command->next)
+	last_command = mi->commands;
+	while (last_command != NULL && last_command->next != NULL)
 		last_command = last_command->next;
-	last_command->next = new_command;
+	last_command = new_command;
 }

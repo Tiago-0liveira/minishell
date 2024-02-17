@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/14 19:55:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/17 20:24:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,27 @@
 
 bool	parse_input(t_mini *mini)
 {
-	size_t		commands;
+	int			commands;
 	size_t		i;
 	size_t		j;
 	char		**raw_commands;
 	t_command	*command;
 
 	raw_commands = parse(mini);
-	commands = mini->input.pipe_c + 1;
+	commands = ((int)mini->input.pipe_c) + 1;
 	i = 0;
 	j = 0;
-	while (commands--)
+	while (commands > 0)
 	{
 		i = j;
 		while (raw_commands[j] && *raw_commands[j] != PIPE)
 			j++;
 		command = construct_command(raw_commands + i, j - i);
 		if (!command)
-			return (false); /* TODO: free raw_comamnds */
-		command_add_back(&mini->commands, command);
+			return (false);
+		command_add_back(command);
+		print_command(command);
+		commands--;
 		j++;
 	}
 	free_list(raw_commands);
@@ -50,6 +52,7 @@ size_t	parse_size(char *line)
 	{
 		skip_spaces(&line);
 		section = get_next_section(&line);
+		printf("section: %s\n", section);
 		if (!section)
 			return (0);
 		free(section);
@@ -63,14 +66,16 @@ char	*get_next_section(char **line)
 	char	*start;
 	bool	quotes;
 	int		i;
+	bool	escaped;
 
 	quotes = false;
 	start = *line;
-	while (**line)
+	escaped = false;
+	while (**line && (quotes || !should_split(*line)) && skip_spaces(line))
 	{
-		if (!quotes && should_split(*line))
-			break ;
-		if (**line == QUOTE || **line == DQUOTE)
+		if (**line == ESCAPE_CHAR || escaped)
+			escaped = !escaped;
+		else if (**line == QUOTE || **line == DQUOTE)
 			quotes = !quotes;
 		(*line)++;
 	}
@@ -83,6 +88,7 @@ char	*get_next_section(char **line)
 	}
 	else
 		i = *line - start;
+	// printf("i: %d\n", i);
 	return (ft_substr(start, 0, i));
 }
 

@@ -1,2 +1,1 @@
 cat aaa >> bbb < ttt
-echo -n

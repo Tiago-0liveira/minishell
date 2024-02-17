@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/17 14:47:05 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/17 18:35:07 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ int	ft_atoi_exit(const char *nptr)
 	int		s;
 	char	*d;
 
-	d = (char *) nptr;
+	d = (char *)nptr;
 	r = 0;
 	s = 1;
 	if (!nptr)
 		return (0);
-	while (*d == ' ' || *d == '\n' || *d == '\t' || *d == '\v'
-		|| *d == '\f' || *d == '\r')
+	while (*d == ' ' || *d == '\n' || *d == '\t' || *d == '\v' || *d == '\f'
+		|| *d == '\r')
 		d++;
 	if (*d == '-' || *d == '+')
 	{
@@ -75,9 +75,10 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 {
 	char	*path;
 
-	if (!(mini->commands->next) && !ft_strncmp(mini->commands->cmd_name,
-			"exit", 4))
-		free_shell(mini, NULL, ft_atoi_exit(mini->commands->args[0])); // executar built-in direto se for so 1 comando exit
+	if (!(mini->commands->next) && !ft_strncmp(mini->commands->cmd_name, "exit",
+			4))
+		free_shell(mini, NULL, ft_atoi_exit(mini->commands->args[0]));
+			// executar built-in direto se for so 1 comando exit
 	if (if_builtin(cmd->cmd_name))
 		built_in(mini, cmd);
 	else
@@ -86,6 +87,7 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 		if (execve(path, cmd->args, ev) < 0)
 		{
 			free_commands(cmd);
+			cmd = NULL;
 			return ;
 		}
 		free(path);

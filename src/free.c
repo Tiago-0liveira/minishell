@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 14:48:19 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/17 20:33:36 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ void	free_commands(t_command *commands)
 {
 	t_command	*tmp;
 
-	tmp = commands;
-	while (tmp != NULL)
+	while (commands != NULL)
 	{
-		if (tmp->cmd_name)
-			free(tmp->cmd_name);
-		if (tmp->in.file)
-			free(tmp->in.file);
-		if (tmp->out.file)
-			free(tmp->out.file);
-		if (tmp->args)
-			free_list(tmp->args);
+		tmp = commands->next;
+		if (commands->cmd_name)
+			free(commands->cmd_name);
+		if (commands->in.file)
+			free(commands->in.file);
+		if (commands->out.file)
+			free(commands->out.file);
+		if (commands->args)
+			free_list(commands->args);
+		commands->args = NULL;
+		free(commands);
 		commands = tmp;
-		tmp = tmp->next;
 	}
-	free(commands);
 }
 
 void	free_list(char **list)
@@ -39,13 +39,10 @@ void	free_list(char **list)
 
 	i = 0;
 	if (list == NULL)
-	{
 		return ;
-	}
 	while (list[i] != NULL)
 	{
-		if (list[i])
-			free(list[i]);
+		free(list[i]);
 		i++;
 	}
 	free(list);
@@ -58,19 +55,20 @@ void	free_mini(t_mini *mini)
 }
 
 // adicionei este free para os frees que ja tenho na execution. pode se manter os dois
-void    free_shell(t_mini *mini, char *err, int status)
+void	free_shell(t_mini *mini, char *err, int status)
 {
-	if (mini->input.raw_line)
-		free(mini->input.raw_line);
-	if (mini->commands)
-		free_commands(mini->commands);
+	reset_mini(mini);
 	if (mini->input.pip)
 	{
 		close(mini->input.pip[0]);
 		close(mini->input.pip[1]);
 	}
+	printf("her\n");
 	if (mini->env_list)
+	{
+		printf("her\n");
 		ft_lstclear(&(mini->env_list), free_content);
+	}
 	rl_clear_history();
 	if (err)
 		write(2, err, ft_strlen(err));
