@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/17 02:53:56 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 14:47:22 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_command	*ft_lstlast_mini(t_command *lst)
 	return (lst);
 }
 
-void    ft_execution(t_mini *mini, char **ev)
+void	ft_execution(t_mini *mini, char **ev)
 {
 	t_command	*tmp;
 	pid_t		pid;

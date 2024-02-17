@@ -81,5 +81,5 @@ void	bi_export(t_mini *mini, char **av)
 		}
 	}
 	ft_lstadd_back(&(mini->env_list), ft_lstnew(ft_strjoin("declare -x",
-					av[i])));
+				av[i])));
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 00:19:15 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 14:48:19 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void    free_shell(t_mini *mini, char *err, int status)
 	if (mini->input.raw_line)
 		free(mini->input.raw_line);
 	if (mini->commands)
-        free_commands(mini->commands);
+		free_commands(mini->commands);
 	if (mini->input.pip)
 	{
 		close(mini->input.pip[0]);
@@ -72,9 +72,9 @@ void    free_shell(t_mini *mini, char *err, int status)
 	if (mini->env_list)
 		ft_lstclear(&(mini->env_list), free_content);
 	rl_clear_history();
-    if (err)
-        write(2, err, ft_strlen(err));
-    close(0);
-    close(1);
-    exit(status);
+	if (err)
+		write(2, err, ft_strlen(err));
+	close(0);
+	close(1);
+	exit(status);
 }

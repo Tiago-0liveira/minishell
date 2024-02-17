@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void    bi_echo(char **av)
+void	bi_echo(char **av)
 {
 	int	i;
 	int	flag;

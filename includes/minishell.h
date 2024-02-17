@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/16 21:00:25 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 14:50:16 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void					assign_args(t_command *command, char **raw_commands,
 void					free_commands(t_command *commands);
 void					free_list(char **list);
 void					free_mini(t_mini *mini);
-void    				free_shell(t_mini *mini, char *err, int status);
+void					free_shell(t_mini *mini, char *err, int status);
 // signal_handle.c
 void					prmpt_ctrlc(int signal);
 void					sig_init(void);
@@ -130,7 +130,7 @@ void					ft_execution(t_mini *mini, char **ev);
 void					child_process(t_mini *mini, t_command *cmd,
 							char *lst_cmd, char **ev);
 void					parent_process(t_mini *mini, t_command *cmd,
-										char *lst_cmd);
+							char *lst_cmd);
 // \ execute.c
 void					execution(t_mini *mini, t_command *cmd, char **ev);
 char					*get_path(char *cmd, char **ev);

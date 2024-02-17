@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/16 21:51:15 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/17 14:49:00 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ t_list	*set_env(char **env)
 {
 	int		i;
 	t_list	*env_list;
+	t_list	*new_node;
 
 	env_list = NULL;
 	i = -1;
 	while (env[++i])
 	{
-		t_list *new_node = ft_lstnew(ft_strdup(env[i]));
+		new_node = ft_lstnew(ft_strdup(env[i]));
 		if (!new_node)
 		{
 			ft_lstclear(&env_list, free);
@@ -56,4 +57,3 @@ t_list	*set_env(char **env)
 	}
 	return (env_list);
 }
-
