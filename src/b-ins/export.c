@@ -80,6 +80,7 @@ void	bi_export(t_mini *mini, char **av)
 			}
 			tmp = tmp->next;
 		}
+		tmp = mini->env_list;
 		exp = ft_lstnew(ft_strdup((char *)av[i]));
 		ft_lstadd_back(&(mini->env_list), exp);
 	}

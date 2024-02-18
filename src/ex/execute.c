@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/18 01:19:48 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/18 01:40:18 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,4 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 		}
 		free(path);
 	}
-	free_mini(mini);
 }
