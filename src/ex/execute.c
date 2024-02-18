@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/17 18:35:07 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/18 01:19:48 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,6 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 {
 	char	*path;
 
-	if (!(mini->commands->next) && !ft_strncmp(mini->commands->cmd_name, "exit",
-			4))
-		free_shell(mini, NULL, ft_atoi_exit(mini->commands->args[0]));
-			// executar built-in direto se for so 1 comando exit
 	if (if_builtin(cmd->cmd_name))
 		built_in(mini, cmd);
 	else
@@ -92,8 +88,5 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 		}
 		free(path);
 	}
-	close(STDIN_FILENO);
-	close(STDOUT_FILENO);
-	close(STDERR_FILENO);
-	free(mini->input.raw_line);
+	free_mini(mini);
 }

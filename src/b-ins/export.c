@@ -55,6 +55,7 @@ void	bi_export(t_mini *mini, char **av)
 {
 	int		i;
 	t_list	*tmp;
+	t_list	*exp;
 
 	i = -1;
 	tmp = mini->env_list;
@@ -79,7 +80,7 @@ void	bi_export(t_mini *mini, char **av)
 			}
 			tmp = tmp->next;
 		}
+		exp = ft_lstnew(ft_strdup((char *)av[i]));
+		ft_lstadd_back(&(mini->env_list), exp);
 	}
-	ft_lstadd_back(&(mini->env_list), ft_lstnew(ft_strjoin("declare -x",
-				av[i])));
 }

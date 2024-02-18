@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 20:33:36 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/18 01:14:31 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ void	free_list(char **list)
 void	free_mini(t_mini *mini)
 {
 	reset_mini(mini);
-	free(mini);
 }
 
 // adicionei este free para os frees que ja tenho na execution. pode se manter os dois

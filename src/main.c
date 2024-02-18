@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 20:34:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/18 01:18:46 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int ac, char **av, char **env)
 		{
 			parse_input(mini());
 			if (mini()->commands != NULL
-				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) != 0)
+				&& !ft_strncmp(mini()->commands->cmd_name, "exit", 4))
 				break ;
 			cmd = mini()->commands;
 			while (cmd)
@@ -48,10 +48,10 @@ int	main(int ac, char **av, char **env)
 				if (cmd != NULL)
 					printf("will pipe to: \n");
 			}
-			// ft_execution(mini(), env);
+			ft_execution(mini(), env);
+			reset_mini(mini());
 		}
 		printf("her\n");
-		reset_mini(mini());
 	}
 	printf("asfasdasdasdadsasdasd\n");
 	free_shell(mini(), NULL, 0);
