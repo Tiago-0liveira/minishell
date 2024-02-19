@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 18:20:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:45:52 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define ESCAPE_CHAR '\\'
 # define ENV_VAR '$'
 # define SPACE ' '
+
+# define SHELL_ERROR "minishell: %s %s\n"
+# define CMD_NOT_FOUND "command not found: "
 
 # define DEBUG
 
@@ -115,8 +118,7 @@ t_command				*construct_command(char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 bool					should_split(char *line);
-void	command_add_back(/*t_command **command,*/
-						t_command *new_command);
+void					command_add_back(t_command *new_command);
 void					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 void					assign_args(t_command *command, char **raw_commands,
@@ -124,7 +126,6 @@ void					assign_args(t_command *command, char **raw_commands,
 // free.c
 void					free_commands(t_command *commands);
 void					free_list(char **list);
-void					free_mini(t_mini *mini);
 void					free_shell(t_mini *mini, char *err, int status);
 // signal_handle.c
 void					prmpt_ctrlc(int signal);
@@ -159,4 +160,6 @@ void					bi_export(t_mini *mini, char **av);
 void					bi_pwd(t_mini *mini);
 // \ unset
 void					bi_unset(t_mini *mini, char **av);
+// errors.c
+void					error_msg(char *cmd, char *msg);
 #endif

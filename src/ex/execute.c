@@ -3,42 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/18 01:40:18 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:46:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_atoi_exit(const char *nptr)
-{
-	int		r;
-	int		s;
-	char	*d;
-
-	d = (char *)nptr;
-	r = 0;
-	s = 1;
-	if (!nptr)
-		return (0);
-	while (*d == ' ' || *d == '\n' || *d == '\t' || *d == '\v' || *d == '\f'
-		|| *d == '\r')
-		d++;
-	if (*d == '-' || *d == '+')
-	{
-		if (*d == '-')
-			s = -1;
-		d++;
-	}
-	while (*d >= '0' && *d <= '9')
-	{
-		r = r * 10 + *d - '0';
-		d++;
-	}
-	return (r * s);
-}
 
 char	*cmd_path(char **ev)
 {
@@ -52,13 +24,16 @@ char	*get_path(char *cmd, char **ev)
 	int		i;
 	char	**paths;
 	char	*path;
+	char	*tmp;
 
 	i = 0;
 	paths = ft_split(cmd_path(ev), ':');
 	while (paths[i])
 	{
 		path = ft_strjoin(paths[i], "/");
+		tmp = path;
 		path = ft_strjoin(path, cmd);
+		free(tmp);
 		if (!access(path, F_OK | X_OK))
 		{
 			free_list(paths);
@@ -80,10 +55,11 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 	else
 	{
 		path = get_path(cmd->cmd_name, ev);
-		if (execve(path, cmd->args, ev) < 0)
+		if (!path || execve(path, cmd->args, ev) < 0)
 		{
-			free_commands(cmd);
-			cmd = NULL;
+			error_msg(CMD_NOT_FOUND, cmd->cmd_name);
+			if (!path)
+				free(path);
 			return ;
 		}
 		free(path);

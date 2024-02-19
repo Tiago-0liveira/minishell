@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 14:49:00 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:24:39 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,12 @@ t_mini	*mini(void)
 
 void	reset_mini(t_mini *mini)
 {
+	printf("resetting mini\n");
 	if (mini->input.raw_line)
+	{
 		free(mini->input.raw_line);
+		mini->input.raw_line = NULL;
+	}
 	mini->input.raw_line = NULL;
 	mini->input.len = 0;
 	mini->input.pipe_c = 0;

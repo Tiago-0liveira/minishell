@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 20:23:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:40:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ void	command_add_back(t_command *new_command)
 		return ;
 	}
 	last_command = mi->commands;
-	while (last_command != NULL && last_command->next != NULL)
+	while (last_command->next != NULL)
+	{
 		last_command = last_command->next;
-	last_command = new_command;
+	}
+	last_command->next = new_command;
 }

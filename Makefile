@@ -13,7 +13,8 @@ INCLUDES = -I $(includefolder) -I $(LIBFT_DIR)
 SRC_FOLDER = src/
 OBJ_DIR = obj/
 
-SRC_ROOT_FILES = main.c input.c mini.c utils.c free.c signal_handle.c
+SRC_ROOT_FILES = main.c input.c mini.c utils.c free.c signal_handle.c \
+				errors.c
 B-INS_FILES = cd.c echo.c env.c export.c pwd.c unset.c utils.c
 EX_FILES = execute.c execution.c
 PARSER_LEXER_FILES = lexer.c parser.c parser_helpers.c

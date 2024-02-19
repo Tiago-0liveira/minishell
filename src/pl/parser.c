@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 20:24:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:40:48 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,11 @@ bool	parse_input(t_mini *mini)
 			j++;
 		command = construct_command(raw_commands + i, j - i);
 		if (!command)
+		{
+			printf("malloc error!\n");
 			return (false);
+		}
 		command_add_back(command);
-		print_command(command);
 		commands--;
 		j++;
 	}
@@ -52,7 +54,6 @@ size_t	parse_size(char *line)
 	{
 		skip_spaces(&line);
 		section = get_next_section(&line);
-		printf("section: %s\n", section);
 		if (!section)
 			return (0);
 		free(section);
@@ -88,7 +89,6 @@ char	*get_next_section(char **line)
 	}
 	else
 		i = *line - start;
-	// printf("i: %d\n", i);
 	return (ft_substr(start, 0, i));
 }
 
@@ -132,6 +132,8 @@ t_command	*construct_command(char **raw_commands, size_t end)
 		return (NULL);
 	i = 0;
 	command->cmd_name = ft_strdup(raw_commands[i++]);
+	if (!command->cmd_name)
+		return (free(command), NULL);
 	assign_args(command, raw_commands, &i, end);
 	t_redir_init(&command->in);
 	t_redir_init(&command->out);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/18 01:14:31 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:54:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ void	free_commands(t_command *commands)
 		if (commands->out.file)
 			free(commands->out.file);
 		if (commands->args)
-			free_list(commands->args);
-		commands->args = NULL;
+			free(commands->args);
 		free(commands);
 		commands = tmp;
 	}
@@ -48,26 +47,18 @@ void	free_list(char **list)
 	free(list);
 }
 
-void	free_mini(t_mini *mini)
-{
-	reset_mini(mini);
-}
-
 // adicionei este free para os frees que ja tenho na execution. pode se manter os dois
 void	free_shell(t_mini *mini, char *err, int status)
 {
+	printf("freeing shell\n");
 	reset_mini(mini);
 	if (mini->input.pip)
 	{
 		close(mini->input.pip[0]);
 		close(mini->input.pip[1]);
 	}
-	printf("her\n");
 	if (mini->env_list)
-	{
-		printf("her\n");
 		ft_lstclear(&(mini->env_list), free_content);
-	}
 	rl_clear_history();
 	if (err)
 		write(2, err, ft_strlen(err));

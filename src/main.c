@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/18 01:34:37 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/19 18:07:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,8 @@
 
 int	main(int ac, char **av, char **env)
 {
-	t_command	*cmd;
-
-	// char	**s;
 	(void)av;
 	(void)ac;
-	(void)env;
-	/* TODO: Load env? */
-	cmd = NULL;
 	init_mini(mini());
 	mini()->env_list = set_env(env);
 	if (!(mini()->env_list))
@@ -38,17 +32,9 @@ int	main(int ac, char **av, char **env)
 		{
 			parse_input(mini());
 			if (mini()->commands != NULL
-				&& !ft_strncmp(mini()->commands->cmd_name, "exit", 4))
+				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) == 0)
 				break ;
-			cmd = mini()->commands;
-			while (cmd)
-			{
-				print_command(cmd);
-				cmd = cmd->next;
-				if (cmd != NULL)
-					printf("will pipe to: \n");
-			}
-			ft_execution(mini(), env);
+			//ft_execution(mini(), env); //TODO: bug with execution and pipes and fds
 		}
 		reset_mini(mini());
 	}
