@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/19 16:46:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:08:58 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 	else
 	{
 		path = get_path(cmd->cmd_name, ev);
+		print_command(cmd);
 		if (!path || execve(path, cmd->args, ev) < 0)
 		{
 			error_msg(CMD_NOT_FOUND, cmd->cmd_name);

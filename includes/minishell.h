@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 16:45:52 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:00:06 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ void					command_add_back(t_command *new_command);
 void					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 void					assign_args(t_command *command, char **raw_commands,
-							size_t *i, size_t end);
+							size_t end);
 // free.c
 void					free_commands(t_command *commands);
 void					free_list(char **list);
@@ -133,10 +133,11 @@ void					sig_init(void);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
-void					child_process(t_mini *mini, t_command *cmd,
-							char *lst_cmd, char **ev);
-void					parent_process(t_mini *mini, t_command *cmd,
-							char *lst_cmd);
+void					handle_command(t_mini *mini, t_command *cmd, char **ev, int has_next);
+void					execute_direct(t_mini *mini, t_command *cmd, char **ev);
+void					execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next);
+void					setup_redirections(t_command *cmd);
+void					reset_input(t_mini *mini);
 // \ execute.c
 void					execution(t_mini *mini, t_command *cmd, char **ev);
 char					*get_path(char *cmd, char **ev);

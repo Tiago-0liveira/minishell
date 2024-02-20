@@ -1,1 +1,2 @@
-cat aaa >> bbb < ttt
+ls test_files | grep txt
+ls test_files | grep "txt"

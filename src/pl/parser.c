@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 17:40:48 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:48:11 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,10 +131,10 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	if (!command)
 		return (NULL);
 	i = 0;
-	command->cmd_name = ft_strdup(raw_commands[i++]);
+	command->cmd_name = ft_strdup(raw_commands[i]);
 	if (!command->cmd_name)
 		return (free(command), NULL);
-	assign_args(command, raw_commands, &i, end);
+	assign_args(command, raw_commands, end);
 	t_redir_init(&command->in);
 	t_redir_init(&command->out);
 	while (i < end)

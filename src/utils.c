@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 18:59:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:49:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,10 @@ void	print_command(t_command *command)
 	size_t	i;
 
 	i = 0;
-	printf("cmd_name: |%s|\n", command->cmd_name);
-	printf("args: ");
+	printf("print_command: ");
 	while (command->args[i])
 	{
-		printf("%s ", command->args[i]);
+		printf("|%s| ", command->args[i]);
 		i++;
 	}
 	printf("\n");
@@ -51,6 +50,6 @@ void	print_command(t_command *command)
 		printf("redir in type:|%d|file:|%s|\n", command->in.type,
 			command->in.file);
 	if (command->out.file)
-		printf("redir out type:|%d|file:|%s|\n",
-			command->out.type, command->out.file);
+		printf("redir out type:|%d|file:|%s|\n", command->out.type,
+			command->out.file);
 }

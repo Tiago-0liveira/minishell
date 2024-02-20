@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 20:41:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:01:12 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ char	*get_input(bool prompt)
 #endif
 	if (!line)
 	{
-		ft_putstr_fd("exit\n", STDOUT_FILENO); /* TODO: what to do here? */
-		exit(0);
+		ft_putendl_fd("!!!detected invalid input, will exit!", STDOUT_FILENO);
+		line = ft_strdup("exit");
 	}
 	tmp = ft_strtrim(line, " \n");
 	free(line);

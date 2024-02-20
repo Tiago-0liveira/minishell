@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 17:54:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:58:52 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_commands(t_command *commands)
 		if (commands->out.file)
 			free(commands->out.file);
 		if (commands->args)
-			free(commands->args);
+			free_list(commands->args);
 		free(commands);
 		commands = tmp;
 	}

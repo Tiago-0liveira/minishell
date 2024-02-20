@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 17:40:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 22:59:08 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,24 @@ void	assign_redir(t_command *command, char *redir_file,
 	}
 }
 
-void	assign_args(t_command *command, char **raw_commands, size_t *i,
-		size_t end)
+void	assign_args(t_command *command, char **raw_commands, size_t end)
 {
-	size_t	j;
+	size_t	i;
 	size_t	k;
 	char	**args;
 
-	j = 0;
-	while (*i < end && redir_type(raw_commands[*i]) == RED_NULL)
-	{
-		(*i)++;
-		j++;
-	}
-	args = malloc((j + 1) * sizeof(char *));
+	i = 0;
+	while (i < end && redir_type(raw_commands[i]) == RED_NULL)
+		i++;
+	args = malloc((i + 1) * sizeof(char *));
 	if (!args)
 		return ; /* TODO: malloc error */
-	args[j] = NULL;
+	args[i] = NULL;
 	k = 0;
-	while (k < j)
+	while (k < i)
 	{
-		args[k] = ft_strdup(raw_commands[*i - j + k]);
+		//printf("k: %zu|%s|\n", k, raw_commands[k]);
+		args[k] = ft_strdup(raw_commands[k]);/* TODO: parse raw_command[k] before duping */
 		k++;
 	}
 	command->args = args;
