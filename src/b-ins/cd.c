@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/18 05:15:52 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/20 00:23:32 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,15 @@ void	bi_cd(t_mini *mini, char **av)
 	char	**tmp_split;
 	char	**pths;
 	char	*final_oldpwd;
+	char	*f_tmp;
+	char	*f_tmp2;
 	int		i;
 	int		j;
 	int		k;
 	int		l;
 
 	i = -1;
-	j = -1;
+	j = 0;
 	k = 0;
 	l = 0;
 	if (!getcwd(oldpwd, PATH_MAX))
@@ -77,32 +79,41 @@ void	bi_cd(t_mini *mini, char **av)
 			{
 				if (av[0][i + 1] == '.')
 				{
+					j = -1;
 					pths = ft_split(av[0], '/');
-					tmp_oldpwd = oldpwd;
-					split_oldpwd = ft_split(tmp_oldpwd, '/');
 					while (pths[++j])
 					{
 						if (!getcwd(oldpwd, PATH_MAX))
 							free_shell(mini, "Error\nFailure getting path!\n", 1);
+						tmp_oldpwd = oldpwd;
+						split_oldpwd = ft_split(tmp_oldpwd, '/');
 						if (pths[j][0] == '.')
 						{
 							final_oldpwd = ft_strdup("/");
 							tmp_split = split_oldpwd;
+							k = 0;
 							while (tmp_split[k])
 								k++;
 							k--;
+							l = 0;
 							while (l < k)
 							{
-								final_oldpwd = ft_strjoin(final_oldpwd, tmp_split[l]);
+								f_tmp = ft_strjoin(final_oldpwd, tmp_split[l]);
+								free(final_oldpwd);
+								final_oldpwd = f_tmp;
 								if (l + 1 != k)
-									final_oldpwd = ft_strjoin(final_oldpwd, "/");
+								{
+									f_tmp2 = ft_strjoin(final_oldpwd, "/");
+									free(final_oldpwd);
+									final_oldpwd = f_tmp2;
+								}
 								l++;
 							}
-							printf("%s\n", final_oldpwd);
 							if (chdir(final_oldpwd))
 								free_shell(mini, "Error\nDirectory change failuree!\n", 1);
-							env_update(mini, oldpwd);
 							free(final_oldpwd);
+							env_update(mini, oldpwd);
+							free_list(split_oldpwd);
 						}
 						else
 						{
@@ -112,6 +123,11 @@ void	bi_cd(t_mini *mini, char **av)
 							env_update(mini, oldpwd);
 
 						}
+					}
+					if (!pths[j])
+					{
+						free_list(pths);
+						break ;
 					}
 				}
 			}
