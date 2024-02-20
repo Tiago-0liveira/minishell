@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/20 22:01:09 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:25:05 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	ft_execution(t_mini *mini, char **ev)
 		}
 		cmd = cmd->next;
 	}
-	reset_input(mini); // Reset input for the next command sequence
 }
 
 void	handle_command(t_mini *mini, t_command *cmd, char **ev, int has_next)
@@ -150,15 +149,6 @@ void	setup_redirections(t_command *cmd)
 		}
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
-	}
-}
-
-void	reset_input(t_mini *mini)
-{
-	if (mini->input.cmd_input != STDIN_FILENO)
-	{
-		close(mini->input.cmd_input);
-		mini->input.cmd_input = STDIN_FILENO;
 	}
 }
 

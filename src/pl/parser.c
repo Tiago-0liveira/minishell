@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/20 22:48:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:27:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ char	*get_next_section(char **line)
 			quotes = !quotes;
 		(*line)++;
 	}
+	i = *line - start;
 	if (*line - start == 0 && should_split(*line))
 	{
 		i = redir_size(*line);
@@ -87,8 +88,6 @@ char	*get_next_section(char **line)
 			i = 1;
 		(*line) += i;
 	}
-	else
-		i = *line - start;
 	return (ft_substr(start, 0, i));
 }
 

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 17:24:39 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:25:14 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ void	reset_mini(t_mini *mini)
 	{
 		free(mini->input.raw_line);
 		mini->input.raw_line = NULL;
+	}
+	if (mini->input.cmd_input != STDIN_FILENO)
+	{
+		close(mini->input.cmd_input);
+		mini->input.cmd_input = STDIN_FILENO;
 	}
 	mini->input.raw_line = NULL;
 	mini->input.len = 0;
