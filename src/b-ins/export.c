@@ -63,7 +63,7 @@ void	bi_export(t_mini *mini, char **av)
 	{
 		while (tmp)
 		{
-			printf("declare -x %p\n", tmp->content);
+			printf("declare -x %s\n", (char *)tmp->content);
 			tmp = tmp->next;
 		}
 		return ;

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/19 18:44:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/20 23:02:19 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ int	main(int ac, char **av, char **env)
 			if (mini()->commands != NULL
 				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) == 0)
 				break ;
-			ft_execution(mini(), env);
-			// TODO: bug with execution and pipes and fds
+			ft_execution(mini(), env); //TODO: bug with execution and pipes and fds
 		}
 		reset_mini(mini());
 	}
