@@ -14,7 +14,7 @@
 
 enum e_redir_type	redir_type(char *line)
 {
-	if (line == NULL || ft_strlen(line) < 2)
+	if (line == NULL || ft_strlen(line) > 2)
 		return (RED_NULL);
 	if (strncmp(line, REDIR_APPEND_IN, 2) == 0)
 		return (RED_AIN);
