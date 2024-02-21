@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/20 00:53:52 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/21 02:43:27 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	bi_cd(t_mini *mini, char **av)
 	if (!getcwd(oldpwd, PATH_MAX))
 		free_shell(mini, "Error\nFailure getting path!\n", 1);
 	tmp = mini->env_list;
-	if (!av[0] || (av[0][0] == '~'))
+	if (!av[1] || (av[1][0] == '~'))
 	{
 		i += 2;
 		while (tmp)
@@ -72,73 +72,75 @@ void	bi_cd(t_mini *mini, char **av)
 		if (chdir(tmp_0 + 5))
 			free_shell(mini, "Error\nDirectory change failure!\n", 1);
 	}
-	while (av[0][++i])
+	if ((av[1] && av[1][0] != '~') || (av[1][0] == '~' && av[1][1]))
 	{
-		if (av[0][i] == '.' || av[0][0] == '~')
+		while (av[1][++i])
 		{
-			if (av[0][i + 1] == '.' || av[0][0] == '~')
+			if (av[1][i] == '.' || av[1][0] == '~')
 			{
-				j = -1;
-				pths = ft_split(av[0], '/');
-				if (!ft_strncmp(pths[0], "~", 1))
-					j = 0;
-				while (pths[++j])
+				if (av[1][i + 1] == '.' || av[1][0] == '~')
 				{
-					if (!getcwd(oldpwd, PATH_MAX))
-						free_shell(mini, "Error\nFailure getting path!\n", 1);
-					tmp_oldpwd = oldpwd;
-					split_oldpwd = ft_split(tmp_oldpwd, '/');
-					if (pths[j][0] == '.')
+					j = -1;
+					pths = ft_split(av[1], '/');
+					if (!ft_strncmp(pths[0], "~", 1))
+						j = 0;
+					while (pths[++j])
 					{
-						final_oldpwd = ft_strdup("/");
-						tmp_split = split_oldpwd;
-						k = 0;
-						while (tmp_split[k])
-							k++;
-						k--;
-						l = 0;
-						while (l < k)
+						if (!getcwd(oldpwd, PATH_MAX))
+							free_shell(mini, "Error\nFailure getting path!\n", 1);
+						tmp_oldpwd = oldpwd;
+						split_oldpwd = ft_split(tmp_oldpwd, '/');
+						if (pths[j][0] == '.')
 						{
-							f_tmp = ft_strjoin(final_oldpwd, tmp_split[l]);
-							free(final_oldpwd);
-							final_oldpwd = f_tmp;
-							if (l + 1 != k)
+							final_oldpwd = ft_strdup("/");
+							tmp_split = split_oldpwd;
+							k = 0;
+							while (tmp_split[k])
+								k++;
+							k--;
+							l = 0;
+							while (l < k)
 							{
-								f_tmp2 = ft_strjoin(final_oldpwd, "/");
+								f_tmp = ft_strjoin(final_oldpwd, tmp_split[l]);
 								free(final_oldpwd);
-								final_oldpwd = f_tmp2;
+								final_oldpwd = f_tmp;
+								if (l + 1 != k)
+								{
+									f_tmp2 = ft_strjoin(final_oldpwd, "/");
+									free(final_oldpwd);
+									final_oldpwd = f_tmp2;
+								}
+								l++;
 							}
-							l++;
+							if (chdir(final_oldpwd))
+								free_shell(mini, "Error\nDirectory change failuree!\n", 1);
+							free(final_oldpwd);
+							env_update(mini, oldpwd);
+							free_list(split_oldpwd);
 						}
-						if (chdir(final_oldpwd))
-							free_shell(mini, "Error\nDirectory change failuree!\n", 1);
-						free(final_oldpwd);
-						env_update(mini, oldpwd);
-						free_list(split_oldpwd);
+						else
+						{
+							if (chdir(pths[j]))
+								free_shell(mini, "Error\nDirectory change failures!\n", 1);
+							env_update(mini, oldpwd);
+							free_list(split_oldpwd);
+						}
 					}
-					else
+					if (!pths[j])
 					{
-						printf("%s\n", pths[j]);
-						if (chdir(pths[j]))
-							free_shell(mini, "Error\nDirectory change failures!\n", 1);
-						env_update(mini, oldpwd);
-						free_list(split_oldpwd);
+						free_list(pths);
+						break ;
 					}
 				}
-				if (!pths[j])
-				{
-					free_list(pths);
-					break ;
-				}
+				else if (av[1][i + 1] == '/')
+					i += 2;
 			}
-			else if (av[0][i + 1] == '/')
-				i += 2;
 		}
-	}
-	if (!j)
-	{
-		if (chdir(av[0]))
-			free_shell(mini, "Error\nDirectory change failurea!\n", 1);
-		env_update(mini, oldpwd);
+		if (!j)
+		{
+			if (chdir(av[1]))
+				free_shell(mini, "Error\nDirectory change failurea!\n", 1);
+			env_update(mini, oldpwd);
+		}
 	}
 }

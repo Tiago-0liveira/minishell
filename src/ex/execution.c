@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/20 23:25:05 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 02:41:47 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_execution(t_mini *mini, char **ev)
 
 void	handle_command(t_mini *mini, t_command *cmd, char **ev, int has_next)
 {
-	if (!has_next && !cmd->in.type && !cmd->out.type)
+	if (!has_next && cmd->in.type == -1 && cmd->out.type == -1 && if_builtin(cmd->cmd_name))
 	{
 		// Direct execution without forking if it's the last command with no redirections
 		execute_direct(mini, cmd, ev);
