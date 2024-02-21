@@ -72,7 +72,7 @@ void	bi_cd(t_mini *mini, char **av)
 		if (chdir(tmp_0 + 5))
 			free_shell(mini, "Error\nDirectory change failure!\n", 1);
 	}
-	if ((av[1] && av[1][0] != '~') || (av[1][0] == '~' && av[1][1]))
+	if (av[1] && ((av[1] && av[1][0] != '~') || (av[1][0] == '~' && av[1][1])))
 	{
 		while (av[1][++i])
 		{
