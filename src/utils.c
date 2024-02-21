@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/20 22:49:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:35:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,14 @@ enum e_redir_type	redir_type(char *line)
 	return (RED_NULL);
 }
 
-void	t_redir_init(t_redir *redir)
+void	t_redir_init(t_command *command)
 {
-	redir->file = NULL;
-	redir->fd = -1;
-	redir->type = RED_NULL;
+	command->in.file = NULL;
+	command->in.fd = -1;
+	command->in.type = RED_NULL;
+	command->out.file = NULL;
+	command->out.fd = -1;
+	command->out.type = RED_NULL;
 }
 
 void	print_command(t_command *command)

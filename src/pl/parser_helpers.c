@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/20 22:59:08 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:25:52 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ size_t	redir_size(char *line)
 	if (type == RED_AIN || type == RED_AOUT)
 		return (2);
 	if (type == RED_IN || type == RED_OUT)
+		return (1);
+	if (line != NULL && (*line == '|' || *line == ' '))
 		return (1);
 	return (0);
 }
@@ -35,11 +37,17 @@ void	assign_redir(t_command *command, char *redir_file,
 	if (type == RED_IN || type == RED_AIN)
 	{
 		command->in.file = ft_strdup(redir_file);
+		if (!command->in.file)
+			free_shell(MALLOC_ERROR, STDERR_FILENO,
+				free_commands_wrapper, command);
 		command->in.type = type;
 	}
 	else
 	{
 		command->out.file = ft_strdup(redir_file);
+		if (!command->out.file)
+			free_shell(MALLOC_ERROR, STDERR_FILENO,
+				free_commands_wrapper, command);
 		command->out.type = type;
 	}
 }
@@ -55,13 +63,16 @@ void	assign_args(t_command *command, char **raw_commands, size_t end)
 		i++;
 	args = malloc((i + 1) * sizeof(char *));
 	if (!args)
-		return ; /* TODO: malloc error */
+		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
 	args[i] = NULL;
 	k = 0;
 	while (k < i)
 	{
-		//printf("k: %zu|%s|\n", k, raw_commands[k]);
-		args[k] = ft_strdup(raw_commands[k]);/* TODO: parse raw_command[k] before duping */
+		/* TODO: parse raw_command[k] before duping */
+		args[k] = ft_strdup(raw_commands[k]);
+		if (args[k] == NULL)
+			free_shell(MALLOC_ERROR, STDERR_FILENO,
+				free_commands_wrapper, command);
 		k++;
 	}
 	command->args = args;

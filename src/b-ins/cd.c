@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/21 02:43:27 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:30:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ void	env_update(t_mini *mini, char *oldpwd)
 	char	**exp;
 
 	if (!getcwd(pwd, PATH_MAX))
-		free_shell(mini, "Error\nFailure getting path!\n", 1);
+		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
 	f_pwd = pwd;
 	f_oldpwd = oldpwd;
 	exp = malloc(4 * sizeof(char *));
 	if (!exp)
-		free_shell(mini, "Error\nMalloc failure!\n", 1);
+		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
 	exp[0] = ft_strdup("export");
 	exp[1] = ft_strjoin("PWD=", f_pwd);
 	exp[2] = ft_strjoin("OLDPWD=", f_oldpwd);
@@ -57,7 +57,7 @@ void	bi_cd(t_mini *mini, char **av)
 	k = 0;
 	l = 0;
 	if (!getcwd(oldpwd, PATH_MAX))
-		free_shell(mini, "Error\nFailure getting path!\n", 1);
+		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
 	tmp = mini->env_list;
 	if (!av[1] || (av[1][0] == '~'))
 	{
@@ -70,7 +70,7 @@ void	bi_cd(t_mini *mini, char **av)
 		}
 		tmp_0 = (char *)tmp->content;
 		if (chdir(tmp_0 + 5))
-			free_shell(mini, "Error\nDirectory change failure!\n", 1);
+			free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
 	}
 	if (av[1] && ((av[1] && av[1][0] != '~') || (av[1][0] == '~' && av[1][1])))
 	{
@@ -87,7 +87,7 @@ void	bi_cd(t_mini *mini, char **av)
 					while (pths[++j])
 					{
 						if (!getcwd(oldpwd, PATH_MAX))
-							free_shell(mini, "Error\nFailure getting path!\n", 1);
+							free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
 						tmp_oldpwd = oldpwd;
 						split_oldpwd = ft_split(tmp_oldpwd, '/');
 						if (pths[j][0] == '.')
@@ -113,7 +113,7 @@ void	bi_cd(t_mini *mini, char **av)
 								l++;
 							}
 							if (chdir(final_oldpwd))
-								free_shell(mini, "Error\nDirectory change failuree!\n", 1);
+								free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
 							free(final_oldpwd);
 							env_update(mini, oldpwd);
 							free_list(split_oldpwd);
@@ -121,7 +121,7 @@ void	bi_cd(t_mini *mini, char **av)
 						else
 						{
 							if (chdir(pths[j]))
-								free_shell(mini, "Error\nDirectory change failures!\n", 1);
+								free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
 							env_update(mini, oldpwd);
 							free_list(split_oldpwd);
 						}
@@ -139,7 +139,7 @@ void	bi_cd(t_mini *mini, char **av)
 		if (!j)
 		{
 			if (chdir(av[1]))
-				free_shell(mini, "Error\nDirectory change failurea!\n", 1);
+				free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
 			env_update(mini, oldpwd);
 		}
 	}

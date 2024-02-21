@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/21 01:41:33 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:23:02 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 	else
 	{
 		path = get_path(cmd->cmd_name, ev);
-		print_command(cmd);
 		if (!path || execve(path, cmd->args, ev) < 0)
 		{
 			error_msg(CMD_NOT_FOUND, cmd->cmd_name);

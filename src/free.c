@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 00:49:29 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:33:24 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,38 @@ void	free_list(char **list)
 	free(list);
 }
 
-// adicionei este free para os frees que ja tenho na execution. pode se manter os dois
-void	free_shell(t_mini *mini, char *err, int status)
+// mudei a funcao para podermos dar free de alguma variavel que tenhamos alocado
+void	free_shell(char *err, int status, void (*cleanup_func)(void *),
+		void *free_arg)
 {
-	printf("freeing shell\n");
-	reset_mini(mini);
-	if (mini->input.pip)
+	t_mini	*m;
+
+	m = mini();
+	#ifdef DEBUG
+		printf("freeing shell\n");
+	#endif
+	if (free_arg != NULL && cleanup_func != NULL)
+		cleanup_func(free_arg);
+	reset_mini(m);
+	if (m->input.pip)
 	{
-		close(mini->input.pip[0]);
-		close(mini->input.pip[1]);
+		close(m->input.pip[0]);
+		close(m->input.pip[1]);
 	}
-	if (mini->env_list)
-		ft_lstclear(&(mini->env_list), free_content);
+	if (m->env_list)
+		ft_lstclear(&(m->env_list), free_content);
 	rl_clear_history();
 	if (err)
 		write(2, err, ft_strlen(err));
 	close(0);
 	close(1);
 	exit(status);
+}
+
+void	free_commands_wrapper(void *arg)
+{
+	t_command	*cmd;
+
+	cmd = (t_command *)arg;
+	free_commands(cmd);
 }

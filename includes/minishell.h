@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 01:34:36 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/21 18:31:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,26 @@
 # define ENV_VAR '$'
 # define SPACE ' '
 
+# define MALLOC_ERROR "Malloc failed!\n"
+
+# define SHELL_SUCCESS_UNICODE "\xE2\x9C\x93"
+# define SHELL_ERROR_UNICODE "\xE2\x9C\x97"
+
+# define RED(a) "\033[0;31m" a "\033[0m"
+# define GREEN(a) "\033[0;32m" a "\033[0m"
+
+// error_msg errors
 # define SHELL_ERROR "minishell: %s %s\n"
 # define CMD_NOT_FOUND "command not found: "
+# define FD_NOT_FOUND "no such file or directory: "
 
-# define DEBUG
+// free shell errors
+# define FAILURE_GETTING_PATH "Failure getting path!\n"
+# define DIR_CHANGE_ERROR "Directory change failure!\n"
+# define PIPE_ERROR "Pipe error!\n"
+# define FORK_ERROR "Fork error!\n"
+
+# define DEBUGG
 
 enum					e_redir_type
 {
@@ -52,6 +68,8 @@ enum					e_redir_type
 	RED_OUT,
 	RED_AOUT
 };
+
+typedef void			(*t_cleanup_func)(void *);
 
 typedef struct s_input
 {
@@ -82,7 +100,7 @@ typedef struct s_mini
 {
 	t_input				input;
 	t_command			*commands;
-	bool				command_ret;
+	int					command_ret;
 	t_list				*env_list;
 }						t_mini;
 
@@ -102,7 +120,7 @@ t_list					*set_env(char **env);
 // utils.c
 enum e_redir_type		redir_type(char *line);
 void					free_commands(t_command *commands);
-void					t_redir_init(t_redir *redir);
+void					t_redir_init(t_command *command);
 void					print_command(t_command *command);
 // pl
 //  \ lexer.c
@@ -126,15 +144,18 @@ void					assign_args(t_command *command, char **raw_commands,
 // free.c
 void					free_commands(t_command *commands);
 void					free_list(char **list);
-void					free_shell(t_mini *mini, char *err, int status);
+
+void					free_shell(char *err, int status,
+							void (*cleanup_func)(void *), void *free_arg);
+void					free_commands_wrapper(void *arg);
 // signal_handle.c
 void					prmpt_ctrlc(int signal);
 void					sig_init(void);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
-void					handle_command(t_mini *mini, t_command *cmd,
-							char **ev, int has_next);
+void					handle_command(t_mini *mini, t_command *cmd, char **ev,
+							int has_next);
 void					execute_direct(t_mini *mini, t_command *cmd, char **ev);
 void					execute_in_child(t_mini *mini, t_command *cmd,
 							char **ev, int has_next);

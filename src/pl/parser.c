@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/20 23:27:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:27:29 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ bool	parse_input(t_mini *mini)
 			j++;
 		command = construct_command(raw_commands + i, j - i);
 		if (!command)
-		{
-			printf("malloc error!\n");
-			return (false);
-		}
+			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 		command_add_back(command);
 		commands--;
 		j++;
@@ -72,7 +69,7 @@ char	*get_next_section(char **line)
 	quotes = false;
 	start = *line;
 	escaped = false;
-	while (**line && (quotes || !should_split(*line)) && skip_spaces(line))
+	while (**line && (quotes || !redir_size(*line)) && skip_spaces(line))
 	{
 		if (**line == ESCAPE_CHAR || escaped)
 			escaped = !escaped;
@@ -81,11 +78,9 @@ char	*get_next_section(char **line)
 		(*line)++;
 	}
 	i = *line - start;
-	if (*line - start == 0 && should_split(*line))
+	if (i == 0 && redir_size(*line))
 	{
 		i = redir_size(*line);
-		if (i == 0)
-			i = 1;
 		(*line) += i;
 	}
 	return (ft_substr(start, 0, i));
@@ -128,14 +123,13 @@ t_command	*construct_command(char **raw_commands, size_t end)
 
 	command = malloc(sizeof(t_command));
 	if (!command)
-		return (NULL);
+		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	i = 0;
 	command->cmd_name = ft_strdup(raw_commands[i]);
 	if (!command->cmd_name)
-		return (free(command), NULL);
+		free_shell(MALLOC_ERROR, STDERR_FILENO, free, command);
 	assign_args(command, raw_commands, end);
-	t_redir_init(&command->in);
-	t_redir_init(&command->out);
+	t_redir_init(command);
 	while (i < end)
 	{
 		type = redir_type(raw_commands[i]);

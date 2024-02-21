@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 01:50:21 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/21 17:09:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av, char **env)
 	init_mini(mini());
 	mini()->env_list = set_env(env);
 	if (!(mini()->env_list))
-		free_shell(mini(), "Error\nMalloc failed!\n", 1);
+		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	while (1)
 	{
 		mini()->input.raw_line = get_input(true);
@@ -34,9 +34,9 @@ int	main(int ac, char **av, char **env)
 			if (mini()->commands != NULL
 				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) == 0)
 				break ;
-			ft_execution(mini(), env); //TODO: bug with execution and pipes and fds
+			ft_execution(mini(), env);
 		}
 		reset_mini(mini());
 	}
-	free_shell(mini(), NULL, 0);
+	free_shell(NULL, 0, NULL, NULL);
 }
