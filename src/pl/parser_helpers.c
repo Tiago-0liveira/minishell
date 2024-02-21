@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 17:25:52 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 19:28:18 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,10 @@ size_t	redir_size(char *line)
 	type = redir_type(line);
 	if (type == RED_AIN || type == RED_AOUT)
 		return (2);
-	if (type == RED_IN || type == RED_OUT)
-		return (1);
-	if (line != NULL && (*line == '|' || *line == ' '))
+	if (type == RED_IN || type == RED_OUT || (line != NULL && (*line == '|'
+		|| *line == ' ')))
 		return (1);
 	return (0);
-}
-
-bool	should_split(char *line)
-{
-	return (redir_size(line) > 0 || *line == '|' || *line == ' ');
 }
 
 void	assign_redir(t_command *command, char *redir_file,
@@ -38,16 +32,16 @@ void	assign_redir(t_command *command, char *redir_file,
 	{
 		command->in.file = ft_strdup(redir_file);
 		if (!command->in.file)
-			free_shell(MALLOC_ERROR, STDERR_FILENO,
-				free_commands_wrapper, command);
+			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
+				command);
 		command->in.type = type;
 	}
 	else
 	{
 		command->out.file = ft_strdup(redir_file);
 		if (!command->out.file)
-			free_shell(MALLOC_ERROR, STDERR_FILENO,
-				free_commands_wrapper, command);
+			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
+				command);
 		command->out.type = type;
 	}
 }
@@ -71,8 +65,8 @@ void	assign_args(t_command *command, char **raw_commands, size_t end)
 		/* TODO: parse raw_command[k] before duping */
 		args[k] = ft_strdup(raw_commands[k]);
 		if (args[k] == NULL)
-			free_shell(MALLOC_ERROR, STDERR_FILENO,
-				free_commands_wrapper, command);
+			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
+				command);
 		k++;
 	}
 	command->args = args;

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/17 17:49:30 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 22:41:31 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,41 @@ bool	escaping(char c, bool *escaping)
 	return (c == QUOTE || c == DQUOTE || c == PIPE || c == ESCAPE_CHAR
 		|| c == ENV_VAR || c == SPACE || c == REDIR_IN || c == REDIR_OUT
 		|| c == '\n');
+}
+
+// check for all types of semantic errors
+bool	semantic_checker(char **raw_commands)
+{
+	bool	commandexpected;
+	bool	isvalid;
+	int		i;
+
+	commandexpected = true;
+	isvalid = true;
+	i = 0;
+	while (raw_commands && raw_commands[i] && isvalid)
+	{
+		if (redir_type(raw_commands[i]) != RED_NULL)
+		{
+			if (commandexpected || (raw_commands[i + 1]
+					&& redir_size(raw_commands[i + 1])))
+				isvalid = false;
+		}
+		else if (!commandexpected)
+		{
+			isvalid = false;
+		}
+		if (!redir_size(raw_commands[i]))
+			commandexpected = !commandexpected;
+		i++;
+	}
+	printf("semantic_checker output: %d\n", isvalid && !commandexpected);
+	return (isvalid && !commandexpected);
+}
+
+bool	valid_arg(char *s1, char *s2, bool commandexpected)
+{
+	if (redir_size(s1) && (s2 == NULL || redir_size(s2)))
+		return (false);
+	return (!commandexpected);
 }

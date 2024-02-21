@@ -6,7 +6,10 @@
 			"type": "cppdbg",
 			"request": "launch",
 			"program": "${workspaceFolder}/minishell",
-			"args": ["<", "test_files/test1.txt"],
+			"args": [
+				"<",
+				"test_files/shell_tester.txt"
+			],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",
 			"environment": [],

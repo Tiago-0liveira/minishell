@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 18:31:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/21 21:05:30 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@
 # define SHELL_ERROR "minishell: %s %s\n"
 # define CMD_NOT_FOUND "command not found: "
 # define FD_NOT_FOUND "no such file or directory: "
+# define SYNTAX_ERROR "syntax error near unexpected token `"
 
 // free shell errors
 # define FAILURE_GETTING_PATH "Failure getting path!\n"
@@ -58,7 +59,7 @@
 # define PIPE_ERROR "Pipe error!\n"
 # define FORK_ERROR "Fork error!\n"
 
-# define DEBUGG
+# define DEBUG
 
 enum					e_redir_type
 {
@@ -127,6 +128,8 @@ void					print_command(t_command *command);
 bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
 bool					escaping(char c, bool *escaping);
+bool					semantic_checker(char **raw_commands);
+bool					valid_arg(char *s1, char *s2, bool commandexpected);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
@@ -135,7 +138,6 @@ char					**parse(t_mini *mini);
 t_command				*construct_command(char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
-bool					should_split(char *line);
 void					command_add_back(t_command *new_command);
 void					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
