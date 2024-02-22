@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/21 22:41:07 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 00:54:37 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,17 +93,13 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 		}
 		setup_redirections(cmd);  // Handle file-based redirections
 		execution(mini, cmd, ev); // Execute the command
-		free_shell("freeing shell in child process", EXIT_SUCCESS, NULL, NULL);
+		free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 	}
 	else if (pid < 0)
-	{
-		printf("FORK FAILED\n");
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
-	}
 	else
 	{
 		// Parent process
-		printf("PARENT PROCESS\n");
 		waitpid(pid, &mini->command_ret, 0);
 		if (has_next)
 			close(mini->input.pip[1]);
@@ -113,15 +109,19 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 		// Close the read-end of the previous pipe if it was used
 		if (WIFEXITED(mini->command_ret))
 		{
+			#ifdef DEBUG
 			printf("Child exited with status %d\n",
 				WEXITSTATUS(mini->command_ret));
+			#endif
 			mini->command_ret = WEXITSTATUS(mini->command_ret);
 				// Store child's exit status if needed
 		}
 		else if (WIFSIGNALED(mini->command_ret))
 		{
+			#ifdef DEBUG
 			printf("Child terminated by signal %d\n",
 				WTERMSIG(mini->command_ret));
+			#endif
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 22:13:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 01:01:03 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,10 @@ bool	parse_input(t_mini *mini)
 	t_command	*command;
 
 	raw_commands = parse(mini);
-	printf("here\n");
 	if (!raw_commands)
-	{
-		printf("here2\n");
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, free, raw_commands);
-	}
 	if (!semantic_checker(raw_commands))
-	{
-		printf("here3\n");
 		return (free_list(raw_commands), false);
-	}
-	printf("here4\n");
 	commands = ((int)mini->input.pipe_c) + 1;
 	i = 0;
 	j = 0;

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 21:05:30 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 01:18:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <stdio.h>
 # include <sys/wait.h>
 
-# define PROMPT " > "
+# define PROMPT "$ "
 # define HEREDOC_PROMPT "heredoc>"
 
 # define QUOTE '\''
@@ -41,11 +41,14 @@
 
 # define MALLOC_ERROR "Malloc failed!\n"
 
-# define SHELL_SUCCESS_UNICODE "\xE2\x9C\x93"
-# define SHELL_ERROR_UNICODE "\xE2\x9C\x97"
+# define CHECK "\xE2\x9C\x93"
+# define X "\xE2\x9C\x97"
 
-# define RED(a) "\033[0;31m" a "\033[0m"
-# define GREEN(a) "\033[0;32m" a "\033[0m"
+# define RED "\033[0;31m"
+# define GREEN "\033[0;32m"
+# define BLUE "\033[0;34m"
+# define CYAN "\033[0;36m"
+# define RESET "\033[0m"
 
 // error_msg errors
 # define SHELL_ERROR "minishell: %s %s\n"
@@ -59,7 +62,7 @@
 # define PIPE_ERROR "Pipe error!\n"
 # define FORK_ERROR "Fork error!\n"
 
-# define DEBUG
+# define DEBUGG
 
 enum					e_redir_type
 {
@@ -129,7 +132,8 @@ bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
 bool					escaping(char c, bool *escaping);
 bool					semantic_checker(char **raw_commands);
-bool					valid_arg(char *s1, char *s2, bool commandexpected);
+bool					valid_arg(char **sections, int i,
+							bool *commandexpected);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
@@ -187,4 +191,6 @@ void					bi_pwd(t_mini *mini);
 void					bi_unset(t_mini *mini, char **av);
 // errors.c
 void					error_msg(char *cmd, char *msg);
+// colors.c
+void					color_out(char *color, char *str);
 #endif

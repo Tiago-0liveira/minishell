@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 22:41:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 01:10:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ bool	escaping(char c, bool *escaping)
 }
 
 // check for all types of semantic errors
-bool	semantic_checker(char **raw_commands)
+bool	semantic_checker(char **sections)
 {
 	bool	commandexpected;
 	bool	isvalid;
@@ -74,29 +74,30 @@ bool	semantic_checker(char **raw_commands)
 	commandexpected = true;
 	isvalid = true;
 	i = 0;
-	while (raw_commands && raw_commands[i] && isvalid)
+	while (sections && sections[i] && isvalid)
 	{
-		if (redir_type(raw_commands[i]) != RED_NULL)
-		{
-			if (commandexpected || (raw_commands[i + 1]
-					&& redir_size(raw_commands[i + 1])))
-				isvalid = false;
-		}
-		else if (!commandexpected)
-		{
-			isvalid = false;
-		}
-		if (!redir_size(raw_commands[i]))
-			commandexpected = !commandexpected;
+		isvalid = valid_arg(sections, i, &commandexpected);
 		i++;
 	}
 	printf("semantic_checker output: %d\n", isvalid && !commandexpected);
+	if (!isvalid || commandexpected)
+		error_msg(SYNTAX_ERROR, sections[i - 1]); // TODO: need better error msg
 	return (isvalid && !commandexpected);
 }
 
-bool	valid_arg(char *s1, char *s2, bool commandexpected)
+// this function needs to check if the sequence of sections is valid
+// for example "ls | | ls" is invalid and "| " is invalid
+// it also needs to check for redirections
+// use redir_type to check for redirections
+bool	valid_arg(char **sections, int i, bool *commandexpected)
 {
-	if (redir_size(s1) && (s2 == NULL || redir_size(s2)))
-		return (false);
-	return (!commandexpected);
+	if (redir_type(sections[i]) != RED_NULL || *sections[i] == PIPE)
+	{
+		if (*commandexpected)
+			return (false);
+		*commandexpected = true;
+	}
+	else
+		*commandexpected = false;
+	return (true);
 }
