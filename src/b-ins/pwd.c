@@ -16,10 +16,9 @@
 #include "minishell.h"
 
 
-void	bi_pwd(t_mini *mini)
+void	bi_pwd(void)
 {
-	(void)mini; // TODO: maybe remove parameter mini??
-	char dir[PATH_MAX + 1];
+	char	dir[PATH_MAX + 1];
 
 	if (!getcwd(dir, PATH_MAX))
 		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
