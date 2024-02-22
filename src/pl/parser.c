@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 01:01:03 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 02:51:58 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	parse_input(t_mini *mini)
 		i = j;
 		while (raw_commands[j] && *raw_commands[j] != PIPE)
 			j++;
-		command = construct_command(raw_commands + i, j - i);
+		command = construct_command(mini, raw_commands + i, j - i);
 		if (!command)
 			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 		command_add_back(command);
@@ -121,7 +121,7 @@ char	**parse(t_mini *mini)
 	return (s);
 }
 
-t_command	*construct_command(char **raw_commands, size_t end)
+t_command	*construct_command(t_mini *mini, char **raw_commands, size_t end)
 {
 	t_command			*command;
 	size_t				i;
@@ -141,6 +141,8 @@ t_command	*construct_command(char **raw_commands, size_t end)
 		type = redir_type(raw_commands[i]);
 		if (type != RED_NULL)
 			assign_redir(command, raw_commands[++i], type);
+		if (type == RED_AIN)
+			mini->hd_limiter = ft_strdup(raw_commands[i]);
 		i++;
 	}
 	command->next = NULL;

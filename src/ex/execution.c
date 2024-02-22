@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/22 00:54:37 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 06:15:08 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,8 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			close(mini->input.pip[1]);
 			// Redirect stdout to pipe's write-end
 		}
-		setup_redirections(cmd);  // Handle file-based redirections
+		setup_redirections(mini, cmd);  // Handle file-based redirections
+		printf("1a");
 		execution(mini, cmd, ev); // Execute the command
 		free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 	}
@@ -126,14 +127,24 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	}
 }
 
-void	setup_redirections(t_command *cmd)
+void	setup_redirections(t_mini *mini, t_command *cmd)
 {
-	int	fd_in;
-	int	fd_out;
+	int		fd_in;
+	int		fd_out;
+	char	*heredoc_fd;
 
+	heredoc_fd = NULL;
 	if (cmd->in.type != RED_NULL)
 	{
-		fd_in = open(cmd->in.file, O_RDONLY);
+		if (cmd->out.type == RED_IN)
+			fd_in = open(cmd->in.file, O_RDONLY);
+		else
+		{
+			heredoc_fd = heredoc(mini);
+			fd_in = open(heredoc_fd, O_RDONLY);
+			free(mini->hd_limiter);
+			free(heredoc_fd);
+		}
 		if (fd_in < 0)
 		{
 			// perror("Error opening input file");

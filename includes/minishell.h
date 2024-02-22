@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 01:18:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 05:21:01 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <sys/wait.h>
+# include <termios.h>
 
 # define PROMPT "$ "
 # define HEREDOC_PROMPT "heredoc>"
@@ -106,6 +107,7 @@ typedef struct s_mini
 	t_command			*commands;
 	int					command_ret;
 	t_list				*env_list;
+	char				*hd_limiter;
 }						t_mini;
 
 // main.c
@@ -139,7 +141,7 @@ bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
-t_command				*construct_command(char **raw_commands, size_t end);
+t_command				*construct_command(t_mini *mini, char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
@@ -165,11 +167,13 @@ void					handle_command(t_mini *mini, t_command *cmd, char **ev,
 void					execute_direct(t_mini *mini, t_command *cmd, char **ev);
 void					execute_in_child(t_mini *mini, t_command *cmd,
 							char **ev, int has_next);
-void					setup_redirections(t_command *cmd);
+void					setup_redirections(t_mini *mini, t_command *cmd);
 // \ execute.c
 void					execution(t_mini *mini, t_command *cmd, char **ev);
 char					*get_path(char *cmd, char **ev);
 char					*cmd_path(char **ev);
+// \ heredoc.c
+char					*heredoc(t_mini *mini);
 // b-ins
 // \ built-ins_utils.c
 int						if_builtin(char *s);
