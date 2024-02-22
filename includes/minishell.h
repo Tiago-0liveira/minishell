@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 20:14:27 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 21:50:17 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,6 +154,7 @@ void					assign_args(t_command *command, char **raw_commands,
 char					*substr_expander(char *str, size_t len);
 char					*replace_vars(char *str);
 char					*replace_var(char **str, int *i);
+/*char					*remove_layer_quotes(char *str);*/
 bool					valid_env_char(char c);
 // free.c
 void					free_commands(t_command *commands);
