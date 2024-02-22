@@ -1,2 +1,3 @@
-ls test_files | grep txt
-ls test_files | grep "txt"
+echo "asd"'asd'	
+echo "asd"asd
+exit

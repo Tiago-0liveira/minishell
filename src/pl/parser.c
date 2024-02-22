@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 02:51:58 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/22 20:16:37 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ char	*get_next_section(char **line)
 		i = redir_size(*line);
 		(*line) += i;
 	}
-	return (ft_substr(start, 0, i));
+	return (substr_expander(start, i));
+	/*return (ft_substr(start, 0, i));*/
 }
 
 char	**parse(t_mini *mini)
@@ -95,9 +96,9 @@ char	**parse(t_mini *mini)
 	size_t	sections;
 	size_t	i;
 	char	*line;
-	char	*tmp;
 	char	**s;
 
+	// char	*tmp;
 	line = mini->input.raw_line;
 	sections = parse_size(line);
 	i = 0;
@@ -108,14 +109,16 @@ char	**parse(t_mini *mini)
 	while (i < sections)
 	{
 		skip_spaces(&line);
-		tmp = get_next_section(&line);
+		/*tmp = get_next_section(&line);
 		if (!tmp)
 			return (NULL);
 		s[i] = ft_strtrim(tmp, " ");
-		free(tmp);
+		printf("section:|%s|\n", s[i]);
+		free(tmp);*/
+		s[i] = get_next_section(&line);
 		if (s[i] == NULL)
 			return (free_list(s), NULL);
-		tmp = NULL;
+		// tmp = NULL;
 		i++;
 	}
 	return (s);

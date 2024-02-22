@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 19:28:18 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/22 18:26:44 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ size_t	redir_size(char *line)
 	if (type == RED_AIN || type == RED_AOUT)
 		return (2);
 	if (type == RED_IN || type == RED_OUT || (line != NULL && (*line == '|'
-		|| *line == ' ')))
+				|| *line == ' ')))
 		return (1);
 	return (0);
 }

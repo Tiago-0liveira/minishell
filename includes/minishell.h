@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 05:21:01 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/22 20:14:27 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,16 +132,17 @@ void					print_command(t_command *command);
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
-bool					escaping(char c, bool *escaping);
 bool					semantic_checker(char **raw_commands);
 bool					valid_arg(char **sections, int i,
-							bool *commandexpected);
+							bool *last_was_redir, char **error);
+bool					valid_command_or_arg(char *section);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
-t_command				*construct_command(t_mini *mini, char **raw_commands, size_t end);
+t_command				*construct_command(t_mini *mini,
+							char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
@@ -149,6 +150,11 @@ void					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 void					assign_args(t_command *command, char **raw_commands,
 							size_t end);
+//  \ parser_helpers2.c
+char					*substr_expander(char *str, size_t len);
+char					*replace_vars(char *str);
+char					*replace_var(char **str, int *i);
+bool					valid_env_char(char c);
 // free.c
 void					free_commands(t_command *commands);
 void					free_list(char **list);
@@ -184,13 +190,14 @@ void					bi_cd(t_mini *mini, char **av);
 void					bi_echo(char **av);
 // \ env
 void					bi_env(t_list *env_list);
+char					*get_env_var(t_list *env_list, char *var);
 // \ export
 int						ft_strlen_eq(char *s);
 void					free_content(void *content);
 void					delete_var(t_list **head, void *node_to_del);
 void					bi_export(t_mini *mini, char **av);
 // \ pwd
-void					bi_pwd(t_mini *mini);
+void					bi_pwd(void);
 // \ unset
 void					bi_unset(t_mini *mini, char **av);
 // errors.c
