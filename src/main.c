@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 03:35:25 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:20:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,12 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		mini()->input.raw_line = get_input(true);
-		if (!input_error_check(mini()))
+		if (ft_strlen(mini()->input.raw_line) == 0)
+		{
+			free(mini()->input.raw_line);
+			continue ;
+		}
+		else if (!input_error_check(mini()))
 		{
 			mini()->command_ret = false;
 			printf("minishell: syntax error\n");

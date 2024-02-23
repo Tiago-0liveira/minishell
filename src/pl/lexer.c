@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 17:26:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:00:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,18 @@
 bool	input_error_check(t_mini *mini)
 {
 	char	*line_cursor;
-	bool	quotes;
-	bool	dquotes;
-	bool	escaped;
 
 	line_cursor = mini->input.raw_line;
-	quotes = false;
-	dquotes = false;
-	escaped = false;
 	while (*line_cursor)
 	{
 		if (!skip_spaces(&line_cursor))
 			return (false);
-		if (*line_cursor == ESCAPE_CHAR || escaped)
-			escaped = !escaped;
-		else if (*line_cursor == QUOTE)
-			quotes = !quotes;
-		else if (*line_cursor == DQUOTE)
-			dquotes = !dquotes;
 		else if (*line_cursor == PIPE)
 			mini->input.pipe_c++;
 		line_cursor++;
 	}
 	mini->input.len = line_cursor - mini->input.raw_line;
-	return (!(quotes || dquotes) && ft_strlen(mini->input.raw_line) > 0);
+	return (ft_strlen(mini->input.raw_line) > 0);
 }
 
 bool	skip_spaces(char **line)
@@ -61,35 +49,18 @@ bool	semantic_checker(char **sections)
 	isvalid = true;
 	i = 0;
 	error = NULL;
-	while (sections && sections[i])
+	while (sections && sections[i] && isvalid && !error)
 	{
 		isvalid = valid_arg(sections, i, &last_was_redir, &error);
-		if (!isvalid || error != NULL)
-			break ;
 		i++;
 	}
-	/*printf("section:|%s|isnull:%d|%d|%d\n", sections[i], sections[i] == NULL,
-		isvalid, last_was_redir);*/
-	if (sections[i] != NULL)
+	if (error && *error == '\n')
+		error = "newline'";
+	if (sections[i - 1])
 	{
-		valid_arg(sections, i, &last_was_redir, &error);
-		if (error != NULL)
-		{
-			if (*error == '\n')
-				error = "newline'";
-			// printf("semantic_checker output: %d\n", 0);
+		isvalid = valid_arg(sections, i - 1, &last_was_redir, &error);
+		if (error)
 			return (error_msg(SYNTAX_ERROR, error), false);
-		}
-	}
-	if (error != NULL)
-	{
-		// printf("semantic_checker output: %d\n", 0);
-		return (error_msg(SYNTAX_ERROR, error), false);
-	}
-	if (isvalid && last_was_redir)
-	{
-		// printf("semantic_checker output: %d\n", isvalid && last_was_redir);
-		return (error_msg(SYNTAX_ERROR, "newline'"), false);
 	}
 	return (isvalid && !last_was_redir);
 }

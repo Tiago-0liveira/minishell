@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:25:58 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 21:50:13 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:55:30 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,14 @@ char	*replace_vars(char *str)
 	i = 0;
 	in_quotes = false;
 	in_dquotes = false;
-	while (/*(printf("replace_vars::|%c|%d|%d|\n", str[i], in_dquotes,
-				in_quotes)
-			|| 1) && */
-			str[i] && ft_strchr(str + i, '$') != NULL)
+	while (str[i] && ft_strchr(str + i, '$') != NULL)
 	{
 		if (str[i] == QUOTE)
 			in_quotes = !in_quotes;
 		else if (str[i] == DQUOTE)
 			in_dquotes = !in_dquotes;
-		else if (str[i] == '$' && (!in_quotes || (in_quotes && in_dquotes)))
+		else if (str[i] == '$' && str[i + 1] != '?' && (!in_quotes || (in_quotes
+					&& in_dquotes)))
 			str = replace_var(&str, &i);
 		i++;
 	}
@@ -84,7 +82,7 @@ char	*replace_var(char **str, int *i)
 	(*i) = (*i - 1) + ft_strlen(var_content) - 1;
 	return (res);
 }
-/* 
+/*
 	This function will remove the quotes from a string
 		it will go through the whole string to find pairs of quotes
 		and remove them, if there is something like this "'asd'"
@@ -95,7 +93,6 @@ char	*replace_var(char **str, int *i)
 {
 	(void)str;
 }*/
-
 bool	valid_env_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');

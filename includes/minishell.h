@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 15:18:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:36:00 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@
 # define FORK_ERROR "Fork error!\n"
 
 # define DEBUGG
+
+# define DEBUG_MSG(fmt, ...) \
+	printf("[%s::%d]:" fmt "\n", __func__, __LINE__, __VA_ARGS__)
 
 enum					e_redir_type
 {
@@ -136,16 +139,16 @@ void					print_command(t_command *command);
 bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
 bool					semantic_checker(char **raw_commands);
-bool					valid_arg(char **sections, int i,
-							bool *last_was_redir, char **error);
+bool					valid_arg(char **sections, int i, bool *last_was_redir,
+							char **error);
 bool					valid_command_or_arg(char *section);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
-t_command				*construct_command(t_mini *mini,
-							char **raw_commands, size_t end);
+t_command				*construct_command(t_mini *mini, char **raw_commands,
+							size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);

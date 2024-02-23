@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 15:15:53 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:54:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,21 @@
 char	*get_input(bool prompt)
 {
 	char	*line;
+	char	*tmp;
 
 	if (prompt)
 		display_prompt();
-		// return ("cat aaa> b$ABCbb < tt");
 #if defined(DEBUG)
 	printf("-------------------------------------------\n");
 #endif
-	/*line = get_next_line(STDIN_FILENO);*/
 	line = readline(mini()->output);
 	if (*line && line)
 		add_history(line);
+	tmp = ft_strtrim(line, " \t\n");
+	if (!tmp)
+		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+	free(line);
+	line = tmp;
 #if defined(DEBUG) || !defined(DEBUGG)
 	printf("%s", line);
 #endif
@@ -54,10 +58,10 @@ void	display_prompt(void)
 	mini()->command_ret = 0;
 	if (getcwd(dir, PATH_MAX))
 	{
-		//bug in norminette 
-		//mini()->output = ft_strnjoin(6, color, chr, CYAN, dir, RESET, PROMPT);
-		//for some reason the above line is invalid
-		tmp = ft_strnjoin(6, color, chr, CYAN" ", dir, RESET, PROMPT" ");
+		// bug in norminette
+		// mini()->output = ft_strnjoin(6, color, chr, CYAN, dir, RESET, PROMPT);
+		// for some reason the above line is invalid
+		tmp = ft_strnjoin(6, color, chr, CYAN " ", dir, RESET, PROMPT " ");
 		mini()->output = tmp;
 	}
 }
