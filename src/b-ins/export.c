@@ -54,6 +54,7 @@ void	delete_var(t_list **head, void *node_to_del)
 void	bi_export(t_mini *mini, char **av)
 {
 	int		i;
+	int		j;
 	t_list	*tmp;
 	t_list	*exp;
 
@@ -71,6 +72,21 @@ void	bi_export(t_mini *mini, char **av)
 	tmp = mini->env_list;
 	while (av[++i])
 	{
+		if (!ft_isalpha(av[i][0]) && av[i][0] != '_')
+		{
+			error_msg(TOO_MANY_ARGS, av[i]);
+			return ;
+		}
+		j = 0;
+		while (av[i][++j] != '\n' && av[i][j] != '=')
+		{
+			printf("%i\n", j);
+			if (!ft_isalnum(av[i][j]) && av[i][j] != '_')
+			{
+				error_msg(NOT_VALID_IDENT, av[i]);
+				return ;
+			}
+		}
 		while (tmp)
 		{
 			if (!ft_strncmp(av[i], tmp->content, ft_strlen_eq(tmp->content)))

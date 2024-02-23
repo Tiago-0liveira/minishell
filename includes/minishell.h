@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 21:50:17 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 02:31:52 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 # define CMD_NOT_FOUND "command not found: "
 # define FD_NOT_FOUND "no such file or directory: "
 # define SYNTAX_ERROR "syntax error near unexpected token `"
+# define TOO_MANY_ARGS "too many arguments: "
+# define NOT_VALID_IDENT "not a valid identifier: "
 
 // free shell errors
 # define FAILURE_GETTING_PATH "Failure getting path!\n"

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 00:15:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 03:35:25 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ int	main(int ac, char **av, char **env)
 			parse_input(mini());
 			if (mini()->commands != NULL
 				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) == 0)
-				break ;
+			{
+				if (mini()->commands->args && mini()->commands->args[0]
+					&& mini()->commands->args[1] && mini()->commands->args[2])
+					error_msg(TOO_MANY_ARGS, "exit");
+				else
+					break ;
+			}
 			ft_execution(mini(), env);
 		}
 		reset_mini(mini());

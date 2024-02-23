@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/21 18:30:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 02:32:23 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,11 @@ void	bi_cd(t_mini *mini, char **av)
 	if (!getcwd(oldpwd, PATH_MAX))
 		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
 	tmp = mini->env_list;
+	if (av[2])
+	{
+		error_msg(TOO_MANY_ARGS, "cd");
+		return ;
+	}
 	if (!av[1] || (av[1][0] == '~'))
 	{
 		i += 2;
