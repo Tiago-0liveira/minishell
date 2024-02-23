@@ -80,7 +80,6 @@ void	bi_export(t_mini *mini, char **av)
 		j = 0;
 		while (av[i][++j] != '\n' && av[i][j] != '=')
 		{
-			printf("%i\n", j);
 			if (!ft_isalnum(av[i][j]) && av[i][j] != '_')
 			{
 				error_msg(NOT_VALID_IDENT, av[i]);
