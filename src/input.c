@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/22 15:30:07 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:15:53 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,11 @@ char	*get_input(bool prompt)
 #if defined(DEBUG)
 	printf("-------------------------------------------\n");
 #endif
-	line = get_next_line(STDIN_FILENO);
-#if defined(DEBUG) || defined(DEBUGG)
+	/*line = get_next_line(STDIN_FILENO);*/
+	line = readline(mini()->output);
+	if (*line && line)
+		add_history(line);
+#if defined(DEBUG) || !defined(DEBUGG)
 	printf("%s", line);
 #endif
 	if (!line)
@@ -37,16 +40,24 @@ char	*get_input(bool prompt)
 void	display_prompt(void)
 {
 	char	dir[PATH_MAX + 1];
+	char	*color;
+	char	*chr;
+	char	*tmp;
 
-	/* TODO: display last program success */
-	// printf("cmd_ret: %d\n", mini()->command_ret);
+	color = RED;
+	chr = X;
 	if (mini()->command_ret == 0)
-		color_out(GREEN, CHECK " ");
-	else
-		color_out(RED, X);
+	{
+		color = GREEN;
+		chr = CHECK;
+	}
 	mini()->command_ret = 0;
-	/* TODO: display pwd */
 	if (getcwd(dir, PATH_MAX))
-		color_out(CYAN, dir);
-	ft_putstr_fd(PROMPT, STDOUT_FILENO);
+	{
+		//bug in norminette 
+		//mini()->output = ft_strnjoin(6, color, chr, CYAN, dir, RESET, PROMPT);
+		//for some reason the above line is invalid
+		tmp = ft_strnjoin(6, color, chr, CYAN" ", dir, RESET, PROMPT" ");
+		mini()->output = tmp;
+	}
 }
