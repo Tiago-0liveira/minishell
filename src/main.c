@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 15:20:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:54:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ int	main(int ac, char **av, char **env)
 				else
 					break ;
 			}
-			ft_execution(mini(), env);
+			// still improving new parser, not yet tested
+			//ft_execution(mini(), env);
 		}
 		reset_mini(mini());
 	}

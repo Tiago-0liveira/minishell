@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/22 06:15:08 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:59:50 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			// Redirect stdout to pipe's write-end
 		}
 		setup_redirections(mini, cmd);  // Handle file-based redirections
-		printf("1a");
 		execution(mini, cmd, ev); // Execute the command
 		free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 	}

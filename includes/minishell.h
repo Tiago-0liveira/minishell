@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 16:36:00 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:59:11 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,13 @@
 # define PIPE_ERROR "Pipe error!\n"
 # define FORK_ERROR "Fork error!\n"
 
-# define DEBUGG
+# define DEBUG
 
-# define DEBUG_MSG(fmt, ...) \
-	printf("[%s::%d]:" fmt "\n", __func__, __LINE__, __VA_ARGS__)
+# define DEBUG_MSG(fmt, ...) printf("[%d::%s::%d]:" fmt, getpid(), __func__, __LINE__,##__VA_ARGS__)
 
 enum					e_redir_type
 {
-	RED_NULL = -1,
+	RED_NULL = 0,
 	RED_IN,
 	RED_AIN,
 	RED_OUT,
@@ -95,14 +94,14 @@ typedef struct s_redir
 	char				*file;
 	int					fd;
 	enum e_redir_type	type;
+	struct s_redir		*next;
 }						t_redir;
 
 typedef struct s_command
 {
 	char				*cmd_name;
 	char				**args;
-	t_redir				in;
-	t_redir				out;
+	t_redir				*redirs;
 	struct s_command	*next;
 }						t_command;
 
@@ -121,7 +120,7 @@ int						main(int ac, char **av, char **env);
 
 // input.c
 char					*get_input(bool prompt);
-void					display_prompt(void);
+void					update_prompt(void);
 
 // mini.c
 void					init_mini(t_mini *mini);
@@ -132,7 +131,6 @@ t_list					*set_env(char **env);
 // utils.c
 enum e_redir_type		redir_type(char *line);
 void					free_commands(t_command *commands);
-void					t_redir_init(t_command *command);
 void					print_command(t_command *command);
 // pl
 //  \ lexer.c
@@ -147,8 +145,11 @@ bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
-t_command				*construct_command(t_mini *mini, char **raw_commands,
+t_command				*construct_command(char **raw_commands,
 							size_t end);
+void					update_command(t_command *command, char **raw_commands,
+							size_t *i, size_t end);
+bool					add_arg(t_command *command, char *section);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
@@ -162,10 +163,11 @@ char					*replace_vars(char *str);
 char					*replace_var(char **str, int *i);
 /*char					*remove_layer_quotes(char *str);*/
 bool					valid_env_char(char c);
+//  \ new_parser.c
 // free.c
 void					free_commands(t_command *commands);
+void					free_redirs(t_redir *redirs);
 void					free_list(char **list);
-
 void					free_shell(char *err, int status,
 							void (*cleanup_func)(void *), void *free_arg);
 void					free_commands_wrapper(void *arg);

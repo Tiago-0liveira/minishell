@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/21 22:02:05 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:38:27 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,26 @@ void	free_commands(t_command *commands)
 	while (commands != NULL)
 	{
 		tmp = commands->next;
-		if (commands->cmd_name)
-			free(commands->cmd_name);
-		if (commands->in.file)
-			free(commands->in.file);
-		if (commands->out.file)
-			free(commands->out.file);
+		if (commands->redirs)
+			free_redirs(commands->redirs);
 		if (commands->args)
 			free_list(commands->args);
 		free(commands);
 		commands = tmp;
+	}
+}
+
+void	free_redirs(t_redir *redirs)
+{
+	t_redir	*tmp;
+
+	while (redirs != NULL)
+	{
+		tmp = redirs->next;
+		if (redirs->file)
+			free(redirs->file);
+		free(redirs);
+		redirs = tmp;
 	}
 }
 
@@ -41,10 +51,12 @@ void	free_list(char **list)
 		return ;
 	while (list[i] != NULL)
 	{
-		free(list[i]);
+		if (list[i])
+			free(list[i]);
 		i++;
 	}
-	free(list);
+	if (list)
+		free(list);
 }
 
 // mudei a funcao para podermos dar free de alguma variavel que tenhamos alocado
@@ -54,9 +66,9 @@ void	free_shell(char *err, int status, void (*cleanup_func)(void *),
 	t_mini	*m;
 
 	m = mini();
-	#ifdef DEBUG
-		printf("freeing shell\n");
-	#endif
+#ifdef DEBUG
+	printf("freeing shell\n");
+#endif
 	if (free_arg != NULL && cleanup_func != NULL)
 		cleanup_func(free_arg);
 	reset_mini(m);

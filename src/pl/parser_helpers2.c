@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 18:25:58 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 16:55:30 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 15:56:07 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ char	*replace_vars(char *str)
 	i = 0;
 	in_quotes = false;
 	in_dquotes = false;
-	while (str[i] && ft_strchr(str + i, '$') != NULL)
+	/* TODO: testing in progress */
+	while (str[i] /*&& ft_strchr(str + i, '$') != NULL*/)
 	{
 		if (str[i] == QUOTE)
 			in_quotes = !in_quotes;
