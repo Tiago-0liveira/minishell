@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/25 16:19:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:19:06 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	ft_execution(t_mini *mini, char **ev)
 			if (pipe(mini->input.pip) < 0)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
-		handle_command(mini, cmd, ev, has_next);
+		/*handle_command(mini, cmd, ev, has_next);*/
+		execute_in_child(mini, cmd, ev, has_next);
 		if (has_next)
 		{
 			// Update cmd_input for the next command to read from this pipe
@@ -45,28 +46,6 @@ void	ft_execution(t_mini *mini, char **ev)
 		}
 		cmd = cmd->next;
 	}
-}
-
-void	handle_command(t_mini *mini, t_command *cmd, char **ev, int has_next)
-{
-	if (!has_next /*&& cmd->in.type == -1 && cmd->out.type == -1*/
-		&& if_builtin(cmd->cmd_name))
-	{
-		// Direct execution without forking if it's the last command with no redirections
-		execute_direct(mini, cmd, ev);
-	}
-	else
-	{
-		// Setup and execute command in a child process
-		execute_in_child(mini, cmd, ev, has_next);
-	}
-}
-
-void	execute_direct(t_mini *mini, t_command *cmd, char **ev)
-{
-	// Direct execution logic (without forking)
-	// This is a placeholder; actual execution logic depends on your shell's capabilities
-	execution(mini, cmd, ev);
 }
 
 void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
@@ -91,7 +70,7 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			close(mini->input.pip[1]);
 			// Redirect stdout to pipe's write-end
 		}
-		setup_redirections(cmd); // Handle file-based redirections
+		setup_redirections(cmd, false); // Handle file-based redirections
 		if (cmd->cmd_name != NULL && cmd->cmd_name[0] != '\0')
 			if (!execution(mini, cmd, ev)) // Execute the command
 				free_shell(NULL, -1, NULL, NULL);
@@ -128,27 +107,37 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	}
 }
 
-void	setup_redirections(t_command *cmd)
+void	setup_redirections(t_command *cmd, bool	isparent)
 {
 	int		fd;
 	t_redir	*redir;
+	char	*heredoc_fd;
 
 	// char	*heredoc_fd;
 	// heredoc_fd = NULL;
 	redir = cmd->redirs;
-	while (redir && redir->next)
+	while (redir != NULL)
 	{
+		//DEBUG_MSG("redir:|%s| type:", redir->file);
 		if (redir->type == RED_IN)
 			fd = open(redir->file, O_RDONLY);
 		else if (redir->type == RED_OUT)
 			fd = open(redir->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else if (redir->type == RED_AIN)
-			fd = open(redir->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
+		// DEBUG_MSG("RED_OUT|%s|\n", redir->file);
+		else if (redir->type == RED_AIN) /* heredoc */
+		{
+			heredoc_fd = heredoc(mini());
+			fd = open(heredoc_fd, O_RDONLY);
+			free(mini()->hd_limiter);
+			free(heredoc_fd);
+		}
 		else /* assumed type == RED_AOUT */
 			fd = open(redir->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 		{
 			error_msg(FD_NOT_FOUND, redir->file);
+			if (isparent)
+				return ;
 			free_shell(NULL, 0, NULL, NULL);
 		}
 		if (redir->type == RED_IN || redir->type == RED_AIN)
@@ -158,38 +147,4 @@ void	setup_redirections(t_command *cmd)
 		close(fd);
 		redir = redir->next;
 	}
-	/*if (cmd->in.type != RED_NULL)
-	{
-		if (cmd->out.type == RED_IN)
-			fd_in = open(cmd->in.file, O_RDONLY);
-		else
-		{
-			heredoc_fd = heredoc(mini);
-			fd_in = open(heredoc_fd, O_RDONLY);
-			free(mini->hd_limiter);
-			free(heredoc_fd);
-		}
-		if (fd_in < 0)
-		{
-			// perror("Error opening input file");
-			error_msg(FD_NOT_FOUND, cmd->in.file);
-			free_shell(NULL, 0, NULL, NULL);
-		}
-		dup2(fd_in, STDIN_FILENO);
-		close(fd_in);
-	}
-	if (cmd->out.type != RED_NULL)
-	{
-		if (cmd->out.type == RED_OUT)
-			fd_out = open(cmd->out.file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		else
-			fd_out = open(cmd->out.file, O_CREAT | O_WRONLY | O_APPEND, 0644);
-		if (fd_out < 0)
-		{
-			error_msg(FD_NOT_FOUND, cmd->out.file);
-			free_shell(NULL, 0, NULL, NULL);
-		}
-		dup2(fd_out, STDOUT_FILENO);
-		close(fd_out);
-	}*/
 }
