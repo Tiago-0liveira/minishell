@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/21 18:23:02 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 21:00:06 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*get_path(char *cmd, char **ev)
 	return (0);
 }
 
-void	execution(t_mini *mini, t_command *cmd, char **ev)
+bool	execution(t_mini *mini, t_command *cmd, char **ev)
 {
 	char	*path;
 
@@ -60,8 +60,9 @@ void	execution(t_mini *mini, t_command *cmd, char **ev)
 			error_msg(CMD_NOT_FOUND, cmd->cmd_name);
 			if (!path)
 				free(path);
-			return ;
+			return (false);
 		}
 		free(path);
 	}
+	return (true);
 }
