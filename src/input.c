@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/23 20:23:47 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:42:08 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,18 @@ char	*get_input(bool prompt)
 
 	if (prompt)
 		update_prompt();
-#if defined(DEBUG)
-	printf("-------------------------------------------\n");
-#endif
 	line = readline(mini()->output);
-	if (line && *line)
-		add_history(line);
-	tmp = ft_strtrim(line, " \t\n");
-	if (!tmp)
-		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	free(line);
-	line = tmp;
-#if defined(DEBUG) || !defined(DEBUGG)
-	printf("%s\n", line);
-#endif
-	if (!line)
+	if (line)
 	{
-		ft_putendl_fd("!!!detected invalid input, will exit!", STDOUT_FILENO);
-		line = ft_strdup("exit");
+		tmp = ft_strtrim(line, " \t\n");
+		free(line);
+		if (!tmp)
+			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+		line = tmp;
+		add_history(line);
 	}
+	else
+		line = ft_strdup("exit");
 	return (line);
 }
 
