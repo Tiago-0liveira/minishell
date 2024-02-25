@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 16:24:16 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:12:00 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@
 # define PIPE_ERROR "Pipe error!\n"
 # define FORK_ERROR "Fork error!\n"
 
-# define DEBUG
+# define DEBUGG
 
 # define DEBUG_MSG(fmt, ...) printf("[%d::%s::%d]:" fmt, getpid(), __func__, __LINE__,##__VA_ARGS__)
 
@@ -155,8 +155,6 @@ size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
 bool					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
-void					assign_args(t_command *command, char **raw_commands,
-							size_t end);
 //  \ parser_helpers2.c
 char					*substr_expander(char *str, size_t len);
 char					*replace_vars(char *str);
@@ -177,12 +175,9 @@ void					sig_init(void);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
-void					handle_command(t_mini *mini, t_command *cmd, char **ev,
-							int has_next);
-void					execute_direct(t_mini *mini, t_command *cmd, char **ev);
 void					execute_in_child(t_mini *mini, t_command *cmd,
 							char **ev, int has_next);
-void					setup_redirections(t_command *cmd);
+void					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c
 bool					execution(t_mini *mini, t_command *cmd, char **ev);
 char					*get_path(char *cmd, char **ev);

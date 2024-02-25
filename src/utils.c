@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 20:02:43 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:59:04 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,34 +29,42 @@ enum e_redir_type	redir_type(char *line)
 
 void	print_command(t_command *command)
 {
-	size_t	i;
-	t_redir	*redir;
+	size_t		i;
+	t_redir		*redir;
+	t_command	*tmp;
 
 	i = 0;
-	DEBUG_MSG("print_command: ");
+	if (ft_strlen(command->cmd_name) != 0)
+		DEBUG_MSG("print_command: ");
 	while (command->args && command->args[i])
 	{
 		printf("|%s| ", command->args[i]);
 		i++;
 	}
-	printf("\n");
-	redir = command->redirs;
-	while (redir)
+	if (ft_strlen(command->cmd_name) != 0)
+		printf("\n");
+	tmp = command;
+	while (tmp)
 	{
-		DEBUG_MSG("redir:|%s| type:", redir->file);
-		if (redir->type)
+		redir = command->redirs;
+		while (redir)
 		{
-			if (redir->type == RED_IN)
-				printf("RED_IN\n");
-			else if (redir->type == RED_AIN)
-				printf("RED_AIN\n");
-			else if (redir->type == RED_OUT)
-				printf("RED_OUT\n");
-			else if (redir->type == RED_AOUT)
-				printf("RED_AOUT\n");
+			DEBUG_MSG("redir:|%s| type:", redir->file);
+			if (redir->type)
+			{
+				if (redir->type == RED_IN)
+					printf("RED_IN\n");
+				else if (redir->type == RED_AIN)
+					printf("RED_AIN\n");
+				else if (redir->type == RED_OUT)
+					printf("RED_OUT\n");
+				else if (redir->type == RED_AOUT)
+					printf("RED_AOUT\n");
+			}
+			redir = redir->next;
 		}
-		redir = redir->next;
-		if (redir)
+		tmp = tmp->next;
+		if (tmp)
 			DEBUG_MSG("output will be piped to:\n");
 	}
 }
