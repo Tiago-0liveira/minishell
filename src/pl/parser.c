@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 15:42:47 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:50:01 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ bool	parse_input(t_mini *mini)
 		while (raw_commands[j] && *raw_commands[j] != PIPE)
 			j++;
 		command = construct_command(raw_commands + i, j - i);
-		if (!command)/* malloc error is handled inside construct_command */
+		if (!command)
 			return (free_list(raw_commands), false);
-		//print_command(command);
 		command_add_back(command);
 		commands--;
 		j++;
@@ -54,7 +53,6 @@ size_t	parse_size(char *line)
 	{
 		skip_spaces(&line);
 		section = get_next_section(&line);
-		// DEBUG_MSG("section[%d]: %s\n", si, section);
 		if (!section)
 			return (0);
 		free(section);
@@ -130,10 +128,8 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	{
 		if (!update_command(command, raw_commands, &i, end))
 			return (free(command), NULL);
-		// TODO: IGNORING RED_AIN FOR NOW AND TREATING AS normal RED_IN
-		// maybe handle this inside assign_redir
-		/*if (type == RED_AIN)
-			mini->hd_limiter = ft_strdup(raw_commands[i]);*/
+		if ((int) i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
+			mini()->hd_limiter = ft_strdup(raw_commands[i]);
 		i++;
 	}
 	if (command->args == NULL)
@@ -150,7 +146,8 @@ bool	update_command(t_command *command, char **raw_commands, size_t *i,
 	if (redir_type(raw_commands[*i]) != RED_NULL)
 	{
 		if (++(*i) < end)
-			if (!assign_redir(command, raw_commands[*i], redir_type(raw_commands[*i - 1])))
+			if (!assign_redir(command, raw_commands[*i],
+					redir_type(raw_commands[*i - 1])))
 				return (false);
 		/* it might be an error if it didnt enter the if */
 	}

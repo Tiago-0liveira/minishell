@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 20:49:03 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 19:21:21 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	assign_redir(t_command *command, char *redir_file,
 	t_redir	*redir;
 	t_redir	*last_redir;
 
-	if ((type == RED_AIN || type == RED_IN) && access(redir_file, F_OK) == -1)
+	if (type == RED_IN && access(redir_file, F_OK) == -1)
 		return (error_msg(FD_NOT_FOUND, redir_file), false);
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
