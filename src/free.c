@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 15:38:27 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:17:24 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,6 @@ void	free_shell(char *err, int status, void (*cleanup_func)(void *),
 	t_mini	*m;
 
 	m = mini();
-#ifdef DEBUG
-	printf("freeing shell\n");
-#endif
 	if (free_arg != NULL && cleanup_func != NULL)
 		cleanup_func(free_arg);
 	reset_mini(m);

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 16:00:08 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:49:03 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,14 @@ size_t	redir_size(char *line)
 	return (0);
 }
 
-void	assign_redir(t_command *command, char *redir_file,
+bool	assign_redir(t_command *command, char *redir_file,
 		enum e_redir_type type)
 {
 	t_redir	*redir;
 	t_redir	*last_redir;
 
 	if ((type == RED_AIN || type == RED_IN) && access(redir_file, F_OK) == -1)
-		return (error_msg(FD_NOT_FOUND, redir_file));
+		return (error_msg(FD_NOT_FOUND, redir_file), false);
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
@@ -50,6 +50,7 @@ void	assign_redir(t_command *command, char *redir_file,
 			last_redir = last_redir->next;
 		last_redir->next = redir;
 	}
+	return (true);
 }
 
 void	command_add_back(t_command *new_command)

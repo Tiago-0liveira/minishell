@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 15:57:40 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/24 20:02:43 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_command(t_command *command)
 
 	i = 0;
 	DEBUG_MSG("print_command: ");
-	while (command->args[i])
+	while (command->args && command->args[i])
 	{
 		printf("|%s| ", command->args[i]);
 		i++;

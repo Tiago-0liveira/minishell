@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 15:53:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 15:42:47 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ bool	parse_input(t_mini *mini)
 	t_command	*command;
 
 	raw_commands = parse(mini);
-	if (!raw_commands)
-		free_shell(MALLOC_ERROR, EXIT_FAILURE, free, raw_commands);
 	/*if (!semantic_checker(raw_commands))
 		return (free_list(raw_commands), false);*/
 	commands = ((int)mini->input.pipe_c) + 1;
@@ -34,9 +32,9 @@ bool	parse_input(t_mini *mini)
 		while (raw_commands[j] && *raw_commands[j] != PIPE)
 			j++;
 		command = construct_command(raw_commands + i, j - i);
-		if (!command)
-			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-		print_command(command);
+		if (!command)/* malloc error is handled inside construct_command */
+			return (free_list(raw_commands), false);
+		//print_command(command);
 		command_add_back(command);
 		commands--;
 		j++;
@@ -130,7 +128,8 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	command->args = NULL;
 	while (i < end)
 	{
-		update_command(command, raw_commands, &i, end);
+		if (!update_command(command, raw_commands, &i, end))
+			return (free(command), NULL);
 		// TODO: IGNORING RED_AIN FOR NOW AND TREATING AS normal RED_IN
 		// maybe handle this inside assign_redir
 		/*if (type == RED_AIN)
@@ -145,13 +144,14 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	return (command);
 }
 
-void	update_command(t_command *command, char **raw_commands, size_t *i,
+bool	update_command(t_command *command, char **raw_commands, size_t *i,
 		size_t end)
 {
 	if (redir_type(raw_commands[*i]) != RED_NULL)
 	{
 		if (++(*i) < end)
-			assign_redir(command, raw_commands[*i], redir_type(raw_commands[*i - 1]));
+			if (!assign_redir(command, raw_commands[*i], redir_type(raw_commands[*i - 1])))
+				return (false);
 		/* it might be an error if it didnt enter the if */
 	}
 	else
@@ -160,6 +160,7 @@ void	update_command(t_command *command, char **raw_commands, size_t *i,
 			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
 				command);
 	}
+	return (true);
 }
 
 bool	add_arg(t_command *command, char *section)
@@ -178,7 +179,6 @@ bool	add_arg(t_command *command, char *section)
 	while (i < k)
 	{
 		new_args[i] = command->args[i];
-		// free(command->args[i]);
 		i++;
 	}
 	new_args[i] = ft_strdup(section);

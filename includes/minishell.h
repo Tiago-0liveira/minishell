@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 15:59:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 16:24:16 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,13 +147,13 @@ char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
 t_command				*construct_command(char **raw_commands,
 							size_t end);
-void					update_command(t_command *command, char **raw_commands,
+bool					update_command(t_command *command, char **raw_commands,
 							size_t *i, size_t end);
 bool					add_arg(t_command *command, char *section);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
-void					assign_redir(t_command *command, char *redir_file,
+bool					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 void					assign_args(t_command *command, char **raw_commands,
 							size_t end);
@@ -182,9 +182,9 @@ void					handle_command(t_mini *mini, t_command *cmd, char **ev,
 void					execute_direct(t_mini *mini, t_command *cmd, char **ev);
 void					execute_in_child(t_mini *mini, t_command *cmd,
 							char **ev, int has_next);
-void					setup_redirections(t_mini *mini, t_command *cmd);
+void					setup_redirections(t_command *cmd);
 // \ execute.c
-void					execution(t_mini *mini, t_command *cmd, char **ev);
+bool					execution(t_mini *mini, t_command *cmd, char **ev);
 char					*get_path(char *cmd, char **ev);
 char					*cmd_path(char **ev);
 // \ heredoc.c
