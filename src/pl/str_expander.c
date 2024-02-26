@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 18:58:54 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:23:10 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,38 +110,4 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 		res = get_env_var(mini()->env_list, str + ex->i - ex->var_len - 1);
 	ex->var_clen = ft_strlen(res);
 	return (res);
-}
-
-bool	expand_command(t_command *cmd)
-{
-	size_t	i;
-	char	*expanded;
-	t_redir	*redir;
-
-	DEBUG_MSG("\n");
-	i = 0;
-	while (cmd->args[i])
-	{
-		if (cmd->args[i] && cmd->args[i][0] == '\0')
-		{
-			i++;
-			continue ;
-		}
-		expanded = str_expander(cmd->args[i]);
-		free(cmd->args[i]);
-		cmd->args[i++] = expanded;
-	}
-	redir = cmd->redirs;
-	while (redir)
-	{
-		if (redir->file && redir->file[0] == '\0')
-			continue ;
-		expanded = str_expander(redir->file);
-		free(redir->file);
-		redir->file = expanded;
-		redir = redir->next;
-	}
-	if (cmd->args && cmd->args[0] != NULL)
-		cmd->cmd_name = cmd->args[0];
-	return (true);
 }

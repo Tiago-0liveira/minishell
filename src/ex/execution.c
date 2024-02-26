@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/26 19:17:35 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:24:10 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	ft_execution(t_mini *mini, char **ev)
 		}
 		if (!expand_command(cmd))
 			return ;
-		print_command(cmd);
 		execute_in_child(mini, cmd, ev, has_next);
 		if (has_next)
 		{

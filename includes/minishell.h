@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:03:13 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:30:27 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,10 @@ char					*str_expander(char *str);
 void					expand_vars(char *str, char *expanded, int len);
 int						str_expander_len(char *str);
 char					*str_expander_var_len(t_str_ex *ex, char *str);
+// \ str_expander_utils.c
 bool					expand_command(t_command *cmd);
+void					expand_args(t_command *cmd);
+bool					expand_redirs(t_command *cmd);
 // free.c
 void					free_commands(t_command *commands);
 void					free_redirs(t_redir *redirs);
