@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 19:19:43 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 03:51:24 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	init_mini(t_mini *mini)
 	reset_mini(mini);
 	mini->hd_limiter = NULL;
 	mini->output = NULL;
+	mini->hdfd = 0;
 }
 
 t_mini	*mini(void)
@@ -46,8 +47,6 @@ void	reset_mini(t_mini *mini)
 		free_commands(mini->commands);
 	if (mini->output)
 		free(mini->output);
-	if (mini->hd_limiter)
-		free(mini->hd_limiter);
 	mini->commands = NULL;
 }
 

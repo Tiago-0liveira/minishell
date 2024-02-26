@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 23:32:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:04:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	main(int ac, char **av, char **env)
 					&& mini()->commands->args[1]
 					&& mini()->commands->args[2])
 					error_msg(TOO_MANY_ARGS, "exit");
+				else if (ft_strlen(mini()->commands->cmd_name) != 4)
+					error_msg(CMD_NOT_FOUND, "exit");
 				else
 					break ;
 			}

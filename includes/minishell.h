@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 17:39:00 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:03:13 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_mini
 	t_list				*env_list;
 	char				*hd_limiter;
 	char				*output;
+	int					hdfd;
 }						t_mini;
 
 // main.c
