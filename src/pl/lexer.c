@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 01:24:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:56:55 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,12 @@ bool	semantic_checker(char **sections)
 	error = NULL;
 	while (sections && sections[i] && isvalid && !error)
 	{
-		DEBUG_MSG("section[%d]: %s\n", i, sections[i]);
 		isvalid = valid_arg(sections, &i, &last_section, &error);
 		i++;
 	}
 	if (error)
 		return (error_msg(SYNTAX_ERROR, error), false);
-	return (isvalid && !last_section);
+	return (isvalid);
 }
 
 bool	valid_arg(char **sections, int *i, char **last_section, char **error)

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 20:56:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 23:32:31 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,14 @@ int	main(int ac, char **av, char **env)
 			free(mini()->input.raw_line);
 			continue ;
 		}
-		else if (!input_error_check(mini()))
+		else if (parse_input(mini()))
 		{
-			mini()->command_ret = false;
-			printf("minishell: syntax error\n");
-		}
-		else
-		{
-			if (parse_input(mini()) && mini()->commands != NULL
+			if (mini()->commands != NULL
 				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) == 0)
 			{
 				if (mini()->commands->args && mini()->commands->args[0]
-					&& mini()->commands->args[1] && mini()->commands->args[2])
+					&& mini()->commands->args[1]
+					&& mini()->commands->args[2])
 					error_msg(TOO_MANY_ARGS, "exit");
 				else
 					break ;

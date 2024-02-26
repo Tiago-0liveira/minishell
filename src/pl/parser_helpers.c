@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 02:08:29 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:57:32 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ bool	assign_redir(t_command *command, char *redir_file,
 	t_redir	*redir;
 	t_redir	*last_redir;
 
-	if (type == RED_IN && access(redir_file, F_OK) == -1)
-		return (error_msg(FD_NOT_FOUND, redir_file), false);
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
@@ -85,6 +83,12 @@ bool	update_command(t_command *command, char **raw_commands, size_t *i,
 	}
 	else
 	{
+		if (str_expander_len(raw_commands[*i]) <= 0)
+		{
+			DEBUG_MSG("empty arg:|%s|\n", raw_commands[*i]);
+			free(raw_commands[*i]);
+			raw_commands[*i] = ft_strdup("");
+		}
 		if (!add_arg(command, raw_commands[*i]))
 			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
 				command);

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 19:42:08 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:47:02 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*get_input(bool prompt)
 		if (!tmp)
 			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 		line = tmp;
-		add_history(line);
+		add_history(line); /* we need more conditions when adding to history */
 	}
 	else
 		line = ft_strdup("exit");
@@ -48,7 +48,6 @@ void	update_prompt(void)
 		color = GREEN;
 		chr = CHECK;
 	}
-	mini()->command_ret = 0;
 	if (getcwd(dir, PATH_MAX))
 	{
 		tmp = ft_strnjoin(6, color, chr, CYAN " ", dir, RESET, PROMPT " ");

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/25 19:19:06 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:56:30 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ void	ft_execution(t_mini *mini, char **ev)
 			if (pipe(mini->input.pip) < 0)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
-		/*handle_command(mini, cmd, ev, has_next);*/
+		if (!expand_command(cmd))
+			return ;
+		print_command(cmd);
 		execute_in_child(mini, cmd, ev, has_next);
 		if (has_next)
 		{
-			// Update cmd_input for the next command to read from this pipe
 			close(mini->input.pip[1]);
-			// Close the write-end as it's not needed anymore
 			mini->input.cmd_input = mini->input.pip[0];
 		}
 		cmd = cmd->next;
@@ -55,24 +55,20 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	pid = fork();
 	if (pid == 0)
 	{
-		// Child process
 		if (mini->input.cmd_input != STDIN_FILENO)
 		{
 			dup2(mini->input.cmd_input, STDIN_FILENO);
-			// Set up input redirection from previous pipe if necessary
 			close(mini->input.cmd_input);
 		}
 		if (has_next)
 		{
 			close(mini->input.pip[0]);
-			// Close read-end; not needed in child
 			dup2(mini->input.pip[1], STDOUT_FILENO);
 			close(mini->input.pip[1]);
-			// Redirect stdout to pipe's write-end
 		}
-		setup_redirections(cmd, false); // Handle file-based redirections
+		setup_redirections(cmd, false);
 		if (cmd->cmd_name != NULL && cmd->cmd_name[0] != '\0')
-			if (!execution(mini, cmd, ev)) // Execute the command
+			if (!execution(mini, cmd, ev))
 				free_shell(NULL, -1, NULL, NULL);
 		free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 	}
@@ -80,34 +76,23 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else
 	{
-		// Parent process
 		waitpid(pid, &mini->command_ret, 0);
 		if (has_next)
 			close(mini->input.pip[1]);
-		// Close the write-end after child execution
 		if (mini->input.cmd_input != STDIN_FILENO)
 			close(mini->input.cmd_input);
-		// Close the read-end of the previous pipe if it was used
 		if (WIFEXITED(mini->command_ret))
-		{
-#ifdef DEBUG
-			printf("Child exited with status %d\n",
-				WEXITSTATUS(mini->command_ret));
-#endif
 			mini->command_ret = WEXITSTATUS(mini->command_ret);
-			// Store child's exit status if needed
-		}
 		else if (WIFSIGNALED(mini->command_ret))
 		{
-#ifdef DEBUG
 			printf("Child terminated by signal %d\n",
 				WTERMSIG(mini->command_ret));
-#endif
+				/* need to handle signals */
 		}
 	}
 }
 
-void	setup_redirections(t_command *cmd, bool	isparent)
+void	setup_redirections(t_command *cmd, bool isparent)
 {
 	int		fd;
 	t_redir	*redir;
@@ -118,7 +103,7 @@ void	setup_redirections(t_command *cmd, bool	isparent)
 	redir = cmd->redirs;
 	while (redir != NULL)
 	{
-		//DEBUG_MSG("redir:|%s| type:", redir->file);
+		// DEBUG_MSG("redir:|%s| type:", redir->file);
 		if (redir->type == RED_IN)
 			fd = open(redir->file, O_RDONLY);
 		else if (redir->type == RED_OUT)

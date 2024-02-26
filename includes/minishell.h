@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 19:12:00 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 17:39:00 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 
 # define ESCAPE_CHAR '\\'
 # define ENV_VAR '$'
+/* Last command exit status */
+# define ENV_Q  '?'
 # define SPACE ' '
 
 # define MALLOC_ERROR "Malloc failed!\n"
@@ -65,9 +67,9 @@
 # define PIPE_ERROR "Pipe error!\n"
 # define FORK_ERROR "Fork error!\n"
 
-# define DEBUGG
+# define DEBUGGG
 
-# define DEBUG_MSG(fmt, ...) printf("[%d::%s::%d]:" fmt, getpid(), __func__, __LINE__,##__VA_ARGS__)
+# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 enum					e_redir_type
 {
@@ -79,6 +81,17 @@ enum					e_redir_type
 };
 
 typedef void			(*t_cleanup_func)(void *);
+
+typedef struct s_str_ex
+{
+	char				*res;
+	int					len;
+	int					i;
+	bool				quotes;
+	bool				dquotes;
+	int					var_len;
+	int					var_clen;
+}						t_str_ex;
 
 typedef struct s_input
 {
@@ -130,16 +143,14 @@ t_list					*set_env(char **env);
 
 // utils.c
 enum e_redir_type		redir_type(char *line);
-void					free_commands(t_command *commands);
+bool					valid_env_char(char c);
 void					print_command(t_command *command);
 // pl
 //  \ lexer.c
-bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
 bool					semantic_checker(char **raw_commands);
-bool					valid_arg(char **sections, int i, bool *last_was_redir,
+bool					valid_arg(char **sections, int *i, char **last_section,
 							char **error);
-bool					valid_command_or_arg(char *section);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
@@ -147,21 +158,20 @@ char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
 t_command				*construct_command(char **raw_commands,
 							size_t end);
-bool					update_command(t_command *command, char **raw_commands,
-							size_t *i, size_t end);
-bool					add_arg(t_command *command, char *section);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
 bool					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
-//  \ parser_helpers2.c
-char					*substr_expander(char *str, size_t len);
-char					*replace_vars(char *str);
-char					*replace_var(char **str, int *i);
-/*char					*remove_layer_quotes(char *str);*/
-bool					valid_env_char(char c);
-//  \ new_parser.c
+bool					update_command(t_command *command, char **raw_commands,
+							size_t *i, size_t end);
+bool					add_arg(t_command *command, char *section);
+// \ str_expander.c
+char					*str_expander(char *str);
+void					expand_vars(char *str, char *expanded, int len);
+int						str_expander_len(char *str);
+char					*str_expander_var_len(t_str_ex *ex, char *str);
+bool					expand_command(t_command *cmd);
 // free.c
 void					free_commands(t_command *commands);
 void					free_redirs(t_redir *redirs);

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 02:08:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 15:51:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ bool	parse_input(t_mini *mini)
 		command = construct_command(raw_commands + i, j - i);
 		if (!command)
 			return (free_list(raw_commands), false);
+		//print_command(command);
 		command_add_back(command);
 		commands--;
 		j++;
@@ -72,8 +73,7 @@ char	*get_next_section(char **line)
 	if (redir_size(*line) > 0)
 		return (i = redir_size(*line), (*line) += i, ft_substr(*line - i, 0,
 				i));
-	while (*line && skip_spaces(line) && (quotes || dquotes
-			|| redir_size(*line) == 0))
+	while (**line && (quotes || dquotes || redir_size(*line) == 0))
 	{
 		if (**line == QUOTE)
 			quotes = !quotes;
@@ -82,7 +82,6 @@ char	*get_next_section(char **line)
 		i++;
 		(*line)++;
 	}
-	/* substr_expander(start, i) */
 	return (ft_substr(*line - i, 0, i));
 }
 
@@ -104,6 +103,7 @@ char	**parse(t_mini *mini)
 	{
 		skip_spaces(&line);
 		s[i] = get_next_section(&line);
+		// DEBUG_MSG("s[%zu]: %s\n", i, s[i]);
 		if (s[i] == NULL)
 			return (free_list(s), NULL);
 		i++;
