@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:30:27 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:33:14 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,6 +220,4 @@ void					bi_pwd(void);
 void					bi_unset(t_mini *mini, char **av);
 // errors.c
 void					error_msg(char *cmd, char *msg);
-// colors.c
-void					color_out(char *color, char *str);
 #endif
