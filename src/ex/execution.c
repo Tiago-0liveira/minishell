@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/26 19:24:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:37:04 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,18 +109,14 @@ void	setup_redirections(t_command *cmd, bool isparent)
 	int		fd;
 	t_redir	*redir;
 
-	// char	*heredoc_fd;
-	// heredoc_fd = NULL;
 	redir = cmd->redirs;
 	while (redir != NULL)
 	{
-		// DEBUG_MSG("redir:|%s| type:", redir->file);
 		if (redir->type == RED_IN)
 			fd = open(redir->file, O_RDONLY);
 		else if (redir->type == RED_OUT)
 			fd = open(redir->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		// DEBUG_MSG("RED_OUT|%s|\n", redir->file);
-		else if (redir->type == RED_AOUT) /* assumed type == RED_AOUT */
+		else if (redir->type == RED_AOUT)
 			fd = open(redir->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 		{
@@ -130,9 +126,9 @@ void	setup_redirections(t_command *cmd, bool isparent)
 			free_shell(NULL, 0, NULL, NULL);
 		}
 		if ((redir->type == RED_IN))
-			dup2(fd, STDIN_FILENO); /* handle heredoc */
+			dup2(fd, STDIN_FILENO);
 		else if ((redir->type == RED_AIN))
-			dup2(mini()->hdfd, STDIN_FILENO); /* handle heredoc */
+			dup2(mini()->hdfd, STDIN_FILENO);
 		else if (redir->type == RED_OUT || redir->type == RED_AOUT)
 			dup2(fd, STDOUT_FILENO);
 		close(fd);

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:06:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:35:03 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ bool	parse_input(t_mini *mini)
 		command = construct_command(raw_commands + i, j - i);
 		if (!command)
 			return (free_list(raw_commands), false);
-		//print_command(command);
 		command_add_back(command);
 		commands--;
 		j++;
@@ -103,7 +102,6 @@ char	**parse(t_mini *mini)
 	{
 		skip_spaces(&line);
 		s[i] = get_next_section(&line);
-		// DEBUG_MSG("s[%zu]: %s\n", i, s[i]);
 		if (s[i] == NULL)
 			return (free_list(s), NULL);
 		i++;

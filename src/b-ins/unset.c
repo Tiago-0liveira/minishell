@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   unset.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2024/02/15 05:01:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/15 05:01:07 by joaoribe         ###   ########.fr       */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/26 19:38:29 by joaoribe          #+#    #+#             */
+/*   Updated: 2024/02/26 19:38:29 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	bi_unset(t_mini *mini, char **av)
 {
 	int		i;
 	size_t	len;
 	t_list	*tmp;
-
 
 	i = -1;
 	tmp = mini->env_list;

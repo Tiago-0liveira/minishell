@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 18:57:32 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:36:28 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,11 @@ bool	update_command(t_command *command, char **raw_commands, size_t *i,
 			if (!assign_redir(command, raw_commands[*i],
 					redir_type(raw_commands[*i - 1])))
 				return (false);
-		/* it might be an error if it didnt enter the if */
 	}
 	else
 	{
 		if (str_expander_len(raw_commands[*i]) <= 0)
 		{
-			DEBUG_MSG("empty arg:|%s|\n", raw_commands[*i]);
 			free(raw_commands[*i]);
 			raw_commands[*i] = ft_strdup("");
 		}
