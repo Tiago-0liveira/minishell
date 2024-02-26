@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/02/14 01:21:08 by joaoribe          #+#    #+#             */
 /*   Updated: 2024/02/14 01:21:08 by joaoribe         ###   ########.fr       */
 /*                                                                            */
@@ -33,7 +36,7 @@ void	bi_echo(char **av)
 	{
 		printf("%s", av[i]);
 		i++;
-		if (av[i] && av[i][0])
+		if (av[i])
 			printf(" ");
 	}
 	if (!flag)
