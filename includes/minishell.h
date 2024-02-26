@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:33:14 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 23:43:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_str_ex
 	bool				dquotes;
 	int					var_len;
 	int					var_clen;
+	char				*var;
 }						t_str_ex;
 
 typedef struct s_input

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:23:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 23:49:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ void	expand_vars(char *str, char *expanded, int len)
 	memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
-		if ((str[ex.i] == QUOTE && ex.dquotes)
-			|| (str[ex.i] == DQUOTE && ex.quotes))
+		if ((str[ex.i] == QUOTE && ex.dquotes) || (str[ex.i] == DQUOTE
+				&& ex.quotes))
 			ft_strlcat(expanded, str + ex.i, ft_strlen(expanded) + 2);
 		if (str[ex.i] == QUOTE)
 			ex.quotes = !ex.quotes;
@@ -45,7 +45,9 @@ void	expand_vars(char *str, char *expanded, int len)
 		else if (str[ex.i] == ENV_VAR && (!ex.quotes || (ex.quotes
 					&& ex.dquotes)))
 		{
-			ft_strlcat(expanded, str_expander_var_len(&ex, str), len);
+			ft_strlcat(expanded, str_expander_var_len(&ex, str), len + 1);
+			if (ex.var != NULL)
+				free(ex.var);
 			continue ;
 		}
 		else
@@ -74,6 +76,8 @@ int	str_expander_len(char *str)
 		{
 			str_expander_var_len(&ex, str);
 			ex.len += ex.var_clen;
+			if (ex.var != NULL)
+				free(ex.var);
 			continue ;
 		}
 		ex.len++;
@@ -89,25 +93,25 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 	char	*res;
 
 	if (str[ex->i] == ENV_VAR)
-	{
 		ex->i++;
+	if (str[ex->i] == ENV_VAR)
 		ex->var_len += 1;
-	}
-	while (str[ex->i] && (valid_env_char(str[ex->i]) || str[ex->i] == ENV_Q))
+	while (str[ex->i] && valid_env_char(str[ex->i]))
 	{
 		ex->var_len++;
 		ex->i++;
-		if (str[ex->i - 1] == ENV_Q)
-			break ;
 	}
-	if (str[ex->i - 1] != ENV_Q)
+	if (str[ex->i] != ENV_Q)
 	{
-		tmp = ft_substr(str, ex->i - ex->var_len, ex->var_len);
+		tmp = ft_substr(str, ex->i - ex->var_len + 1, ex->var_len - 1);
 		res = get_env_var(mini()->env_list, tmp);
 		free(tmp);
 	}
 	else
-		res = get_env_var(mini()->env_list, str + ex->i - ex->var_len - 1);
+	{
+		res = get_env_var(mini()->env_list, str + ex->i);
+		ex->var = res;
+	}
 	ex->var_clen = ft_strlen(res);
 	return (res);
 }
