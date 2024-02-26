@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/26 19:08:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 19:17:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,8 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 		if (has_next)
 		{
 			close(mini->input.pip[1]);
-			mini->input.cmd_input = mini->input.pip[0];
+			/* esta linha acaba com o stdout */
+			//mini->input.cmd_input = mini->input.pip[0];
 		}
 		if (mini->input.cmd_input != STDIN_FILENO)
 			close(mini->input.cmd_input);
@@ -98,8 +99,7 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			mini->command_ret = WEXITSTATUS(mini->command_ret);
 		else if (WIFSIGNALED(mini->command_ret))
 		{
-			printf("Child terminated by signal %d\n",
-				WTERMSIG(mini->command_ret));
+			printf("Child terminated by signal %d\n", WTERMSIG(mini->command_ret));
 				/* need to handle signals */
 		}
 	}
