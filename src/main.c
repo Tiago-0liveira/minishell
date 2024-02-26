@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/24 20:56:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/25 22:25:19 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	main(int ac, char **av, char **env)
 				if (mini()->commands->args && mini()->commands->args[0]
 					&& mini()->commands->args[1] && mini()->commands->args[2])
 					error_msg(TOO_MANY_ARGS, "exit");
+				else if (ft_strlen(mini()->commands->cmd_name) != 4)
+					error_msg(CMD_NOT_FOUND, "exit");
 				else
 					break ;
 			}

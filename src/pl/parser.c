@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 19:50:01 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 01:57:42 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,9 +146,11 @@ bool	update_command(t_command *command, char **raw_commands, size_t *i,
 	if (redir_type(raw_commands[*i]) != RED_NULL)
 	{
 		if (++(*i) < end)
+		{
 			if (!assign_redir(command, raw_commands[*i],
 					redir_type(raw_commands[*i - 1])))
 				return (false);
+		}
 		/* it might be an error if it didnt enter the if */
 	}
 	else
