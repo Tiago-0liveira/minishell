@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 19:50:01 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 02:08:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ bool	parse_input(t_mini *mini)
 	t_command	*command;
 
 	raw_commands = parse(mini);
-	/*if (!semantic_checker(raw_commands))
-		return (free_list(raw_commands), false);*/
+	if (!semantic_checker(raw_commands))
+		return (free_list(raw_commands), false);
 	commands = ((int)mini->input.pipe_c) + 1;
 	i = 0;
 	j = 0;
@@ -38,8 +38,7 @@ bool	parse_input(t_mini *mini)
 		commands--;
 		j++;
 	}
-	free_list(raw_commands);
-	return (true);
+	return (free_list(raw_commands), true);
 }
 
 size_t	parse_size(char *line)
@@ -63,29 +62,28 @@ size_t	parse_size(char *line)
 
 char	*get_next_section(char **line)
 {
-	char	*start;
 	bool	quotes;
+	bool	dquotes;
 	int		i;
-	bool	escaped;
 
 	quotes = false;
-	start = *line;
-	escaped = false;
-	while (**line && (quotes || !redir_size(*line)) && skip_spaces(line))
+	dquotes = false;
+	i = 0;
+	if (redir_size(*line) > 0)
+		return (i = redir_size(*line), (*line) += i, ft_substr(*line - i, 0,
+				i));
+	while (*line && skip_spaces(line) && (quotes || dquotes
+			|| redir_size(*line) == 0))
 	{
-		if (**line == ESCAPE_CHAR || escaped)
-			escaped = !escaped;
-		else if (**line == QUOTE || **line == DQUOTE)
+		if (**line == QUOTE)
 			quotes = !quotes;
+		else if (**line == DQUOTE)
+			dquotes = !dquotes;
+		i++;
 		(*line)++;
 	}
-	i = *line - start;
-	if (i == 0 && redir_size(*line))
-	{
-		i = redir_size(*line);
-		(*line) += i;
-	}
-	return (substr_expander(start, i));
+	/* substr_expander(start, i) */
+	return (ft_substr(*line - i, 0, i));
 }
 
 char	**parse(t_mini *mini)
@@ -128,7 +126,7 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	{
 		if (!update_command(command, raw_commands, &i, end))
 			return (free(command), NULL);
-		if ((int) i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
+		if ((int)i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
 			mini()->hd_limiter = ft_strdup(raw_commands[i]);
 		i++;
 	}
@@ -138,51 +136,4 @@ t_command	*construct_command(char **raw_commands, size_t end)
 		command->cmd_name = command->args[0];
 	command->next = NULL;
 	return (command);
-}
-
-bool	update_command(t_command *command, char **raw_commands, size_t *i,
-		size_t end)
-{
-	if (redir_type(raw_commands[*i]) != RED_NULL)
-	{
-		if (++(*i) < end)
-			if (!assign_redir(command, raw_commands[*i],
-					redir_type(raw_commands[*i - 1])))
-				return (false);
-		/* it might be an error if it didnt enter the if */
-	}
-	else
-	{
-		if (!add_arg(command, raw_commands[*i]))
-			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
-				command);
-	}
-	return (true);
-}
-
-bool	add_arg(t_command *command, char *section)
-{
-	char	**new_args;
-	size_t	k;
-	size_t	i;
-
-	k = 0;
-	while (command->args && command->args[k])
-		k++;
-	new_args = malloc((k + 2) * sizeof(char *));
-	if (!new_args)
-		return (false);
-	i = 0;
-	while (i < k)
-	{
-		new_args[i] = command->args[i];
-		i++;
-	}
-	new_args[i] = ft_strdup(section);
-	if (!new_args[k])
-		return (false);
-	new_args[k + 1] = NULL;
-	free(command->args);
-	command->args = new_args;
-	return (true);
 }
