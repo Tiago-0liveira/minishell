@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/25 19:21:21 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 02:08:29 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ size_t	redir_size(char *line)
 	type = redir_type(line);
 	if (type == RED_AIN || type == RED_AOUT)
 		return (2);
-	if (type == RED_IN || type == RED_OUT || (line != NULL && (*line == '|'
+	if (type == RED_IN || type == RED_OUT || (line != NULL && (*line == PIPE
 				|| *line == ' ')))
 		return (1);
 	return (0);
@@ -70,4 +70,51 @@ void	command_add_back(t_command *new_command)
 		last_command = last_command->next;
 	}
 	last_command->next = new_command;
+}
+
+bool	update_command(t_command *command, char **raw_commands, size_t *i,
+		size_t end)
+{
+	if (redir_type(raw_commands[*i]) != RED_NULL)
+	{
+		if (++(*i) < end)
+			if (!assign_redir(command, raw_commands[*i],
+					redir_type(raw_commands[*i - 1])))
+				return (false);
+		/* it might be an error if it didnt enter the if */
+	}
+	else
+	{
+		if (!add_arg(command, raw_commands[*i]))
+			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
+				command);
+	}
+	return (true);
+}
+
+bool	add_arg(t_command *command, char *section)
+{
+	char	**new_args;
+	size_t	k;
+	size_t	i;
+
+	k = 0;
+	while (command->args && command->args[k])
+		k++;
+	new_args = malloc((k + 2) * sizeof(char *));
+	if (!new_args)
+		return (false);
+	i = 0;
+	while (i < k)
+	{
+		new_args[i] = command->args[i];
+		i++;
+	}
+	new_args[i] = ft_strdup(section);
+	if (!new_args[k])
+		return (false);
+	new_args[k + 1] = NULL;
+	free(command->args);
+	command->args = new_args;
+	return (true);
 }
