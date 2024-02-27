@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/26 19:37:04 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:39:19 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			close(mini->input.pip[1]);
 		}
 		setup_redirections(cmd, false);
-		if (cmd->cmd_name != NULL && cmd->cmd_name[0] != '\0')
+		if (cmd->cmd_name != NULL)
 			if (!execution(mini, cmd, ev))
 				free_shell(NULL, -1, NULL, NULL);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
