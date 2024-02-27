@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 23:23:47 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/26 23:53:37 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	expand_args(t_command *cmd)
 	char	*expanded;
 
 	i = 0;
-	while (cmd->args[i])
+	while (cmd->args && cmd->args[i])
 	{
 		if (cmd->args[i] && cmd->args[i][0] == '\0')
 		{
