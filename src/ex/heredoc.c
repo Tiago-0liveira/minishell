@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 17:27:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:18:54 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,12 @@ char	*expand_input_hd(char *s)
 {
 	char	*expanded;
 
-	if (s[0] == '$')
+	expanded = str_expander_hd(s);
+	if (!expanded)
 	{
 		free(s);
-		return (ft_strdup(" "));
+		return (ft_strdup(""));
 	}
-	expanded = str_expander_hd(s);
 	free(s);
 	s = expanded;
 	return (s);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_expander.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 19:18:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:14:40 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 	}
 	if (str[ex->i] != ENV_Q)
 	{
-		tmp = ft_substr(str, ex->i - ex->var_len, ex->var_len - 1);
+		tmp = ft_substr(str, ex->i - ex->var_len, ex->var_len);
 		res = get_env_var(mini()->env_list, tmp);
 		free(tmp);
 	}

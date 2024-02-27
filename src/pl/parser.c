@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 05:44:09 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:17:51 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ t_command	*construct_command(char **raw_commands, size_t end)
 				lim++;
 			}
 			mini()->hd_limiter = ft_strdup(lim);
+			free(lim);
 		}
 		i++;
 	}
