@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 18:28:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:54:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ char					*cmd_path(char **ev);
 // \ heredoc.c
 char					*heredoc(t_mini *mini);
 // b-ins
-// \ built-ins_utils.c
+// \ utils.c
 int						if_builtin(char *s);
 void					built_in(t_mini *mini, t_command *cmd);
 // \ cd
