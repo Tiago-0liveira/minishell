@@ -103,7 +103,7 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 	}
 	if (str[ex->i] != ENV_Q)
 	{
-		tmp = ft_substr(str, ex->i - ex->var_len + 1, ex->var_len - 1);
+		tmp = ft_substr(str, ex->i - ex->var_len, ex->var_len - 1);
 		res = get_env_var(mini()->env_list, tmp);
 		free(tmp);
 	}
