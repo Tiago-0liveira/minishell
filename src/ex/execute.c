@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/24 21:00:06 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:12:07 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	execution(t_mini *mini, t_command *cmd, char **ev)
 		if (!path || execve(path, cmd->args, ev) < 0)
 		{
 			error_msg(CMD_NOT_FOUND, cmd->cmd_name);
-			if (!path)
+			if (path)
 				free(path);
 			return (false);
 		}
