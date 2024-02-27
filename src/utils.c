@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 17:07:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:28:06 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,39 @@ enum e_redir_type	redir_type(char *line)
 bool	valid_env_char(char c)
 {
 	return (ft_isalnum(c) || c == '_');
+}
+
+bool	quoted_str(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str && str[i])
+	{
+		if (*str == '\'' || *str == '\"')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+bool	valid_cmd_arg(char *str)
+{
+	bool	quoted;
+	int		l;
+
+	quoted = quoted_str(str);
+	l = str_expander_len(str);
+	if (!quoted && l == 0)
+		return (false);
+	return (l > 0 || quoted);
+}
+
+void	free_assign_null(void **ptr)
+{
+	if (*ptr)
+		free(*ptr);
+	*ptr = NULL;
 }
 
 void	print_command(t_command *command)

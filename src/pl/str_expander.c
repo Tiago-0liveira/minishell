@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 23:49:33 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:18:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,6 @@ char	*str_expander(char *str)
 	int		final_len;
 
 	final_len = str_expander_len(str);
-	if (final_len <= 0)
-		return (NULL);
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
@@ -38,16 +36,15 @@ void	expand_vars(char *str, char *expanded, int len)
 		if ((str[ex.i] == QUOTE && ex.dquotes) || (str[ex.i] == DQUOTE
 				&& ex.quotes))
 			ft_strlcat(expanded, str + ex.i, ft_strlen(expanded) + 2);
-		if (str[ex.i] == QUOTE)
+		else if (str[ex.i] == QUOTE && !ex.dquotes)
 			ex.quotes = !ex.quotes;
-		else if (str[ex.i] == DQUOTE)
+		else if (str[ex.i] == DQUOTE && !ex.quotes)
 			ex.dquotes = !ex.dquotes;
 		else if (str[ex.i] == ENV_VAR && (!ex.quotes || (ex.quotes
 					&& ex.dquotes)))
 		{
 			ft_strlcat(expanded, str_expander_var_len(&ex, str), len + 1);
-			if (ex.var != NULL)
-				free(ex.var);
+			free_assign_null((void **)&ex.var);
 			continue ;
 		}
 		else
@@ -67,17 +64,16 @@ int	str_expander_len(char *str)
 		if ((str[ex.i] == QUOTE && ex.quotes && !ex.dquotes)
 			|| (str[ex.i] == DQUOTE && ex.dquotes && !ex.quotes))
 			ex.len -= 2;
-		if (str[ex.i] == QUOTE)
+		if (str[ex.i] == QUOTE && !ex.dquotes)
 			ex.quotes = !ex.quotes;
-		else if (str[ex.i] == DQUOTE)
+		else if (str[ex.i] == DQUOTE && !ex.quotes)
 			ex.dquotes = !ex.dquotes;
 		else if (str[ex.i] == ENV_VAR && (!ex.quotes || (ex.quotes
 					&& ex.dquotes)))
 		{
 			str_expander_var_len(&ex, str);
 			ex.len += ex.var_clen;
-			if (ex.var != NULL)
-				free(ex.var);
+			free_assign_null((void **)&ex.var);
 			continue ;
 		}
 		ex.len++;
@@ -109,7 +105,7 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 	}
 	else
 	{
-		res = get_env_var(mini()->env_list, str + ex->i);
+		res = get_env_var(mini()->env_list, str + ex->i++);
 		ex->var = res;
 	}
 	ex->var_clen = ft_strlen(res);

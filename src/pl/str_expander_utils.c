@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 23:53:37 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 16:09:22 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ bool	expand_redirs(t_command *cmd)
 		free(redir->file);
 		redir->file = expanded;
 		if (redir->type == RED_IN)
-			if (!access(redir->file, F_OK | R_OK))
+			if (access(redir->file, F_OK | R_OK) != 0)
 				return (false);
 		redir = redir->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 05:17:44 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/27 18:28:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@
 # define ESCAPE_CHAR '\\'
 # define ENV_VAR '$'
 /* Last command exit status */
-# define ENV_Q  '?'
+# define ENV_Q '?'
 # define SPACE ' '
+
+# define ECHO_FLAG_N "-n"
 
 # define MALLOC_ERROR "Malloc failed!\n"
 
@@ -60,6 +62,7 @@
 # define SYNTAX_ERROR "syntax error near unexpected token `"
 # define TOO_MANY_ARGS "too many arguments: "
 # define NOT_VALID_IDENT "not a valid identifier: "
+# define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
 
 // free shell errors
 # define FAILURE_GETTING_PATH "Failure getting path!\n"
@@ -69,7 +72,7 @@
 
 # define DEBUGGG
 
-# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
+# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__);
 
 enum					e_redir_type
 {
@@ -147,20 +150,23 @@ t_list					*set_env(char **env);
 // utils.c
 enum e_redir_type		redir_type(char *line);
 bool					valid_env_char(char c);
+bool					quoted_str(char *str);
+bool					valid_cmd_arg(char *str);
+void					free_assign_null(void **ptr);
 void					print_command(t_command *command);
 // pl
 //  \ lexer.c
+bool					input_error_check(t_mini *mini);
 bool					skip_spaces(char **line);
 bool					semantic_checker(char **raw_commands);
-bool					valid_arg(char **sections, int *i, char **last_section,
-							char **error);
+bool					valid_section(char **sections, int *i,
+							char **last_section, char **error);
 //  \ parser.c
 bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
-t_command				*construct_command(char **raw_commands,
-							size_t end);
+t_command				*construct_command(char **raw_commands, size_t end);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);

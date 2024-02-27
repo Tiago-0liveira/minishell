@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:36:28 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 19:16:05 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ void	command_add_back(t_command *new_command)
 bool	update_command(t_command *command, char **raw_commands, size_t *i,
 		size_t end)
 {
+	bool	ret;
+
 	if (redir_type(raw_commands[*i]) != RED_NULL)
 	{
 		if (++(*i) < end)
@@ -82,12 +84,13 @@ bool	update_command(t_command *command, char **raw_commands, size_t *i,
 	}
 	else
 	{
-		if (str_expander_len(raw_commands[*i]) <= 0)
+		ret = valid_cmd_arg(raw_commands[*i]);
+		if (!ret)
 		{
 			free(raw_commands[*i]);
 			raw_commands[*i] = ft_strdup("");
 		}
-		if (!add_arg(command, raw_commands[*i]))
+		if (ret && !add_arg(command, raw_commands[*i]))
 			free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper,
 				command);
 	}

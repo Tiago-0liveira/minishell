@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 06:09:18 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/27 17:27:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void	expand_vars_hd(char *str, char *expanded, int len)
 		if (str[ex.i] == ENV_VAR)
 		{
 			ft_strlcat(expanded, str_expander_var_len(&ex, str), len + 1);
-			if (ex.var != NULL)
-				free(ex.var);
+			free_assign_null((void **)&ex.var);
 			continue ;
 		}
 		else
@@ -44,8 +43,7 @@ int	str_expander_len_hd(char *str)
 		{
 			str_expander_var_len(&ex, str);
 			ex.len += ex.var_clen;
-			if (ex.var != NULL)
-				free(ex.var);
+			free_assign_null((void **)&ex.var);
 			continue ;
 		}
 		ex.len++;
