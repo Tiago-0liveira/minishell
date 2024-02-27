@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:35:03 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 05:44:09 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ t_command	*construct_command(char **raw_commands, size_t end)
 {
 	t_command	*command;
 	size_t		i;
+	char		*lim;
 
 	command = malloc(sizeof(t_command));
 	if (!command)
@@ -125,7 +126,16 @@ t_command	*construct_command(char **raw_commands, size_t end)
 		if (!update_command(command, raw_commands, &i, end))
 			return (free(command), NULL);
 		if ((int)i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
-			mini()->hd_limiter = ft_strdup(raw_commands[i]);
+		{
+			lim = ft_strdup(raw_commands[i]);
+			if (raw_commands[i][0] == QUOTE || raw_commands[i][0] == DQUOTE)
+			{
+				mini()->lim_q = 1;
+				lim[ft_strlen(lim) - 1] = '\0';
+				lim++;
+			}
+			mini()->hd_limiter = ft_strdup(lim);
+		}
 		i++;
 	}
 	if (command->args == NULL)

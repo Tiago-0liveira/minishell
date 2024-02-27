@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 03:51:24 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/27 05:17:55 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	init_mini(t_mini *mini)
 	mini->command_ret = 0;
 	reset_mini(mini);
 	mini->hd_limiter = NULL;
+	mini->lim_q = 0;
 	mini->output = NULL;
 	mini->hdfd = 0;
 }
