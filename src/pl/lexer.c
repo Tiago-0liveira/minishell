@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 18:56:55 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 18:14:38 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,28 @@
 bool	input_error_check(t_mini *mini)
 {
 	char	*line_cursor;
+	bool	quotes;
+	bool	dquotes;
 
 	line_cursor = mini->input.raw_line;
+	quotes = false;
+	dquotes = false;
 	while (*line_cursor)
 	{
 		if (!skip_spaces(&line_cursor))
 			return (false);
+		if (*line_cursor == QUOTE && !dquotes)
+			quotes = !quotes;
+		else if (*line_cursor == DQUOTE && !quotes)
+			dquotes = !dquotes;
 		else if (*line_cursor == PIPE)
 			mini->input.pipe_c++;
 		line_cursor++;
 	}
 	mini->input.len = line_cursor - mini->input.raw_line;
-	return (ft_strlen(mini->input.raw_line) > 0);
+	if (quotes || dquotes)
+		return (error_msg(OPEN_QUOTES_ERROR, NULL), false);
+	return (true);
 }
 
 bool	skip_spaces(char **line)
@@ -51,7 +61,7 @@ bool	semantic_checker(char **sections)
 	error = NULL;
 	while (sections && sections[i] && isvalid && !error)
 	{
-		isvalid = valid_arg(sections, &i, &last_section, &error);
+		isvalid = valid_section(sections, &i, &last_section, &error);
 		i++;
 	}
 	if (error)
@@ -59,11 +69,11 @@ bool	semantic_checker(char **sections)
 	return (isvalid);
 }
 
-bool	valid_arg(char **sections, int *i, char **last_section, char **error)
+bool	valid_section(char **sections, int *i,
+	char **last_section, char **error)
 {
 	if (*sections[*i] == PIPE)
 	{
-		mini()->input.pipe_c++;
 		if (!*last_section)
 			return (*error = sections[*i], false);
 		else if (!sections[*i + 1])

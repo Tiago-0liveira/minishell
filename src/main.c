@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 19:04:33 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 14:54:31 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int ac, char **av, char **env)
 			free(mini()->input.raw_line);
 			continue ;
 		}
-		else if (parse_input(mini()))
+		else if (input_error_check(mini()) && parse_input(mini()))
 		{
 			if (mini()->commands != NULL
 				&& ft_strncmp(mini()->commands->cmd_name, "exit", 4) == 0)
