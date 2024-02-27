@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 15:39:19 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:49:40 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			close(mini->input.pip[1]);
 		}
 		setup_redirections(cmd, false);
-		if (cmd->cmd_name != NULL)
-			if (!execution(mini, cmd, ev))
+		if (cmd->cmd_name != NULL && !if_builtin(cmd->cmd_name))
+			if (!execution(cmd, ev))
 				free_shell(NULL, -1, NULL, NULL);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
 			dup2(mini->input.pip[0], STDIN_FILENO);
@@ -86,12 +86,10 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	else
 	{
 		waitpid(pid, &mini->command_ret, 0);
+		if (if_builtin(cmd->cmd_name))
+			built_in(mini, cmd);
 		if (has_next)
-		{
 			close(mini->input.pip[1]);
-			/* esta linha acaba com o stdout */
-			//mini->input.cmd_input = mini->input.pip[0];
-		}
 		if (mini->input.cmd_input != STDIN_FILENO)
 			close(mini->input.cmd_input);
 		if (WIFEXITED(mini->command_ret))

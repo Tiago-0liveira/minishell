@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 16:12:07 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:47:51 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,23 +46,18 @@ char	*get_path(char *cmd, char **ev)
 	return (0);
 }
 
-bool	execution(t_mini *mini, t_command *cmd, char **ev)
+bool	execution(t_command *cmd, char **ev)
 {
 	char	*path;
 
-	if (if_builtin(cmd->cmd_name))
-		built_in(mini, cmd);
-	else
+	path = get_path(cmd->cmd_name, ev);
+	if (!path || execve(path, cmd->args, ev) < 0)
 	{
-		path = get_path(cmd->cmd_name, ev);
-		if (!path || execve(path, cmd->args, ev) < 0)
-		{
-			error_msg(CMD_NOT_FOUND, cmd->cmd_name);
-			if (path)
-				free(path);
-			return (false);
-		}
-		free(path);
+		error_msg(CMD_NOT_FOUND, cmd->cmd_name);
+		if (path)
+			free(path);
+		return (false);
 	}
+	free(path);
 	return (true);
 }

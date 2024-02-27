@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 14:54:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 23:31:12 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	main(int ac, char **av, char **env)
 {
 	(void)av;
 	(void)ac;
-	init_mini(mini());
 	mini()->env_list = set_env(env);
+	init_mini(mini());
 	if (!(mini()->env_list))
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	while (1)

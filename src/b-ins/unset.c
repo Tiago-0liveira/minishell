@@ -20,7 +20,7 @@ void	bi_unset(t_mini *mini, char **av)
 
 	i = -1;
 	tmp = mini->env_list;
-	len = ft_strlen_eq(av[0]);
+	len = ft_strlen_eq(av[1]);
 	while (av[++i])
 	{
 		tmp = mini->env_list;
