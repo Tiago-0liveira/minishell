@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 23:45:30 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/28 01:16:08 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,10 +217,12 @@ void					bi_echo(char **av);
 // \ env
 void					bi_env(t_list *env_list);
 char					*get_env_var(t_list *env_list, char *var);
+int						valid_env_var_name(char *str);
 // \ export
 int						ft_strlen_eq(char *s);
-void					free_content(void *content);
 void					delete_var(t_list **head, void *node_to_del);
+void					show_export(t_list *env_list, char **av);
+void					delete_if_needed(t_list **env_list, char *var, int len);
 void					bi_export(t_mini *mini, char **av);
 // \ pwd
 void					bi_pwd(void);

@@ -36,3 +36,23 @@ char	*get_env_var(t_list *env_list, char *var)
 	}
 	return ("");
 }
+
+int	valid_env_var_name(char *str)
+{
+	int		namelen;
+	int		i;
+
+	namelen = ft_strlen_eq(str);
+	if (namelen == 0)
+		return (error_msg(NOT_VALID_IDENT, str), -1);
+	if (str[namelen] != '=')
+		return (0);
+	i = 0;
+	while (str[i] && str[i] != '=')
+	{
+		if (!valid_env_char(str[i]))
+			return (false);
+		i++;
+	}
+	return (namelen);
+}
