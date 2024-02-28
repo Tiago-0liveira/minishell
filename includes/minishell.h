@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 01:16:08 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 02:06:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,8 @@ void					sig_init(void);
 void					ft_execution(t_mini *mini, char **ev);
 void					execute_in_child(t_mini *mini, t_command *cmd,
 							char **ev, int has_next);
+void					execute_in_parent(t_mini *mini, t_command *cmd,
+							int has_next);
 void					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);

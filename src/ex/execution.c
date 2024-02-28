@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 23:49:40 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/28 02:06:13 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ void	ft_execution(t_mini *mini, char **ev)
 		}
 		if (!expand_command(cmd))
 			return ;
-		execute_in_child(mini, cmd, ev, has_next);
+		if (if_builtin(cmd->cmd_name))
+			execute_in_parent(mini, cmd, has_next);
+		else
+			execute_in_child(mini, cmd, ev, has_next);
 		if (has_next)
 		{
 			close(mini->input.pip[1]);
@@ -53,6 +56,23 @@ void	ft_execution(t_mini *mini, char **ev)
 		}
 		cmd = cmd->next;
 	}
+}
+
+void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
+{
+	int	original_stdout;
+	int	original_stdin;
+
+	original_stdout = dup(STDOUT_FILENO);
+	original_stdin = dup(STDIN_FILENO);
+	if (has_next)
+		dup2(mini->input.pip[1], STDOUT_FILENO);
+	setup_redirections(cmd, true);
+	built_in(mini, cmd);
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
 }
 
 void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
