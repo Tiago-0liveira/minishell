@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 01:00:47 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 20:18:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ void	free_shell(char *err, int status, void (*cleanup_func)(void *),
 		ft_lstclear(&(m->env_list), free);
 	rl_clear_history();
 	if (err)
-		write(2, err, ft_strlen(err));
-	close(0);
-	close(1);
+		write(STDERR_FILENO, err, ft_strlen(err));
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
 	exit(status);
 }
 

@@ -58,3 +58,12 @@ Prints the current working directory.
 Prints the current environment.
 
 ### Always returns Zero
+
+## `exit` - Exit the Shell
+
+Exits the shell with a status of `n`.
+
+- `exit [n]` : Exits the shell with a status of `n`.
+- `exit` : Exits the shell with the status of the last command executed.
+- `exit [nan]` : Exits the shell with a status of `255`.
+- `exit [n>255]` : Exits the shell with a status of `n`.

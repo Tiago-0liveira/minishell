@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 18:32:48 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 21:36:11 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,15 @@
 # define CMD_NOT_FOUND "command not found: "
 # define FD_NOT_FOUND "no such file or directory: "
 # define SYNTAX_ERROR "syntax error near unexpected token `"
-# define TOO_MANY_ARGS "too many arguments: "
+# define TOO_MANY_ARGS "too many arguments\n"
 # define NOT_VALID_IDENT "not a valid identifier: "
 # define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
 # define CMD_INSUF_PERMS "Permission denied: "
+# define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
 
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
+# define CMD_NUM_ARG_REQ_RET 2
 
 // free shell errors
 # define FAILURE_GETTING_PATH "Failure getting path!\n"
@@ -74,7 +76,7 @@
 # define PIPE_ERROR "Pipe error!\n"
 # define FORK_ERROR "Fork error!\n"
 
-# define DEBUGGG
+# define EXIT_STATUS_N 256
 
 # define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
@@ -233,6 +235,10 @@ void					bi_export(t_mini *mini, char **av);
 void					bi_pwd(void);
 // \ unset
 void					bi_unset(t_mini *mini, char **av);
+// \ exit
+int						calculate_exit_code_from_string(const char *number);
+bool					str_is_num(const char *str);
+void					bi_exit(t_mini *mini, char **args, bool has_next);
 // errors.c
 void					error_msg(char *cmd, char *msg);
 void					error_msg_ret(char *cmd, char *msg, int ret);
