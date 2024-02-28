@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:13:48 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 21:49:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 23:42:39 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ void	bi_exit(t_mini *mini, char **args, bool has_next)
 
 	status = 0;
 
+	if (ft_strlen(mini->commands->cmd_name) != 4)
+	{
+		error_msg(CMD_NOT_FOUND, "exit");
+		mini->command_ret = 127;
+		return ;
+	}
 	if (!args[1])
 	{
 		if (has_next)
@@ -65,17 +71,15 @@ void	bi_exit(t_mini *mini, char **args, bool has_next)
 	valid = str_is_num(args[1]);
 	if (!valid)
 	{
-		if (has_next)
-			return ;
 		error_msg(EXIT_NUMERIR_ARG_REQ, args[1]);
-		free_shell(NULL, CMD_NUM_ARG_REQ_RET, NULL, NULL);
+		mini->command_ret = 1;
+		return ;
 	}
 	else if (args[2])
 	{
 		error_msg(TOO_MANY_ARGS, NULL);
-		if (has_next)
-			return ;
-		free_shell(NULL, EXIT_FAILURE, NULL, NULL);
+		mini->command_ret = 1;
+		return ;
 	}
 	status = calculate_exit_code_from_string(args[1]);
 	mini->command_ret = status;
