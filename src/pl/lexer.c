@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 18:14:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:47:00 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ bool	input_error_check(t_mini *mini)
 	}
 	mini->input.len = line_cursor - mini->input.raw_line;
 	if (quotes || dquotes)
-		return (error_msg(OPEN_QUOTES_ERROR, NULL), false);
+		return (error_msg_ret(OPEN_QUOTES_ERROR, NULL, EXIT_FAILURE), false);
 	return (true);
 }
 
@@ -65,7 +65,7 @@ bool	semantic_checker(char **sections)
 		i++;
 	}
 	if (error)
-		return (error_msg(SYNTAX_ERROR, error), false);
+		return (error_msg_ret(SYNTAX_ERROR, error, EXIT_FAILURE), false);
 	return (isvalid);
 }
 

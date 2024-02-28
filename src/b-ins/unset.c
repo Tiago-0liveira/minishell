@@ -15,24 +15,15 @@
 void	bi_unset(t_mini *mini, char **av)
 {
 	int		i;
-	size_t	len;
-	t_list	*tmp;
+	int		res;
 
 	i = -1;
-	tmp = mini->env_list;
-	len = ft_strlen_eq(av[1]);
 	while (av[++i])
 	{
-		tmp = mini->env_list;
-		while (tmp)
-		{
-			if (!ft_strncmp(av[i], tmp->content, len))
-			{
-				delete_var(&(mini->env_list), tmp->content);
-				break ;
-			}
-			tmp = tmp->next;
-		}
-		tmp = mini->env_list;
+		res = valid_env_var_name(av[i], false);
+		if (res == -1)
+			return (error_msg_ret(NOT_VALID_IDENT, av[i], 1));
+		delete_var(&mini->env_list, av[i]);
 	}
+	mini->command_ret = 0;
 }

@@ -6,20 +6,11 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/28 02:06:13 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:32:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_command	*ft_lstlast_mini(t_command *lst)
-{
-	if (!lst)
-		return (0);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
 
 void	ft_execution(t_mini *mini, char **ev)
 {
@@ -44,7 +35,7 @@ void	ft_execution(t_mini *mini, char **ev)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
 		if (!expand_command(cmd))
-			return ;
+			continue ;
 		if (if_builtin(cmd->cmd_name))
 			execute_in_parent(mini, cmd, has_next);
 		else
@@ -94,9 +85,9 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 			close(mini->input.pip[1]);
 		}
 		setup_redirections(cmd, false);
-		if (cmd->cmd_name != NULL && !if_builtin(cmd->cmd_name))
+		if (cmd->cmd_name != NULL)
 			if (!execution(cmd, ev))
-				free_shell(NULL, -1, NULL, NULL);
+				free_shell(NULL, 1, NULL, NULL);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
 			dup2(mini->input.pip[0], STDIN_FILENO);
 		free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
@@ -106,18 +97,22 @@ void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	else
 	{
 		waitpid(pid, &mini->command_ret, 0);
-		if (if_builtin(cmd->cmd_name))
-			built_in(mini, cmd);
+		//DEBUG_MSG("command_ret: %d\n", mini->command_ret);
 		if (has_next)
 			close(mini->input.pip[1]);
 		if (mini->input.cmd_input != STDIN_FILENO)
 			close(mini->input.cmd_input);
 		if (WIFEXITED(mini->command_ret))
+		{
+			//DEBUG_MSG("Child terminated normally|%d|%d\n", mini->command_ret,
+				WEXITSTATUS(mini->command_ret);
 			mini->command_ret = WEXITSTATUS(mini->command_ret);
+		}
 		else if (WIFSIGNALED(mini->command_ret))
 		{
-			printf("Child terminated by signal %d\n", WTERMSIG(mini->command_ret));
-				/* need to handle signals */
+			printf("Child terminated by signal %d\n",
+				WTERMSIG(mini->command_ret));
+			/* need to handle signals */
 		}
 	}
 }

@@ -2,15 +2,19 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2024/02/14 01:50:53 by joaoribe          #+#    #+#             */
 /*   Updated: 2024/02/14 01:50:53 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
 
 void	bi_env(t_list *env_list)
 {
@@ -19,6 +23,7 @@ void	bi_env(t_list *env_list)
 		printf("%s\n", (char *)env_list->content);
 		env_list = env_list->next;
 	}
+	mini()->command_ret = 0;
 }
 
 char	*get_env_var(t_list *env_list, char *var)
@@ -37,22 +42,32 @@ char	*get_env_var(t_list *env_list, char *var)
 	return ("");
 }
 
-int	valid_env_var_name(char *str)
+/*
+**	Checks if the string is a valid environment variable name
+**	@param str: the string to be checked
+**	@param is_entry: if the string to check should be a entry
+**	@return length of the name of the variable if valid,
+		-1 if invalid, if is_entry=true: 0 if there's no = and still valid name
+ */
+int	valid_env_var_name(char *str, bool is_entry)
 {
 	int		namelen;
 	int		i;
 
 	namelen = ft_strlen_eq(str);
-	if (namelen == 0)
-		return (error_msg(NOT_VALID_IDENT, str), -1);
-	if (str[namelen] != '=')
-		return (0);
 	i = 0;
-	while (str[i] && str[i] != '=')
+	if ((!is_entry && str[namelen] == '=')
+		|| namelen == 0 || ft_isdigit(str[i]))
+		return (DEBUG_MSG("%s:%d\n", str, -1),-1);
+	while (str[i])
 	{
-		if (!valid_env_char(str[i]))
-			return (false);
+		if (is_entry && str[i] == '=')
+			return (DEBUG_MSG("%s:%d\n", str, i),i);
+		if (!valid_env_char(str[i]) || (!is_entry && str[i] == '='))
+			return (DEBUG_MSG("%s:%d\n", str, -1), -1);
 		i++;
 	}
-	return (namelen);
+	if (is_entry && str[namelen] != '=')
+		return (DEBUG_MSG("%s:%d\n", str, 0), 0);
+	return (DEBUG_MSG("%s:%d\n", str, 1), 1);
 }

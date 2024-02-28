@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 23:47:51 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:45:10 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ bool	execution(t_command *cmd, char **ev)
 	path = get_path(cmd->cmd_name, ev);
 	if (!path || execve(path, cmd->args, ev) < 0)
 	{
-		error_msg(CMD_NOT_FOUND, cmd->cmd_name);
+		error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, EXIT_FAILURE);
 		if (path)
 			free(path);
 		return (false);

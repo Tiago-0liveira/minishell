@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:36:39 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 14:55:24 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 16:17:40 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,10 @@ void	error_msg(char *cmd, char *msg)
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	if (msg)
 		ft_putendl_fd(msg, STDERR_FILENO);
-	if (mini()->command_ret == 0)
-		mini()->command_ret = -1;
+}
+
+void	error_msg_ret(char *cmd, char *msg, int ret)
+{
+	error_msg(cmd, msg);
+	mini()->command_ret = ret;
 }

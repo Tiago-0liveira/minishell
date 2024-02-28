@@ -19,4 +19,5 @@ void	bi_pwd(void)
 	if (!getcwd(dir, PATH_MAX))
 		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
 	printf("%s\n", dir);
+	mini()->command_ret = 0;
 }

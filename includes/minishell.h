@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 02:06:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:32:48 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,10 @@
 # define TOO_MANY_ARGS "too many arguments: "
 # define NOT_VALID_IDENT "not a valid identifier: "
 # define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
+# define CMD_INSUF_PERMS "Permission denied: "
+
+# define CMD_NOT_FOUND_RET 127
+# define CMD_INSUF_PERMS_RET 126
 
 // free shell errors
 # define FAILURE_GETTING_PATH "Failure getting path!\n"
@@ -72,7 +76,7 @@
 
 # define DEBUGGG
 
-# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__);
+# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 enum					e_redir_type
 {
@@ -209,7 +213,7 @@ char					*cmd_path(char **ev);
 // \ heredoc.c
 char					*heredoc(t_mini *mini);
 // b-ins
-// \ built-ins_utils.c
+// \ utils.c
 int						if_builtin(char *s);
 void					built_in(t_mini *mini, t_command *cmd);
 // \ cd
@@ -219,12 +223,11 @@ void					bi_echo(char **av);
 // \ env
 void					bi_env(t_list *env_list);
 char					*get_env_var(t_list *env_list, char *var);
-int						valid_env_var_name(char *str);
+int						valid_env_var_name(char *str, bool is_entry);
 // \ export
 int						ft_strlen_eq(char *s);
 void					delete_var(t_list **head, void *node_to_del);
 void					show_export(t_list *env_list, char **av);
-void					delete_if_needed(t_list **env_list, char *var, int len);
 void					bi_export(t_mini *mini, char **av);
 // \ pwd
 void					bi_pwd(void);
@@ -232,4 +235,5 @@ void					bi_pwd(void);
 void					bi_unset(t_mini *mini, char **av);
 // errors.c
 void					error_msg(char *cmd, char *msg);
+void					error_msg_ret(char *cmd, char *msg, int ret);
 #endif

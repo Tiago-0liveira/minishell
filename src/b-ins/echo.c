@@ -40,4 +40,5 @@ void	bi_echo(char **av)
 	}
 	if (!flag_n)
 		ft_putstr_fd("\n", STDOUT_FILENO);
+	mini()->command_ret = 0;
 }

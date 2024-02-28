@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/23 02:32:23 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/28 18:38:10 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	bi_cd(t_mini *mini, char **av)
 	tmp = mini->env_list;
 	if (av[2])
 	{
-		error_msg(TOO_MANY_ARGS, "cd");
+		error_msg_ret(TOO_MANY_ARGS, "cd", EXIT_FAILURE);
 		return ;
 	}
 	if (!av[1] || (av[1][0] == '~'))
@@ -148,4 +148,5 @@ void	bi_cd(t_mini *mini, char **av)
 			env_update(mini, oldpwd);
 		}
 	}
+	mini->command_ret = 0;
 }

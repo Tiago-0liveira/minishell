@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2024/02/14 05:10:41 by joaoribe          #+#    #+#             */
 /*   Updated: 2024/02/14 05:10:41 by joaoribe         ###   ########.fr       */
 /*                                                                            */
@@ -59,22 +62,6 @@ void	show_export(t_list *env_list, char **av)
 	}
 }
 
-void	delete_if_needed(t_list **env_list, char *var, int len)
-{
-	t_list	*tmp;
-
-	tmp = *env_list;
-	while (tmp)
-	{
-		if (!ft_strncmp(var, tmp->content, len))
-		{
-			delete_var(env_list, tmp->content);
-			return ;
-		}
-		tmp = tmp->next;
-	}
-}
-
 void	bi_export(t_mini *mini, char **av)
 {
 	int		i;
@@ -85,13 +72,14 @@ void	bi_export(t_mini *mini, char **av)
 	i = 0;
 	while (av[++i])
 	{
-		res = valid_env_var_name(av[i]);
+		res = valid_env_var_name(av[i], true);
 		if (res == 0)
 			continue ;
 		else if (res == -1)
-			return ;
-		delete_if_needed(&mini->env_list, av[i], res);
+			return (error_msg_ret(NOT_VALID_IDENT, av[i], 1));
+		delete_var(&mini->env_list, av[i]);
 		exp = ft_lstnew(ft_strdup((char *)av[i]));
 		ft_lstadd_back(&mini->env_list, exp);
 	}
+	mini->command_ret = 0;
 }
