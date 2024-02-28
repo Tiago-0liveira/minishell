@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/26 15:47:02 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/28 00:58:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,21 @@ char	*get_input(bool prompt)
 	if (prompt)
 		update_prompt();
 	line = readline(mini()->output);
-	if (line)
+	if (mini()->output)
+	{
+		free(mini()->output);
+		mini()->output = NULL;
+	}
+	if (line && *line)
 	{
 		tmp = ft_strtrim(line, " \t\n");
 		free(line);
 		if (!tmp)
 			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 		line = tmp;
-		add_history(line); /* we need more conditions when adding to history */
+		add_history(line);
 	}
-	else
+	else if (!line)
 		line = ft_strdup("exit");
 	return (line);
 }
@@ -50,7 +55,7 @@ void	update_prompt(void)
 	}
 	if (getcwd(dir, PATH_MAX))
 	{
-		tmp = ft_strnjoin(6, color, chr, CYAN " ", dir, RESET, PROMPT " ");
+		tmp = ft_strnjoin(6, color, chr, CYAN " ", dir, RESET, PROMPT);
 		mini()->output = tmp;
 	}
 }
