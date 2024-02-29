@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/29 04:54:17 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:49:40 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	bi_cd(t_mini *mini, char **av)
 		error_msg_ret(TOO_MANY_ARGS, "cd", EXIT_FAILURE);
 		return ;
 	}
-	if (!av[1] || (av[1][0] == '~'))
+	if (!av[1] || (av[1][0] == TILDE))
 	{
 		i += 2;
 		while (tmp)
@@ -80,13 +80,13 @@ void	bi_cd(t_mini *mini, char **av)
 			return ;
 		}
 	}
-	if (av[1] && ((av[1] && av[1][0] != '~') || (av[1][0] == '~' && av[1][1])))
+	if (av[1] && ((av[1] && av[1][0] != TILDE) || (av[1][0] == TILDE && av[1][1])))
 	{
 		while (av[1][++i])
 		{
-			if (av[1][i] == '.' || av[1][0] == '~')
+			if (av[1][i] == '.' || av[1][0] == TILDE)
 			{
-				if (av[1][i + 1] == '.' || av[1][0] == '~')
+				if (av[1][i + 1] == '.' || av[1][0] == TILDE)
 				{
 					j = -1;
 					pths = ft_split(av[1], '/');
@@ -100,7 +100,7 @@ void	bi_cd(t_mini *mini, char **av)
 						split_oldpwd = ft_split(tmp_oldpwd, '/');
 						if (pths[j][0] == '.')
 						{
-							final_oldpwd = ft_strdup("/");
+							final_oldpwd = ft_strdup(SLASH_STR);
 							tmp_split = split_oldpwd;
 							k = 0;
 							while (tmp_split[k])
@@ -114,7 +114,7 @@ void	bi_cd(t_mini *mini, char **av)
 								final_oldpwd = f_tmp;
 								if (l + 1 != k)
 								{
-									f_tmp2 = ft_strjoin(final_oldpwd, "/");
+									f_tmp2 = ft_strjoin(final_oldpwd, SLASH_STR);
 									free(final_oldpwd);
 									final_oldpwd = f_tmp2;
 								}
@@ -146,7 +146,7 @@ void	bi_cd(t_mini *mini, char **av)
 						break ;
 					}
 				}
-				else if (av[1][i + 1] == '/')
+				else if (av[1][i + 1] == SLASH)
 					i += 2;
 			}
 		}

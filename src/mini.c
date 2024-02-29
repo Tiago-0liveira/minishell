@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/29 04:36:56 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:08:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	init_mini(t_mini *mini)
 {
 	mini->command_ret = 0;
 	reset_mini(mini);
-	mini->relative_path = 0;
 	mini->hd_limiter = NULL;
 	mini->lim_q = 0;
 	mini->output = NULL;

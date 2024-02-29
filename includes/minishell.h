@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 21:36:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:09:47 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,10 @@
 # define REDIR_APPEND_OUT ">>"
 
 # define ESCAPE_CHAR '\\'
+# define SLASH '/'
+# define SLASH_STR "/"
 # define ENV_VAR '$'
+# define TILDE '~'
 /* Last command exit status */
 # define ENV_Q '?'
 # define SPACE ' '
@@ -147,6 +150,22 @@ int						main(int ac, char **av, char **env);
 char					*get_input(bool prompt);
 void					update_prompt(void);
 
+// errors.c
+void					error_msg(char *cmd, char *msg);
+void					error_msg_ret(char *cmd, char *msg, int ret);
+
+// path.c
+char					*get_roa_path(char *cmd);
+char					*get_envpath_cmd(char *cmd, char **ev);
+char					*path_add_home_prefix(char *cmd, char **ev);
+char					*get_relative_path(char *cmd);
+char					*get_cmd_path(char *cmd, char **ev);
+// path_utils.c
+bool					is_relative_path(char *cmd);
+bool					is_absolute_path(char *cmd);
+int						can_access_path(char *path);
+int						can_path_to(char *path);
+char					*get_env_value(char **ev, char *key);
 // mini.c
 void					init_mini(t_mini *mini);
 t_mini					*mini(void);
@@ -187,7 +206,7 @@ void					expand_vars(char *str, char *expanded, int len);
 int						str_expander_len(char *str);
 char					*str_expander_var_len(t_str_ex *ex, char *str);
 // \ str_expander_utils.c
-bool					expand_command(t_command *cmd);
+bool					expand_command(t_command *cmd, char **ev);
 void					expand_args(t_command *cmd);
 bool					expand_redirs(t_command *cmd);
 // free.c
@@ -203,15 +222,13 @@ void					sig_init(void);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
-void					execute_in_child(t_mini *mini, t_command *cmd,
-							char **ev, int has_next);
+void					execute_in_child(t_command *cmd, char **ev,
+							int has_next);
 void					execute_in_parent(t_mini *mini, t_command *cmd,
 							int has_next);
 void					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
-char					*get_path(char *cmd, char **ev);
-char					*cmd_path(char **ev);
 // \ heredoc.c
 char					*heredoc(t_mini *mini);
 // b-ins
@@ -238,8 +255,5 @@ void					bi_unset(t_mini *mini, char **av);
 // \ exit
 int						calculate_exit_code_from_string(const char *number);
 bool					str_is_num(const char *str);
-void					bi_exit(t_mini *mini, char **args, bool has_next);
-// errors.c
-void					error_msg(char *cmd, char *msg);
-void					error_msg_ret(char *cmd, char *msg, int ret);
+bool					bi_exit(t_mini *mini, char **args, bool has_next);
 #endif

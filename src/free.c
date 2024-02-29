@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/29 04:41:26 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:08:24 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ void	free_commands(t_command *commands)
 	while (commands != NULL)
 	{
 		tmp = commands->next;
+		if (commands->cmd_name)
+			free(commands->cmd_name);
 		if (commands->redirs)
 			free_redirs(commands->redirs);
-		if (commands->args && !mini()->relative_path)
+		if (commands->args)
 			free_list(commands->args);
 		free(commands);
 		commands = tmp;
 	}
-	mini()->relative_path = 0;
 }
 
 void	free_redirs(t_redir *redirs)
