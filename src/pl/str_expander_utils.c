@@ -6,19 +6,31 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/28 18:35:39 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/29 18:20:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	expand_command(t_command *cmd)
+bool	expand_command(t_command *cmd, char **ev)
 {
 	expand_args(cmd);
 	if (!expand_redirs(cmd))
 		return (false);
+	(void)ev;
 	if (cmd->args && cmd->args[0] != NULL)
-		cmd->cmd_name = cmd->args[0];
+	{
+		if (if_builtin(cmd->args[0]))
+		{
+			cmd->cmd_name = ft_strdup(cmd->args[0]);
+			if (!cmd->cmd_name)
+				free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
+			return (true);
+		}
+		cmd->cmd_name = get_cmd_path(cmd->args[0], ev);
+		if (cmd->cmd_name == NULL)
+			return (false);
+	}
 	return (true);
 }
 
@@ -60,7 +72,8 @@ bool	expand_redirs(t_command *cmd)
 		redir->file = expanded;
 		if (redir->type == RED_IN)
 			if (access(redir->file, F_OK | R_OK) != 0)
-				return (error_msg_ret(FD_NOT_FOUND, redir->file, EXIT_FAILURE), false);
+				return (error_msg_ret(FD_NOT_FOUND, redir->file, EXIT_FAILURE),
+					false);
 		redir = redir->next;
 	}
 	return (true);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/29 04:17:18 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/29 16:15:43 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	ft_execution(t_mini *mini, char **ev)
 {
 	t_command	*cmd;
-	char		*path;
 	int			has_next;
 	char		*heredoc_fd;
 
@@ -35,19 +34,15 @@ void	ft_execution(t_mini *mini, char **ev)
 			if (pipe(mini->input.pip) < 0)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
-		if (!expand_command(cmd))
+		if (!expand_command(cmd, ev))
+		{
+			cmd = cmd->next;
 			continue ;
+		}
 		if (if_builtin(cmd->cmd_name))
 			execute_in_parent(mini, cmd, has_next);
 		else
-		{
-			path = get_path(cmd->cmd_name, ev);
-			if (!path || access(path, F_OK | X_OK))
-				error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, CMD_NOT_FOUND_RET);
-			else
-				execute_in_child(cmd, ev, has_next, path);
-			free(path);
-		}
+			execute_in_child(cmd, ev, has_next);
 		if (has_next)
 		{
 			close(mini->input.pip[1]);
@@ -74,7 +69,7 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
 	close(original_stdout);
 }
 
-void	execute_in_child(t_command *cmd, char **ev, int has_next, char *path)
+void	execute_in_child(t_command *cmd, char **ev, int has_next)
 {
 	pid_t	pid;
 
@@ -94,7 +89,7 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next, char *path)
 		}
 		setup_redirections(cmd, false);
 		if (cmd->cmd_name != NULL)
-			if (!execution(cmd, ev, path))
+			if (!execution(cmd, ev))
 				free_shell(NULL, 1, NULL, NULL);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
 			dup2(mini()->input.pip[0], STDIN_FILENO);
