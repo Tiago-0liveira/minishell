@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/29 03:55:06 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/29 04:36:15 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,17 @@ char	*get_path(char *cmd, char **ev)
 		tmp = path;
 		if (ft_strnstr(cmd, "/", ft_strlen(path)))
 		{
+			mini()->relative_path = 1;
 			if (!access(cmd, F_OK))
 			{
 				p = ft_strdup(cmd);
 				p = delete_until_char(p, '/');
 			}
-			if (ft_strnstr(path, p, ft_strlen(path))
-				&& ft_strnstr(path, "/", ft_strlen(path)))
+			if (ft_strnstr(path, p, ft_strlen(path)))
 			{
-				free_list(paths);
+				free(p);
 				free(tmp);
+				free_list(paths);
 				return (cmd);
 			}
 		}
@@ -71,6 +72,7 @@ char	*get_path(char *cmd, char **ev)
 			free_list(paths);
 			return (path);
 		}
+		free(path);
 		i++;
 	}
 	if (path)
@@ -79,20 +81,12 @@ char	*get_path(char *cmd, char **ev)
 	return (0);
 }
 
-bool	execution(t_command *cmd, char **ev)
+bool	execution(t_command *cmd, char **ev, char *path)
 {
-	char	*path;
-
-	path = get_path(cmd->cmd_name, ev);
 	if (!path || execve(path, cmd->args, ev) < 0)
 	{
 		error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, CMD_NOT_FOUND_RET);
-		ft_putendl_fd("1", 1);
-		if (path)
-			free(path);
 		return (false);
 	}
-	ft_putendl_fd("1", 1);
-	free(path);
 	return (true);
 }

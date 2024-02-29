@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/29 03:53:37 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/02/29 04:17:18 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	ft_execution(t_mini *mini, char **ev)
 			if (!path || access(path, F_OK | X_OK))
 				error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, CMD_NOT_FOUND_RET);
 			else
-				execute_in_child(mini, cmd, ev, has_next);
+				execute_in_child(cmd, ev, has_next, path);
 			free(path);
 		}
 		if (has_next)
@@ -74,52 +74,52 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
 	close(original_stdout);
 }
 
-void	execute_in_child(t_mini *mini, t_command *cmd, char **ev, int has_next)
+void	execute_in_child(t_command *cmd, char **ev, int has_next, char *path)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		if (mini->input.cmd_input != STDIN_FILENO)
+		if (mini()->input.cmd_input != STDIN_FILENO)
 		{
-			dup2(mini->input.cmd_input, STDIN_FILENO);
-			close(mini->input.cmd_input);
+			dup2(mini()->input.cmd_input, STDIN_FILENO);
+			close(mini()->input.cmd_input);
 		}
 		if (has_next)
 		{
-			close(mini->input.pip[0]);
-			dup2(mini->input.pip[1], STDOUT_FILENO);
-			close(mini->input.pip[1]);
+			close(mini()->input.pip[0]);
+			dup2(mini()->input.pip[1], STDOUT_FILENO);
+			close(mini()->input.pip[1]);
 		}
 		setup_redirections(cmd, false);
 		if (cmd->cmd_name != NULL)
-			if (!execution(cmd, ev))
+			if (!execution(cmd, ev, path))
 				free_shell(NULL, 1, NULL, NULL);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
-			dup2(mini->input.pip[0], STDIN_FILENO);
+			dup2(mini()->input.pip[0], STDIN_FILENO);
 		free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 	}
 	else if (pid < 0)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else
 	{
-		waitpid(pid, &mini->command_ret, 0);
+		waitpid(pid, &mini()->command_ret, 0);
 		//DEBUG_MSG("command_ret: %d\n", mini->command_ret);
 		if (has_next)
-			close(mini->input.pip[1]);
-		if (mini->input.cmd_input != STDIN_FILENO)
-			close(mini->input.cmd_input);
-		if (WIFEXITED(mini->command_ret))
+			close(mini()->input.pip[1]);
+		if (mini()->input.cmd_input != STDIN_FILENO)
+			close(mini()->input.cmd_input);
+		if (WIFEXITED(mini()->command_ret))
 		{
 			//DEBUG_MSG("Child terminated normally|%d|%d\n", mini->command_ret,
-				WEXITSTATUS(mini->command_ret);
-			mini->command_ret = WEXITSTATUS(mini->command_ret);
+				WEXITSTATUS(mini()->command_ret);
+			mini()->command_ret = WEXITSTATUS(mini()->command_ret);
 		}
-		else if (WIFSIGNALED(mini->command_ret))
+		else if (WIFSIGNALED(mini()->command_ret))
 		{
 			printf("Child terminated by signal %d\n",
-				WTERMSIG(mini->command_ret));
+				WTERMSIG(mini()->command_ret));
 			/* need to handle signals */
 		}
 	}
