@@ -58,16 +58,28 @@ int	valid_env_var_name(char *str, bool is_entry)
 	i = 0;
 	if ((!is_entry && str[namelen] == '=')
 		|| namelen == 0 || ft_isdigit(str[i]))
+	{
+		mini()->command_ret = 1;
 		return (DEBUG_MSG("%s:%d\n", str, -1),-1);
+	}
 	while (str[i])
 	{
 		if (is_entry && str[i] == '=')
+		{
+			mini()->command_ret = 1;
 			return (DEBUG_MSG("%s:%d\n", str, i),i);
+		}
 		if (!valid_env_char(str[i]) || (!is_entry && str[i] == '='))
+		{
+			mini()->command_ret = 1;
 			return (DEBUG_MSG("%s:%d\n", str, -1), -1);
+		}
 		i++;
 	}
 	if (is_entry && str[namelen] != '=')
+	{
+		mini()->command_ret = 1;
 		return (DEBUG_MSG("%s:%d\n", str, 0), 0);
+	}
 	return (DEBUG_MSG("%s:%d\n", str, 1), 1);
 }

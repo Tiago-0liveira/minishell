@@ -62,6 +62,22 @@ void	show_export(t_list *env_list, char **av)
 	}
 }
 
+void	delete_if_needed(t_list **env_list, char *var, int len)
+{
+	t_list	*tmp;
+
+	tmp = *env_list;
+	while (tmp)
+	{
+		if (!ft_strncmp(var, tmp->content, len))
+		{
+			delete_var(env_list, tmp->content);
+			return ;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void	bi_export(t_mini *mini, char **av)
 {
 	int		i;
@@ -76,8 +92,8 @@ void	bi_export(t_mini *mini, char **av)
 		if (res == 0)
 			continue ;
 		else if (res == -1)
-			return (error_msg_ret(NOT_VALID_IDENT, av[i], 1));
-		delete_var(&mini->env_list, av[i]);
+			return ;
+		delete_if_needed(&mini->env_list, av[i], res);
 		exp = ft_lstnew(ft_strdup((char *)av[i]));
 		ft_lstadd_back(&mini->env_list, exp);
 	}
