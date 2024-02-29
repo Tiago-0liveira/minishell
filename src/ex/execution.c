@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/28 18:32:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/29 03:53:37 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_execution(t_mini *mini, char **ev)
 {
 	t_command	*cmd;
+	char		*path;
 	int			has_next;
 	char		*heredoc_fd;
 
@@ -39,7 +40,14 @@ void	ft_execution(t_mini *mini, char **ev)
 		if (if_builtin(cmd->cmd_name))
 			execute_in_parent(mini, cmd, has_next);
 		else
-			execute_in_child(mini, cmd, ev, has_next);
+		{
+			path = get_path(cmd->cmd_name, ev);
+			if (!path || access(path, F_OK | X_OK))
+				error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, CMD_NOT_FOUND_RET);
+			else
+				execute_in_child(mini, cmd, ev, has_next);
+			free(path);
+		}
 		if (has_next)
 		{
 			close(mini->input.pip[1]);
