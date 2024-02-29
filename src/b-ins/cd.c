@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/28 18:38:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/29 04:54:17 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ void	bi_cd(t_mini *mini, char **av)
 		}
 		tmp_0 = (char *)tmp->content;
 		if (chdir(tmp_0 + 5))
-			free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
+		{
+			error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+			return ;
+		}
 	}
 	if (av[1] && ((av[1] && av[1][0] != '~') || (av[1][0] == '~' && av[1][1])))
 	{
@@ -118,7 +121,10 @@ void	bi_cd(t_mini *mini, char **av)
 								l++;
 							}
 							if (chdir(final_oldpwd))
-								free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
+							{
+								error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+								return ;
+							}
 							free(final_oldpwd);
 							env_update(mini, oldpwd);
 							free_list(split_oldpwd);
@@ -126,7 +132,10 @@ void	bi_cd(t_mini *mini, char **av)
 						else
 						{
 							if (chdir(pths[j]))
-								free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
+							{
+								error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+								return ;
+							}
 							env_update(mini, oldpwd);
 							free_list(split_oldpwd);
 						}
@@ -144,7 +153,10 @@ void	bi_cd(t_mini *mini, char **av)
 		if (!j)
 		{
 			if (chdir(av[1]))
-				free_shell(DIR_CHANGE_ERROR, EXIT_FAILURE, NULL, NULL);
+			{
+				error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+				return ;
+			}
 			env_update(mini, oldpwd);
 		}
 	}
