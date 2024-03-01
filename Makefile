@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) #-g -fsanitize=address -static-libasan 
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g -fsanitize=address -static-libasan 
 
 SRC = main.c
 
@@ -14,7 +14,7 @@ SRC_FOLDER = src/
 OBJ_DIR = obj/
 
 SRC_ROOT_FILES = main.c input.c mini.c utils.c free.c signal_handle.c \
-				errors.c
+				errors.c path.c path_utils.c
 B-INS_FILES = cd.c echo.c env.c export.c pwd.c unset.c utils.c exit.c
 EX_FILES = execute.c execution.c heredoc.c
 

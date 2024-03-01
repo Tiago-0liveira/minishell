@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/01 02:52:39 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/27 22:17:51 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	if (!command)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	i = 0;
-	memset(command, 0, sizeof(t_command));
+	command->redirs = NULL;
+	command->args = NULL;
 	while (i < end)
 	{
 		if (!update_command(command, raw_commands, &i, end))
@@ -127,14 +128,13 @@ t_command	*construct_command(char **raw_commands, size_t end)
 		if ((int)i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
 		{
 			lim = ft_strdup(raw_commands[i]);
-			command->doctor.used = true;/* TODO: fix this */
 			if (raw_commands[i][0] == QUOTE || raw_commands[i][0] == DQUOTE)
 			{
-				command->doctor.lim_q = 1;
+				mini()->lim_q = 1;
 				lim[ft_strlen(lim) - 1] = '\0';
 				lim++;
 			}
-			command->doctor.delim = ft_strdup(lim);
+			mini()->hd_limiter = ft_strdup(lim);
 			free(lim);
 		}
 		i++;
