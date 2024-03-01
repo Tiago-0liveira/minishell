@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:36:05 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/29 20:01:46 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/01 00:10:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*get_cmd_path(char *cmd, char **ev)
 	else if (is_absolute_path(cmd))
 		path = get_roa_path(cmd);
 	else
-		path = get_envpath_cmd(cmd, ev);
+		return(get_envpath_cmd(cmd, ev));
 	if (home_added)
 		free(cmd);
 	if (is_absolute_path(path))
