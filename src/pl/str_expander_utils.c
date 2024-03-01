@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/29 18:20:33 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/01 01:48:20 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ bool	expand_command(t_command *cmd, char **ev)
 		cmd->cmd_name = get_cmd_path(cmd->args[0], ev);
 		if (cmd->cmd_name == NULL)
 			return (false);
+		cmd->exec_parent = if_builtin(cmd->cmd_name);
 	}
 	return (true);
 }

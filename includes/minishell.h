@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/29 19:09:47 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/01 02:58:09 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ typedef struct s_input
 	char				*raw_line;
 	size_t				len;
 	size_t				pipe_c;
-	int					pip[2];
 	int					cmd_input;
 }						t_input;
 
@@ -123,11 +122,35 @@ typedef struct s_redir
 	struct s_redir		*next;
 }						t_redir;
 
+typedef struct s_std
+{
+	int					in;
+	int					out;
+	int					err;
+}						t_std;
+
+typedef struct s_doctor
+{
+	int					status;
+	int					signal;
+	char				*delim;
+	int					lim_q;
+	int					fd;
+	int					pip[2];
+	int					used;
+}						t_doctor;
+
 typedef struct s_command
 {
 	char				*cmd_name;
 	char				**args;
 	t_redir				*redirs;
+	int					pip[2];
+	t_std				std;
+	pid_t				pid;
+	t_doctor			doctor;
+	int					status;
+	int					exec_parent;
 	struct s_command	*next;
 }						t_command;
 
@@ -137,10 +160,7 @@ typedef struct s_mini
 	t_command			*commands;
 	int					command_ret;
 	t_list				*env_list;
-	char				*hd_limiter;
-	int					lim_q;
 	char				*output;
-	int					hdfd;
 }						t_mini;
 
 // main.c
@@ -172,6 +192,14 @@ t_mini					*mini(void);
 void					reset_mini(t_mini *mini);
 t_list					*set_env(char **env);
 
+// command.c
+void					prepare_cmd(t_command *cmd, t_command *prev, t_command *next);
+void					prepare_cmd_for_child(t_command *cmd, t_command *prev);
+// redirections.c
+bool					handle_redir_in(t_command *cmd, t_redir *redir);
+bool					handle_redir_heredoc(t_command *cmd, t_redir *redir);
+bool					handle_redir_out(t_command *cmd, t_redir *redir);
+void					handle_redirections(t_command *cmd);
 // utils.c
 enum e_redir_type		redir_type(char *line);
 bool					valid_env_char(char c);
@@ -222,15 +250,13 @@ void					sig_init(void);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
-void					execute_in_child(t_command *cmd, char **ev,
-							int has_next);
-void					execute_in_parent(t_mini *mini, t_command *cmd,
-							int has_next);
-void					setup_redirections(t_command *cmd, bool isparent);
+void					execute_in_child(t_command *cmd, t_command *prev, char **ev);
+void					execute_in_parent(t_command *cmd, t_command *prev);
+void					wait_for_children(t_mini *mini);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
 // \ heredoc.c
-char					*heredoc(t_mini *mini);
+/*char					*heredoc(t_command *cmd);*/
 // b-ins
 // \ utils.c
 int						if_builtin(char *s);
