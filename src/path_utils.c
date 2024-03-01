@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 15:12:44 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/29 20:01:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/01 23:35:53 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,16 @@ int	can_path_to(char *r_path)
 	return (free(path), free_list(dirs), 1);
 }
 
-char	*get_env_value(char **ev, char *key)
+char	*get_env_value(t_list *envs, char *key)
 {
 	int	len;
 
-	if (!ev || !key)
+	if (!(envs->content) || !key)
 		return (NULL);
 	len = ft_strlen(key);
-	while (*ev && ft_strncmp(key, *ev, len))
-		ev++;
-	if (!*ev)
+	while (envs->next && ft_strncmp(key, envs->content, len))
+		envs = envs->next;
+	if (!(envs->content))
 		return (NULL);
-	return (*ev + len + 1);
+	return ((char *)envs->content);
 }

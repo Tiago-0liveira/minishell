@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:36:05 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/01 00:10:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/01 23:39:30 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,17 @@ char	*get_roa_path(char *cmd)
 /**
  * @brief Search on PATH env variable for cmd
  **/
-char	*get_envpath_cmd(char *cmd, char **ev)
+char	*get_envpath_cmd(char *cmd)
 {
 	char	**paths;
 	char	*path_var;
 	char	*full_path;
 	int		i;
 
-	path_var = get_env_value(ev, "PATH");
+	path_var = get_env_value(mini()->env_list, "PATH");
 	if (path_var && ft_strlen(path_var) == 0)
 		return (NULL);
+	path_var += 5;
 	paths = ft_split(path_var, ':');
 	if (!paths)
 		return (NULL);
@@ -58,14 +59,15 @@ char	*get_envpath_cmd(char *cmd, char **ev)
 	return (error_msg_ret(CMD_NOT_FOUND, cmd, CMD_NOT_FOUND_RET), NULL);
 }
 
-char	*path_add_home_prefix(char *cmd, char **ev)
+char	*path_add_home_prefix(char *cmd)
 {
 	char	*home_absp;
 	char	*res;
 
-	home_absp = get_env_value(ev, "HOME");
+	home_absp = get_env_value(mini()->env_list, "HOME");
 	if (home_absp)
 	{
+		home_absp += 5;
 		res = ft_strnjoin(2, home_absp, cmd + 1);
 		if (!res)
 			free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
@@ -94,7 +96,7 @@ char	*get_relative_path(char *cmd)
 /**
  *  @brief get path and validate it from cmd
  **/
-char	*get_cmd_path(char *cmd, char **ev)
+char	*get_cmd_path(char *cmd)
 {
 	char	*path;
 	bool	home_added;
@@ -103,7 +105,7 @@ char	*get_cmd_path(char *cmd, char **ev)
 	home_added = false;
 	if (cmd && *cmd == TILDE)
 	{
-		cmd = path_add_home_prefix(cmd, ev);
+		cmd = path_add_home_prefix(cmd);
 		home_added = true;
 	}
 	if (is_relative_path(cmd))
@@ -115,7 +117,7 @@ char	*get_cmd_path(char *cmd, char **ev)
 	else if (is_absolute_path(cmd))
 		path = get_roa_path(cmd);
 	else
-		return(get_envpath_cmd(cmd, ev));
+		path = get_envpath_cmd(cmd);
 	if (home_added)
 		free(cmd);
 	if (is_absolute_path(path))
