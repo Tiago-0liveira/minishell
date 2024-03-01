@@ -27,7 +27,7 @@ bool	expand_command(t_command *cmd, char **ev)
 				free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
 			return (true);
 		}
-		cmd->cmd_name = get_cmd_path(cmd->args[0], ev);
+		cmd->cmd_name = get_cmd_path(cmd->args[0]);
 		if (cmd->cmd_name == NULL)
 			return (false);
 	}
