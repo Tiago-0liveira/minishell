@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/02 05:23:55 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 05:51:07 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_execution(t_mini *mini, char **ev)
 {
+	int			i;
 	t_command	*cmd;
 	int			has_next;
 	char		*heredoc_fd;
@@ -39,7 +40,8 @@ void	ft_execution(t_mini *mini, char **ev)
 			cmd = cmd->next;
 			continue ;
 		}
-		if (if_builtin(cmd->cmd_name))
+		i = if_builtin(cmd->cmd_name);
+		if (i)
 			execute_in_parent(mini, cmd, has_next);
 		else
 			execute_in_child(cmd, ev, has_next);
@@ -50,17 +52,17 @@ void	ft_execution(t_mini *mini, char **ev)
 		}
 		cmd = cmd->next;
 	}
-	wait_for_children(mini);
+	wait_for_children(mini, i);
 }
 
-void	wait_for_children(t_mini *mini)
+void	wait_for_children(t_mini *mini, int i)
 {
 	t_command	*cmd;
 
 	cmd = mini->commands;
 	while (cmd)
 	{
-		if (!if_builtin(cmd->cmd_name))
+		if (!i)
 		{
 			waitpid(0, &cmd->status, 0);
 			if (WIFEXITED(cmd->status))
