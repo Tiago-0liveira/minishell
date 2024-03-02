@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 22:18:54 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/01 03:21:43 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,16 @@ char	*expand_input_hd(char *s)
 	return (s);
 }
 
-char	*heredoc(t_mini *mini)
+char	*heredoc(t_command *cmd)
 {
-	int				fd;
 	char			*file;
 	char			*input;
 	struct termios	termios;
 
 	input = NULL;
 	file = ft_strdup("/tmp/hd");
-	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
+	cmd->doctor.fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (cmd->doctor.fd < 0)
 	{
 		error_msg(FD_NOT_FOUND, "heredoc");
 		free_shell(NULL, 0, NULL, NULL);
@@ -104,14 +103,14 @@ char	*heredoc(t_mini *mini)
 		termios.c_cc[VQUIT] = _POSIX_VDISABLE;
 		tcsetattr(STDIN_FILENO, TCSANOW, &termios); // change stdin to ignore SIGQUIT
 		input = readline("> ");
-		if (!ft_strncmp(input, mini->hd_limiter, ft_strlen(input)) && input[0] != '\0')
+		if (!ft_strncmp(input, cmd->doctor.delim, ft_strlen(input)) && input[0] != '\0')
 			break ;
-		if (!mini->lim_q)
+		if (!cmd->doctor.lim_q)
 			input = expand_input_hd(input);
-		ft_putendl_fd(input, fd);
+		ft_putendl_fd(input, cmd->doctor.fd);
 		free(input);
 	}
-	dup2(mini->input.pip[1], STDOUT_FILENO);
-	close(fd);
+	dup2(cmd->pip[1], STDOUT_FILENO);
+	close(cmd->doctor.fd);
 	return (file);
 }
