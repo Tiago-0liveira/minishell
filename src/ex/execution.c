@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/02 06:38:19 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 22:11:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,40 +51,39 @@ void	ft_execution(t_mini *mini, char **ev)
 			cmd = cmd->next;
 			continue ;
 		}
-		if (has_next && if_builtin(lst->cmd_name) && !cmd->redirs)
+		if (has_next && if_builtin(cmd->cmd_name) && !cmd->redirs && cmd != lst)
 			cmd = cmd->next;
 		else
 		{
-		i = if_builtin(cmd->cmd_name);
-		if (i)
-			execute_in_parent(mini, cmd, has_next);
-		else if (!i)
-			execute_in_child(cmd, ev, has_next);
-		if (has_next)
-		{
-			close(mini->input.pip[1]);
-			mini->input.cmd_input = mini->input.pip[0];
-		}
-		cmd = cmd->next;
+			i = if_builtin(cmd->cmd_name);
+			if (i)
+				execute_in_parent(mini, cmd, has_next);
+			else if (!i)
+				execute_in_child(cmd, ev, has_next);
+			if (has_next)
+			{
+				close(mini->input.pip[1]);
+				mini->input.cmd_input = mini->input.pip[0];
+			}
+			cmd = cmd->next;
 		}
 	}
-	wait_for_children(mini, i);
+	wait_for_children(mini);
 }
 
-void	wait_for_children(t_mini *mini, int i)
+void	wait_for_children(t_mini *mini)
 {
-	t_command	*cmd;
+	int			status;
 
-	cmd = mini->commands;
-	while (cmd)
+	while (1)
 	{
-		if (!i)
-		{
-			waitpid(0, &cmd->status, 0);
-			if (WIFEXITED(cmd->status))
-				mini->command_ret = WEXITSTATUS(cmd->status);
-		}
-		cmd = cmd->next;
+		waitpid(0, &status, 0);
+		if (errno == ECHILD)
+			break ;
+		if (WIFEXITED(status))
+			mini->command_ret = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			mini->command_ret = WTERMSIG(status);
 	}
 }
 
@@ -135,7 +134,6 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else
 	{
-		//DEBUG_MSG("command_ret: %d\n", mini->command_ret);
 		if (has_next)
 			close(mini()->input.pip[1]);
 		if (mini()->input.cmd_input != STDIN_FILENO)
@@ -143,17 +141,9 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 		if (!has_next)
 			waitpid(pid, &mini()->command_ret, 0);
 		if (WIFEXITED(mini()->command_ret))
-		{
-			//DEBUG_MSG("Child terminated normally|%d|%d\n", mini->command_ret,
-				WEXITSTATUS(mini()->command_ret);
 			mini()->command_ret = WEXITSTATUS(mini()->command_ret);
-		}
 		else if (WIFSIGNALED(mini()->command_ret))
-		{
-			printf("Child terminated by signal %d\n",
-				WTERMSIG(mini()->command_ret));
-			/* need to handle signals */
-		}
+			mini()->command_ret = WTERMSIG(mini()->command_ret);
 	}
 }
 
