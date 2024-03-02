@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/15 14:36:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/02 22:03:12 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 void	prmpt_ctrlc(int signal)
 {
 	(void)signal;
-	printf("\n");
+	mini()->command_ret = signal + 128;
+	write(STDOUT_FILENO, "^C\n", 3);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
