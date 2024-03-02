@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/01 02:53:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/02/29 19:08:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ void	init_mini(t_mini *mini)
 {
 	mini->command_ret = 0;
 	reset_mini(mini);
+	mini->hd_limiter = NULL;
+	mini->lim_q = 0;
 	mini->output = NULL;
+	mini->hdfd = 0;
 }
 
 t_mini	*mini(void)
@@ -32,6 +35,11 @@ void	reset_mini(t_mini *mini)
 	{
 		free(mini->input.raw_line);
 		mini->input.raw_line = NULL;
+	}
+	if (mini->input.cmd_input != STDIN_FILENO)
+	{
+		close(mini->input.cmd_input);
+		mini->input.cmd_input = STDIN_FILENO;
 	}
 	mini->input.raw_line = NULL;
 	mini->input.len = 0;

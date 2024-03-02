@@ -92,10 +92,7 @@ void	bi_export(t_mini *mini, char **av)
 		if (res == 0)
 			continue ;
 		else if (res == -1)
-		{
-			error_msg_ret(NOT_VALID_IDENT, "export", EXIT_FAILURE);
 			return ;
-		}
 		delete_if_needed(&mini->env_list, av[i], res);
 		exp = ft_lstnew(ft_strdup((char *)av[i]));
 		ft_lstadd_back(&mini->env_list, exp);

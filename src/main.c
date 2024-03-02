@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 00:52:17 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 00:39:48 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int ac, char **av, char **env)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	while (1)
 	{
+		sig_init();
 		mini()->input.raw_line = get_input(true);
 		if (ft_strlen(mini()->input.raw_line) == 0)
 		{
