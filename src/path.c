@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:36:05 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/01 23:39:30 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 00:04:43 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,15 @@ char	*get_relative_path(char *cmd)
  **/
 char	*get_cmd_path(char *cmd)
 {
+	int		i;
 	char	*path;
 	bool	home_added;
 
+	i = 0;
 	path = NULL;
 	home_added = false;
+	if (is_absolute_path(cmd))
+		i++;
 	if (cmd && *cmd == TILDE)
 	{
 		cmd = path_add_home_prefix(cmd);
@@ -120,7 +124,7 @@ char	*get_cmd_path(char *cmd)
 		path = get_envpath_cmd(cmd);
 	if (home_added)
 		free(cmd);
-	if (is_absolute_path(path))
+	if (i)
 		return (ft_strdup(path));
 	return (path);
 }
