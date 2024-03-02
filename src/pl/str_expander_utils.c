@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 00:47:52 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 02:48:23 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ bool	expand_command(t_command *cmd, char **ev)
 		if (cmd->cmd_name == NULL)
 			return (false);
 		cmd->exec_parent = if_builtin(cmd->cmd_name);
+		printf("%i\n", cmd->exec_parent);
 	}
 	return (true);
 }

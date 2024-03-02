@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 00:51:09 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 03:07:46 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,12 +251,12 @@ void					sig_init(void);
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
 void					execute_in_child(t_command *cmd, t_command *prev, char **ev);
-void					execute_in_parent(t_command *cmd, t_command *prev);
+void					execute_in_parent(t_command *cmd);
 void					wait_for_children(t_mini *mini);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
 // \ heredoc.c
-/*char					*heredoc(t_command *cmd);*/
+char					*heredoc(t_command *cmd);
 // b-ins
 // \ utils.c
 int						if_builtin(char *s);

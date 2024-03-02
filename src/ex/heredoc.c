@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/01 03:21:43 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 01:59:13 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ char	*heredoc(t_command *cmd)
 		ft_putendl_fd(input, cmd->doctor.fd);
 		free(input);
 	}
-	dup2(cmd->pip[1], STDOUT_FILENO);
 	close(cmd->doctor.fd);
 	return (file);
 }
