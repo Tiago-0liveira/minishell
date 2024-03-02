@@ -6,20 +6,31 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/02 05:51:07 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/02 06:38:19 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_command	*ft_lstlast_mini(t_command *lst)
+{
+	if (!lst)
+		return (0);
+	while (lst->next)
+		lst = lst->next;
+	return (lst);
+}
+
 void	ft_execution(t_mini *mini, char **ev)
 {
 	int			i;
 	t_command	*cmd;
+	t_command	*lst;
 	int			has_next;
 	char		*heredoc_fd;
 
 	cmd = mini->commands;
+	lst = ft_lstlast_mini(cmd);
 	while (cmd)
 	{
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
@@ -40,10 +51,14 @@ void	ft_execution(t_mini *mini, char **ev)
 			cmd = cmd->next;
 			continue ;
 		}
+		if (has_next && if_builtin(lst->cmd_name) && !cmd->redirs)
+			cmd = cmd->next;
+		else
+		{
 		i = if_builtin(cmd->cmd_name);
 		if (i)
 			execute_in_parent(mini, cmd, has_next);
-		else
+		else if (!i)
 			execute_in_child(cmd, ev, has_next);
 		if (has_next)
 		{
@@ -51,6 +66,7 @@ void	ft_execution(t_mini *mini, char **ev)
 			mini->input.cmd_input = mini->input.pip[0];
 		}
 		cmd = cmd->next;
+		}
 	}
 	wait_for_children(mini, i);
 }
