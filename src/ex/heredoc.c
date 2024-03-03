@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 04:52:00 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:42:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,32 @@ char	*heredoc(t_mini *mini)
 
 	input = NULL;
 	file = ft_strdup("/tmp/hd");
+	if (!file)
+		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 	{
 		error_msg(FD_NOT_FOUND, "heredoc");
 		free_shell(NULL, 0, NULL, NULL);
 	}
+	mini->heredoc_is_running = true;
 	signal(SIGINT, hd_ctrlc);
-	while (1)
+	while (1 && mini->heredoc_is_running)
 	{
 		tcgetattr(STDIN_FILENO, &termios);
 		termios.c_cc[VQUIT] = _POSIX_VDISABLE;
 		tcsetattr(STDIN_FILENO, TCSANOW, &termios); // change stdin to ignore SIGQUIT
 		input = readline("> ");
-		if (!input || (!ft_strncmp(input, mini->hd_limiter, ft_strlen(input)) && input[0] != '\0'))
+		DEBUG_MSG("line:%s|\n", input);
+		if (!mini->heredoc_is_running || !input || (!ft_strncmp(input, mini->hd_limiter, ft_strlen(input)) && input[0] != '\0'))
 		{
+			DEBUG_MSG("heredoc interrupted|%d|\n", mini->heredoc_is_running);
+			if (!mini->heredoc_is_running)
+			{
+				DEBUG_MSG("heredoc interrupted by ctrl-c\n");
+				free(file);
+				return (NULL);
+			}
 			if (input)
 				free(input);
 			break ;
@@ -114,9 +125,10 @@ char	*heredoc(t_mini *mini)
 		if (!mini->lim_q)
 			input = expand_input_hd(input);
 		ft_putendl_fd(input, fd);
-		ft_putendl_fd(ft_itoa(mini->command_ret), fd);
+		//ft_putendl_fd(ft_itoa(mini->command_ret), fd);/* isto é o que ??? */
 		free(input);
 	}
+	mini->heredoc_is_running = false;
 	close(fd);
 	return (file);
 }

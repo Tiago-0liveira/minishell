@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 17:39:02 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/03 19:13:09 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	expand_args(t_command *cmd)
 		cmd->args[i] = expanded;
 		i++;
 	}
+	cmd->expanded = true;
 }
 
 bool	expand_redirs(t_command *cmd)

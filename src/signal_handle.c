@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 04:32:37 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 18:43:18 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ void	prmpt_ctrlc(int signal)
 {
 	(void)signal;
 	mini()->command_ret = 130;
-	printf("^C\n");
+	write(1, "prmpt_ctrlc called\n", 18);
+	write(1, "^C\n", 3);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
@@ -35,17 +36,20 @@ void	exec_sig(int signal)
 		ft_putstr_fd("Quit (core dumped)", 2);
 		mini()->command_ret = SIGQUIT;
 	}
-	else if (signal == SIGPIPE)
-		mini()->command_ret = SIGPIPE;
-	else if (signal == SIGINT)
-		mini()->command_ret = 130;
+	else if (signal == SIGPIPE || signal == SIGINT)
+		mini()->command_ret = signal + SIG_BASE_RET;
 }
 
 void	hd_ctrlc(int signal)
 {
 	(void)signal;
-	mini()->command_ret = 130;
-	printf("^C\n");
+	mini()->command_ret = signal + SIG_BASE_RET;
 	dup2(mini()->original_stdin_fd, STDIN_FILENO);
+	if (mini()->heredoc_is_running)
+		mini()->heredoc_is_running = false;
 	close(mini()->original_stdin_fd);
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }

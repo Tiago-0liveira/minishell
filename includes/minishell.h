@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 17:39:12 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/03 19:12:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@
 
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
+# define SIG_BASE_RET 128
 # define CMD_NUM_ARG_REQ_RET 2
 
 // free shell errors
@@ -129,6 +130,7 @@ typedef struct s_command
 	char				*cmd_name;
 	char				**args;
 	t_redir				*redirs;
+	bool				expanded;
 	int					status;
 	struct s_command	*next;
 }						t_command;
@@ -145,6 +147,7 @@ typedef struct s_mini
 	int					hdfd;
 	int					exit_unavailability;
 	int					original_stdin_fd;
+	bool				heredoc_is_running;
 }						t_mini;
 
 // main.c
@@ -171,7 +174,6 @@ int						can_access_path(char *path);
 int						can_path_to(char *path);
 char					*get_env_value(t_list *envs, char *key);
 // mini.c
-void					init_mini(t_mini *mini);
 t_mini					*mini(void);
 void					reset_mini(t_mini *mini);
 t_list					*set_env(char **env);

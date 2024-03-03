@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 04:42:25 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 19:09:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,14 @@ void	ft_execution(t_mini *mini, char **ev)
 		signal(SIGINT, exec_sig);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
 		{
+			heredoc_fd = heredoc(mini);
+			if (!heredoc_fd)
+			{
+				DEBUG_MSG("heredoc_fd is NULL\n");
+				break ;
+			}
 			mini->original_stdin_fd = dup(STDIN_FILENO);
 			close(mini->original_stdin_fd);
-			heredoc_fd = heredoc(mini);
 			dup2(mini->original_stdin_fd, STDIN_FILENO);
 			close(mini->original_stdin_fd);
 			mini->hdfd = open(heredoc_fd, O_RDONLY);
@@ -169,6 +174,7 @@ void	setup_redirections(t_command *cmd, bool isparent)
 	t_redir	*redir;
 
 	redir = cmd->redirs;
+	fd = 0;
 	while (redir != NULL)
 	{
 		if (redir->type == RED_IN)
