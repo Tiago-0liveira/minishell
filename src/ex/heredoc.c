@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/27 22:18:54 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 04:52:00 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,20 +98,25 @@ char	*heredoc(t_mini *mini)
 		error_msg(FD_NOT_FOUND, "heredoc");
 		free_shell(NULL, 0, NULL, NULL);
 	}
+	signal(SIGINT, hd_ctrlc);
 	while (1)
 	{
 		tcgetattr(STDIN_FILENO, &termios);
 		termios.c_cc[VQUIT] = _POSIX_VDISABLE;
 		tcsetattr(STDIN_FILENO, TCSANOW, &termios); // change stdin to ignore SIGQUIT
 		input = readline("> ");
-		if (!ft_strncmp(input, mini->hd_limiter, ft_strlen(input)) && input[0] != '\0')
+		if (!input || (!ft_strncmp(input, mini->hd_limiter, ft_strlen(input)) && input[0] != '\0'))
+		{
+			if (input)
+				free(input);
 			break ;
+		}
 		if (!mini->lim_q)
 			input = expand_input_hd(input);
 		ft_putendl_fd(input, fd);
+		ft_putendl_fd(ft_itoa(mini->command_ret), fd);
 		free(input);
 	}
-	dup2(mini->input.pip[1], STDOUT_FILENO);
 	close(fd);
 	return (file);
 }

@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 00:33:45 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 05:15:47 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct s_redir
 {
 	char				*file;
 	int					fd;
+	int					red_in_not_found;
 	enum e_redir_type	type;
 	struct s_redir		*next;
 }						t_redir;
@@ -144,6 +145,7 @@ typedef struct s_mini
 	char				*output;
 	int					hdfd;
 	int					exit_unavailability;
+	int					original_stdin_fd;
 }						t_mini;
 
 // main.c
@@ -222,6 +224,8 @@ void					free_commands_wrapper(void *arg);
 // signal_handle.c
 void					prmpt_ctrlc(int signal);
 void					sig_init(void);
+void					exec_sig(int signal);
+void					hd_ctrlc(int signal);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);

@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 00:49:45 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 04:42:25 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,16 @@ void	ft_execution(t_mini *mini, char **ev)
 	lst = ft_lstlast_mini(cmd);
 	while (cmd)
 	{
+		signal(SIGQUIT, exec_sig);
+		signal(SIGPIPE, exec_sig);
+		signal(SIGINT, exec_sig);
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
 		{
+			mini->original_stdin_fd = dup(STDIN_FILENO);
+			close(mini->original_stdin_fd);
 			heredoc_fd = heredoc(mini);
+			dup2(mini->original_stdin_fd, STDIN_FILENO);
+			close(mini->original_stdin_fd);
 			mini->hdfd = open(heredoc_fd, O_RDONLY);
 			free(mini->hd_limiter);
 			free(heredoc_fd);
