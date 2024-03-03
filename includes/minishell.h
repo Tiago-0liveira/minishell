@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 22:55:31 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 00:33:45 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,7 @@ typedef struct s_mini
 	int					lim_q;
 	char				*output;
 	int					hdfd;
+	int					exit_unavailability;
 }						t_mini;
 
 // main.c
@@ -227,7 +228,7 @@ void					ft_execution(t_mini *mini, char **ev);
 void					execute_in_child(t_command *cmd, char **ev,
 							int has_next);
 void					execute_in_parent(t_mini *mini, t_command *cmd,
-							int has_next);
+							int has_next, int j);
 void					setup_redirections(t_command *cmd, bool isparent);
 void					wait_for_children(t_mini *mini);
 // \ execute.c
@@ -237,9 +238,10 @@ char					*heredoc(t_mini *mini);
 // b-ins
 // \ utils.c
 int						if_builtin(char *s);
-void					built_in(t_mini *mini, t_command *cmd);
+int						if_builtin_epe(char *s);
+void					built_in(t_mini *mini, t_command *cmd, int j);
 // \ cd
-void					bi_cd(t_mini *mini, char **av);
+void					bi_cd(t_mini *mini, char **av, int p);
 // \ echo
 void					bi_echo(char **av);
 // \ env
@@ -250,11 +252,11 @@ int						valid_env_var_name(char *str, bool is_entry);
 int						ft_strlen_eq(char *s);
 void					delete_var(t_list **head, void *node_to_del);
 void					show_export(t_list *env_list, char **av);
-void					bi_export(t_mini *mini, char **av);
+void					bi_export(t_mini *mini, char **av, int j);
 // \ pwd
 void					bi_pwd(void);
 // \ unset
-void					bi_unset(t_mini *mini, char **av);
+void					bi_unset(t_mini *mini, char **av, int j);
 // \ exit
 int						calculate_exit_code_from_string(const char *number);
 bool					str_is_num(const char *str);

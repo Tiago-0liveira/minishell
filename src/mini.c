@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 21:58:37 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/02 23:29:02 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	reset_mini(t_mini *mini)
 	mini->input.raw_line = NULL;
 	mini->input.len = 0;
 	mini->input.pipe_c = 0;
+	mini->exit_unavailability = 0;
 	if (mini->commands)
 	{
 		free_commands(mini->commands);

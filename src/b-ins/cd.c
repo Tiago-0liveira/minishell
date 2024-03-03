@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/29 16:49:40 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/03 00:49:04 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,18 @@ void	env_update(t_mini *mini, char *oldpwd)
 	exp[1] = ft_strjoin("PWD=", f_pwd);
 	exp[2] = ft_strjoin("OLDPWD=", f_oldpwd);
 	exp[3] = NULL;
-	bi_export(mini, exp);
+	bi_export(mini, exp, 0);
 	free_list(exp);
 }
 
 // so aceita 1 argumento.
-void	bi_cd(t_mini *mini, char **av)
+void	bi_cd(t_mini *mini, char **av, int p)
 {
 	char	oldpwd[PATH_MAX + 1];
 	t_list	*tmp;
 	char	*tmp_0;
 	char	*tmp_oldpwd;
+	char	*t_oldpwd;
 	char	**split_oldpwd;
 	char	**tmp_split;
 	char	**pths;
@@ -58,6 +59,7 @@ void	bi_cd(t_mini *mini, char **av)
 	l = 0;
 	if (!getcwd(oldpwd, PATH_MAX))
 		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
+	t_oldpwd = oldpwd;
 	tmp = mini->env_list;
 	if (av[2])
 	{
@@ -74,7 +76,12 @@ void	bi_cd(t_mini *mini, char **av)
 			tmp = tmp->next;
 		}
 		tmp_0 = (char *)tmp->content;
-		if (chdir(tmp_0 + 5))
+		if (access(tmp_0 + 5 , F_OK | R_OK))
+		{
+			error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+			return ;
+		}
+		if (chdir(tmp_0 + 5) && !p)
 		{
 			error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
 			return ;
@@ -94,9 +101,9 @@ void	bi_cd(t_mini *mini, char **av)
 						j = 0;
 					while (pths[++j])
 					{
-						if (!getcwd(oldpwd, PATH_MAX))
+						if (!getcwd(t_oldpwd, PATH_MAX))
 							free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
-						tmp_oldpwd = oldpwd;
+						tmp_oldpwd = t_oldpwd;
 						split_oldpwd = ft_split(tmp_oldpwd, '/');
 						if (pths[j][0] == '.')
 						{
@@ -120,7 +127,13 @@ void	bi_cd(t_mini *mini, char **av)
 								}
 								l++;
 							}
-							if (chdir(final_oldpwd))
+							if (access(final_oldpwd, F_OK | R_OK))
+							{
+								chdir(oldpwd);
+								error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+								return ;
+							}
+							if (chdir(final_oldpwd) && !p)
 							{
 								error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
 								return ;
@@ -131,7 +144,13 @@ void	bi_cd(t_mini *mini, char **av)
 						}
 						else
 						{
-							if (chdir(pths[j]))
+							if (access(pths[j], F_OK | R_OK))
+							{
+								chdir(oldpwd);
+								error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+								return ;
+							}
+							if (chdir(pths[j]) && !p)
 							{
 								error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
 								return ;
@@ -152,7 +171,12 @@ void	bi_cd(t_mini *mini, char **av)
 		}
 		if (!j)
 		{
-			if (chdir(av[1]))
+			if (access(av[1], F_OK | R_OK))
+			{
+				error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+				return ;
+			}
+			if (chdir(av[1]) && !p)
 			{
 				error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
 				return ;

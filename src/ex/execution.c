@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/02 22:11:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/03 00:49:45 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_command	*ft_lstlast_mini(t_command *lst)
 void	ft_execution(t_mini *mini, char **ev)
 {
 	int			i;
+	int			j;
 	t_command	*cmd;
 	t_command	*lst;
 	int			has_next;
@@ -51,13 +52,21 @@ void	ft_execution(t_mini *mini, char **ev)
 			cmd = cmd->next;
 			continue ;
 		}
-		if (has_next && if_builtin(cmd->cmd_name) && !cmd->redirs && cmd != lst)
-			cmd = cmd->next;
-		else
+		j = mini->input.pipe_c;
+		i = if_builtin(cmd->cmd_name);
+		if (j && (if_builtin_epe(cmd->cmd_name))
+			&& cmd == lst && !cmd->redirs)
 		{
-			i = if_builtin(cmd->cmd_name);
+			close(mini->input.pip[0]);
+			built_in(mini, cmd, 0);
+			cmd = cmd->next;
+		}
+		else if (j && i && cmd == lst && !cmd->redirs)
+			cmd = cmd->next;
+		else if (j || !j || cmd == lst || cmd != lst)
+		{
 			if (i)
-				execute_in_parent(mini, cmd, has_next);
+				execute_in_parent(mini, cmd, has_next, j);
 			else if (!i)
 				execute_in_child(cmd, ev, has_next);
 			if (has_next)
@@ -87,7 +96,7 @@ void	wait_for_children(t_mini *mini)
 	}
 }
 
-void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
+void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next, int j)
 {
 	int	original_stdout;
 	int	original_stdin;
@@ -97,7 +106,7 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
 	if (has_next)
 		dup2(mini->input.pip[1], STDOUT_FILENO);
 	setup_redirections(cmd, true);
-	built_in(mini, cmd);
+	built_in(mini, cmd, j);
 	dup2(original_stdin, STDIN_FILENO);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdin);
