@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_expander_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 05:23:16 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/03 17:39:02 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,10 @@ bool	expand_command(t_command *cmd, char **ev)
 {
 	expand_args(cmd);
 	if (!expand_redirs(cmd))
+	{
+		cmd->cmd_name = NULL;
 		return (false);
+	}
 	(void)ev;
 	if (cmd->args && cmd->args[0] != NULL)
 	{
@@ -72,11 +75,8 @@ bool	expand_redirs(t_command *cmd)
 		redir->file = expanded;
 		if (redir->type == RED_IN)
 			if (access(redir->file, F_OK | R_OK) != 0)
-			{
 				return (error_msg_ret(FD_NOT_FOUND, redir->file, EXIT_FAILURE),
 					false);
-				redir->red_in_not_found = 1;
-			}
 		redir = redir->next;
 	}
 	return (true);
