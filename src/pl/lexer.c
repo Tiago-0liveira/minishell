@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 06:01:28 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/04 23:58:14 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool	valid_section(char **sections, int *i,
 {
 	if (*sections[*i] == PIPE)
 	{
-		if (!*last_section)
+		if (!*last_section || (sections[*i + 1] && *sections[*i + 1] == PIPE))
 			return (*error = sections[*i], false);
 		else if (!sections[*i + 1])
 			return (*error = "newline'", false);
