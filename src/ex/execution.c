@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 19:09:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/04 03:40:48 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	ft_execution(t_mini *mini, char **ev)
 	t_command	*lst;
 	int			has_next;
 	char		*heredoc_fd;
+	char		og_stdin;
 
+	og_stdin = dup(STDIN_FILENO);
 	cmd = mini->commands;
 	lst = ft_lstlast_mini(cmd);
 	while (cmd)
@@ -40,18 +42,15 @@ void	ft_execution(t_mini *mini, char **ev)
 		if (cmd->redirs && cmd->redirs->type == RED_AIN)
 		{
 			heredoc_fd = heredoc(mini);
-			if (!heredoc_fd)
-			{
-				DEBUG_MSG("heredoc_fd is NULL\n");
-				break ;
-			}
-			mini->original_stdin_fd = dup(STDIN_FILENO);
-			close(mini->original_stdin_fd);
-			dup2(mini->original_stdin_fd, STDIN_FILENO);
-			close(mini->original_stdin_fd);
 			mini->hdfd = open(heredoc_fd, O_RDONLY);
 			free(mini->hd_limiter);
 			free(heredoc_fd);
+			if (mini->command_ret == 130)
+			{
+				dup2(og_stdin, STDIN_FILENO);
+				printf("\n");
+				return ;
+			}
 		}
 		has_next = (cmd->next != NULL);
 		if (has_next)
@@ -174,7 +173,6 @@ void	setup_redirections(t_command *cmd, bool isparent)
 	t_redir	*redir;
 
 	redir = cmd->redirs;
-	fd = 0;
 	while (redir != NULL)
 	{
 		if (redir->type == RED_IN)
