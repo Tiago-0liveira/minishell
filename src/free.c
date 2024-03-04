@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 17:38:19 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/04 03:33:31 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	free_commands(t_command *commands)
 	while (commands != NULL)
 	{
 		tmp = commands->next;
-		if (commands->cmd_name)
+		if (commands->cmd_name && commands->expanded)
 			free(commands->cmd_name);
 		if (commands->redirs)
 			free_redirs(commands->redirs);

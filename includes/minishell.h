@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 19:12:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/04 03:34:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@
 # define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
 # define CMD_INSUF_PERMS "Permission denied: "
 # define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
+# define HEREDOC_CANT_OPEN_FD "heredoc: cant open fd: "
 
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
