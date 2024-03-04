@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 22:17:51 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 01:29:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,8 +119,7 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	if (!command)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	i = 0;
-	command->redirs = NULL;
-	command->args = NULL;
+	ft_memset(command, 0, sizeof(t_command));
 	while (i < end)
 	{
 		if (!update_command(command, raw_commands, &i, end))
