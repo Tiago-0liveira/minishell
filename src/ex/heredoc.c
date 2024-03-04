@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 03:51:28 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 05:09:21 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ char	*heredoc(t_mini *mini)
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	tcgetattr(STDIN_FILENO, &termios_backup);
 	termios = termios_backup;
+	tcgetattr(STDIN_FILENO, &termios_backup);
 	termios.c_cc[VQUIT] = _POSIX_VDISABLE;
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios); 
 	pid = fork();
@@ -122,7 +123,6 @@ char	*heredoc(t_mini *mini)
 			if (!mini->lim_q)
 				input = expand_input_hd(input);
 			ft_putendl_fd(input, fd);
-			ft_putendl_fd(ft_itoa(mini->command_ret), fd);
 			free(input);
 		}
 		close(fd);
@@ -135,6 +135,8 @@ char	*heredoc(t_mini *mini)
 			tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
 			mini->command_ret = 130;
 		}
+		else
+			exit(0);
 	}
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
 	return (file);

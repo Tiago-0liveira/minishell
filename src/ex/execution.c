@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 03:40:48 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 04:48:28 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ void	ft_execution(t_mini *mini, char **ev)
 	t_command	*lst;
 	int			has_next;
 	char		*heredoc_fd;
-	char		og_stdin;
 
-	og_stdin = dup(STDIN_FILENO);
 	cmd = mini->commands;
 	lst = ft_lstlast_mini(cmd);
 	while (cmd)
@@ -46,11 +44,7 @@ void	ft_execution(t_mini *mini, char **ev)
 			free(mini->hd_limiter);
 			free(heredoc_fd);
 			if (mini->command_ret == 130)
-			{
-				dup2(og_stdin, STDIN_FILENO);
-				printf("\n");
 				return ;
-			}
 		}
 		has_next = (cmd->next != NULL);
 		if (has_next)

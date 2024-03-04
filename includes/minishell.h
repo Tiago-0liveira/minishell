@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 03:34:33 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/04 04:58:33 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@
 # define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
 # define CMD_INSUF_PERMS "Permission denied: "
 # define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
-# define HEREDOC_CANT_OPEN_FD "heredoc: cant open fd: "
 
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
@@ -148,7 +147,7 @@ typedef struct s_mini
 	int					hdfd;
 	int					exit_unavailability;
 	int					original_stdin_fd;
-	bool				heredoc_is_running;
+	int					e_hd;
 }						t_mini;
 
 // main.c
@@ -227,7 +226,6 @@ void					free_commands_wrapper(void *arg);
 void					prmpt_ctrlc(int signal);
 void					sig_init(void);
 void					exec_sig(int signal);
-void					hd_ctrlc(int signal);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
