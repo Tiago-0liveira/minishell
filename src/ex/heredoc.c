@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 18:42:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/04 03:24:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	expand_vars_hd(char *str, char *expanded, int len)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if (str[ex.i] == ENV_VAR)
@@ -36,7 +36,7 @@ int	str_expander_len_hd(char *str)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if (str[ex.i] == ENV_VAR)
@@ -63,7 +63,7 @@ char	*str_expander_hd(char *str)
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	memset(expanded, 0, final_len + 1);
+	ft_memset(expanded, 0, final_len + 1);
 	expand_vars_hd(str, expanded, final_len);
 	return (expanded);
 }
@@ -89,6 +89,7 @@ char	*heredoc(t_mini *mini)
 	char			*file;
 	char			*input;
 	struct termios	termios;
+	struct termios  termios_backup;
 
 	input = NULL;
 	file = ft_strdup("/tmp/hd");
@@ -102,11 +103,12 @@ char	*heredoc(t_mini *mini)
 	}
 	mini->heredoc_is_running = true;
 	signal(SIGINT, hd_ctrlc);
-	while (1 && mini->heredoc_is_running)
+	tcgetattr(STDIN_FILENO, &termios_backup);
+	termios = termios_backup;
+	termios.c_cc[VQUIT] = _POSIX_VDISABLE;
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios); // change stdin to ignore SIGQUIT
+	while (mini->heredoc_is_running)
 	{
-		tcgetattr(STDIN_FILENO, &termios);
-		termios.c_cc[VQUIT] = _POSIX_VDISABLE;
-		tcsetattr(STDIN_FILENO, TCSANOW, &termios); // change stdin to ignore SIGQUIT
 		input = readline("> ");
 		DEBUG_MSG("line:%s|\n", input);
 		if (!mini->heredoc_is_running || !input || (!ft_strncmp(input, mini->hd_limiter, ft_strlen(input)) && input[0] != '\0'))
@@ -116,6 +118,8 @@ char	*heredoc(t_mini *mini)
 			{
 				DEBUG_MSG("heredoc interrupted by ctrl-c\n");
 				free(file);
+				close(fd);
+				tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
 				return (NULL);
 			}
 			if (input)
@@ -125,9 +129,9 @@ char	*heredoc(t_mini *mini)
 		if (!mini->lim_q)
 			input = expand_input_hd(input);
 		ft_putendl_fd(input, fd);
-		//ft_putendl_fd(ft_itoa(mini->command_ret), fd);/* isto é o que ??? */
 		free(input);
 	}
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
 	mini->heredoc_is_running = false;
 	close(fd);
 	return (file);
