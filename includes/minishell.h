@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 15:53:32 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:08:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,10 +190,12 @@ bool					valid_env_char(char c);
 bool					quoted_str(char *str);
 bool					valid_cmd_arg(char *str);
 void					free_assign_null(void **ptr);
+// utils2.c
+bool					skip_spaces(char **line);
+size_t					redir_size(char *line);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
-bool					skip_spaces(char **line);
 bool					semantic_checker(char **raw_commands);
 bool					valid_section(char **sections, int *i,
 							char **last_section, char **error);
@@ -205,13 +207,13 @@ char					**parse(t_mini *mini);
 t_command				*construct_command(char **raw_commands, size_t end);
 void					construct_limiter(char **raw_commands, size_t i);
 //  \ parser_helpers.c
-size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
 bool					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 bool					update_command(t_command *command, char **raw_commands,
 							size_t *i, size_t end);
 bool					add_arg(t_command *command, char *section);
+char					*get_redir(char **line);
 // \ str_expander.c
 char					*str_expander(char *str);
 void					expand_vars(char *str, char *expanded, int len);

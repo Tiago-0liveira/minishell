@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 02:09:57 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:05:28 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ bool	input_error_check(t_mini *mini)
 			quotes = !quotes;
 		else if (*line_cursor == DQUOTE && !quotes)
 			dquotes = !dquotes;
-		else if (*line_cursor == PIPE && !quotes && !dquotes)
+		else if (*line_cursor == PIPE && !quotes && !dquotes
+			&& ((line_cursor - 1) && redir_type(line_cursor - 1) != RED_OUT))
 			mini->input.pipe_c++;
 		line_cursor++;
 	}
@@ -37,13 +38,6 @@ bool	input_error_check(t_mini *mini)
 	if (quotes || dquotes)
 		return (error_msg_ret(OPEN_QUOTES_ERROR, NULL, EXIT_FAILURE), false);
 	return (true);
-}
-
-bool	skip_spaces(char **line)
-{
-	while (**line == ' ')
-		(*line)++;
-	return (**line);
 }
 
 // check for all types of semantic errors

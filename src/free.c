@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 14:57:09 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 17:01:44 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	free_list(char **list)
 		return ;
 	while (list[i] != NULL)
 	{
-		if (list && list[i] && list[i][0])
+		if (list && list[i])
 			free(list[i]);
 		i++;
 	}

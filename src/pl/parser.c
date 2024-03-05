@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 21:31:41 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:10:29 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ size_t	parse_size(char *line)
 	{
 		skip_spaces(&line);
 		section = get_next_section(&line);
+		
 		if (!section)
 			return (0);
 		free(section);
@@ -70,8 +71,7 @@ char	*get_next_section(char **line)
 	dquotes = false;
 	i = 0;
 	if (redir_size(*line) > 0)
-		return (i = redir_size(*line), (*line) += i, ft_substr(*line - i, 0,
-				i));
+		return (get_redir(line));
 	while (**line && (quotes || dquotes || redir_size(*line) == 0))
 	{
 		if (**line == QUOTE)

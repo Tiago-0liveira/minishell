@@ -3,27 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:44:09 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:11:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-size_t	redir_size(char *line)
-{
-	enum e_redir_type	type;
-
-	type = redir_type(line);
-	if (type == RED_AIN || type == RED_AOUT)
-		return (2);
-	if (type == RED_IN || type == RED_OUT || (line != NULL && (*line == PIPE
-				|| *line == ' ')))
-		return (1);
-	return (0);
-}
 
 bool	assign_redir(t_command *command, char *redir_file,
 		enum e_redir_type type)
@@ -122,4 +109,17 @@ bool	add_arg(t_command *command, char *section)
 	free(command->args);
 	command->args = new_args;
 	return (true);
+}
+
+char	*get_redir(char **line)
+{
+	int		i;
+	char	*tmp;
+
+	i = redir_size(*line);
+	(*line) += i;
+	tmp = ft_substr(*line - i, 0,	i);
+	if (redir_type(*line - i) == RED_OUT && *line && **line == PIPE)
+		(*line) += i;
+	return (tmp);
 }
