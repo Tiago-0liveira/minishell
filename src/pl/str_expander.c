@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 18:22:34 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:41:45 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,24 @@
 char	*str_expander(char *str)
 {
 	char	*expanded;
+	char	*tmp;
 	int		final_len;
 
 	final_len = str_expander_len(str);
+	if (final_len == 0)
+	{
+		tmp = ft_strtrim(str, "\"\'");
+		if (ft_strncmp(str, tmp, ft_strlen(tmp)))
+		{
+			free(tmp);
+			tmp = ft_strdup("");
+			if (!tmp)
+				free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
+			return (tmp);
+		}
+		else
+			return (free(tmp), NULL);
+	}
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 15:21:12 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:43:41 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ bool	expand_command(t_command *cmd, char **ev)
 void	expand_args(t_command *cmd)
 {
 	size_t	i;
+	//size_t	invalid_args;
 	char	*expanded;
 
 	i = 0;
@@ -54,10 +55,16 @@ void	expand_args(t_command *cmd)
 			continue ;
 		}
 		expanded = str_expander(cmd->args[i]);
+		if (ft_strlen(expanded) == 0)
+		{
+			i++;
+			continue ;
+		}
 		free(cmd->args[i]);
 		cmd->args[i] = expanded;
 		i++;
 	}
+	//TODO: resize args function (we can check if cmd->args[i] is null)
 }
 
 bool	expand_redirs(t_command *cmd)
@@ -84,3 +91,4 @@ bool	expand_redirs(t_command *cmd)
 	}
 	return (true);
 }
+
