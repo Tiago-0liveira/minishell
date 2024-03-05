@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 18:08:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:09:59 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,6 +266,7 @@ char					*expand_input_hd(char *s);
 int						if_builtin(char *s);
 int						if_builtin_epe(char *s);
 void					built_in(t_mini *mini, t_command *cmd, int j);
+t_list					*sort_list(t_list *lst);
 // \ cd.c
 void					bi_cd(t_mini *mini, char **av, int p);
 // \ cd2.c

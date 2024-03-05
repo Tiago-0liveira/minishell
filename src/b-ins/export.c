@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2024/02/14 05:10:41 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/02/14 05:10:41 by joaoribe         ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 20:17:40 by joaoribe          #+#    #+#             */
+/*   Updated: 2024/03/05 20:17:40 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +52,7 @@ void	show_export(t_list *env_list, char **av)
 	if (av[1])
 		return ;
 	tmp = env_list;
+	tmp = sort_list(tmp);
 	while (tmp)
 	{
 		printf("declare -x %s\n", (char *)tmp->content);

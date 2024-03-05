@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 03:31:53 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 20:08:48 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,14 @@ char	**build_solo_path(char *oldpwd, char *av)
 	char	*tmp;
 
 	s = malloc(2 * sizeof(char *));
-	tmp = ft_strjoin(oldpwd, "/");
-	s[0] = ft_strjoin(tmp, av);
-	free(tmp);
+	if (ft_strncmp(av, "/home", 5))
+	{
+		tmp = ft_strjoin(oldpwd, "/");
+		s[0] = ft_strjoin(tmp, av);
+		free(tmp);
+	}
+	else
+		s[0] = ft_strdup(av);
 	s[1] = NULL;
 	return (s);
 }
@@ -33,7 +38,8 @@ int	path_with_dots(char *av, char *oldpwd, int p)
 
 	j = -1;
 	pths = NULL;
-	if (ft_strnstr(av, "/", ft_strlen(av)) || av[0] == '.')
+	if ((ft_strnstr(av, "/", ft_strlen(av)) || av[0] == '.')
+		&& ft_strncmp(av, "/home", 5))
 		pths = ft_split(av, '/');
 	else
 		pths = build_solo_path(oldpwd, av);
