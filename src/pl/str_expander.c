@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 18:13:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 18:22:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,8 @@ bool	str_starts_with_env_var(char *str)
 		i++;
 	else
 		return (false);
+	if (str[i] == ENV_Q)
+		return (true);
 	while (str[i] && valid_env_char(str[i]))
 		i++;
 	return (i != 1);
