@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_expander.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/02/27 22:14:40 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:54:17 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	expand_vars(char *str, char *expanded, int len)
 		else if (str[ex.i] == DQUOTE && !ex.quotes)
 			ex.dquotes = !ex.dquotes;
 		else if (str[ex.i] == ENV_VAR && (!ex.quotes || (ex.quotes
-					&& ex.dquotes)))
+					&& ex.dquotes)) && str_starts_with_env_var(str + ex.i))
 		{
 			ft_strlcat(expanded, str_expander_var_len(&ex, str), len + 1);
 			free_assign_null((void **)&ex.var);
@@ -69,7 +69,7 @@ int	str_expander_len(char *str)
 		else if (str[ex.i] == DQUOTE && !ex.quotes)
 			ex.dquotes = !ex.dquotes;
 		else if (str[ex.i] == ENV_VAR && (!ex.quotes || (ex.quotes
-					&& ex.dquotes)))
+					&& ex.dquotes)) && str_starts_with_env_var(str + ex.i))
 		{
 			str_expander_var_len(&ex, str);
 			ex.len += ex.var_clen;
@@ -110,4 +110,19 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 	}
 	ex->var_clen = ft_strlen(res);
 	return (res);
+}
+
+bool	str_starts_with_env_var(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == ENV_Q)
+		i++;
+	else
+		return (false);
+	while (str[i])
+		if (!valid_env_char(str[i]))
+			break ;
+	return (i != 1);
 }
