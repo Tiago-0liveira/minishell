@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 21:24:24 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:57:50 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ void	setup_redirections(t_command *cmd, bool isparent)
 			fd = open(redir->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
 			fd_error(redir, isparent);
-		if ((redir->type == RED_IN))
+		if (redir->type == RED_IN)
 			dup2(fd, STDIN_FILENO);
-		else if ((redir->type == RED_AIN))
+		else if (redir->type == RED_AIN)
 			dup2(mini()->hdfd, STDIN_FILENO);
 		else if (redir->type == RED_OUT || redir->type == RED_AOUT)
 			dup2(fd, STDOUT_FILENO);

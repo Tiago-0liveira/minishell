@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 03:27:14 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:56:36 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,23 +28,30 @@
 # define PROMPT "$ "
 # define HEREDOC_PROMPT "heredoc>"
 
-# define QUOTE '\''
-# define DQUOTE '\"'
-# define PIPE '|'
+/* \' */
+# define QUOTE 39
+/* \" */
+# define DQUOTE 34
+/* | */
+# define PIPE 124
 
-# define REDIR_IN '<'
+/* < */
+# define REDIR_IN 60
 # define REDIR_APPEND_IN "<<"
-# define REDIR_OUT '>'
+/* > */
+# define REDIR_OUT 62
 # define REDIR_APPEND_OUT ">>"
 
-# define ESCAPE_CHAR '\\'
-# define SLASH '/'
 # define SLASH_STR "/"
-# define ENV_VAR '$'
-# define TILDE '~'
-/* Last command exit status */
-# define ENV_Q '?'
-# define SPACE ' '
+/* $ */
+# define ENV_VAR 36
+/* ~ */
+# define TILDE 126
+
+/* Last command exit status
+	?
+ */
+# define ENV_Q 63
 
 # define ECHO_FLAG_N "-n"
 
@@ -82,8 +89,6 @@
 # define FORK_ERROR "Fork error!\n"
 
 # define EXIT_STATUS_N 256
-
-# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__)
 
 enum					e_redir_type
 {
@@ -262,13 +267,13 @@ void					built_in(t_mini *mini, t_command *cmd, int j);
 void					bi_cd(t_mini *mini, char **av, int p);
 // \ cd2.c
 int						path_with_dots_2(char **pths, char *oldpwd, int *j, 
-								int p);
+							int p);
 void					non_dot_chdir(char **pths, char *oldpwd, int *j, int p);
 void					clean_until_dots(char **pths, int *j, int *p);
 void					clean_after_access(char *oldpwd, char **pths,
-								 char *t_oldpwd, int *i);
+							char *t_oldpwd, int *i);
 int						dot_handler(char *t_oldpwd, char *oldpwd, char **pths,
-								int p);
+							int p);
 // \ cd3.c
 int						cd_noarg_tilde(int p, int *i);
 char					*delete_until_char(char *str, char c);
