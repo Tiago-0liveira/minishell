@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 21:24:18 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:06:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	pid_zero(t_command *cmd, char **ev, int has_next)
 		close(mini()->input.pip[1]);
 	}
 	setup_redirections(cmd, false);
-	if (cmd->cmd_name != NULL)
+	if (cmd->cmd_name != NULL && ft_strlen(cmd->cmd_name) > 0)
 		if (!execution(cmd, ev))
 			free_shell(NULL, 1, NULL, NULL);
 	if (cmd->redirs && cmd->redirs->type == RED_AIN)

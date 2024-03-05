@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_expander_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:45:04 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 15:21:12 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 bool	expand_command(t_command *cmd, char **ev)
 {
 	expand_args(cmd);
-	cmd->expanded = true;
 	if (!expand_redirs(cmd))
 	{
 		cmd->cmd_name = NULL;
@@ -24,6 +23,9 @@ bool	expand_command(t_command *cmd, char **ev)
 	(void)ev;
 	if (cmd->args && cmd->args[0] != NULL)
 	{
+		if (ft_strlen(cmd->args[0]) == 0)
+			return (true);
+		cmd->expanded = true;
 		if (if_builtin(cmd->args[0]))
 		{
 			cmd->cmd_name = ft_strdup(cmd->args[0]);
@@ -56,7 +58,6 @@ void	expand_args(t_command *cmd)
 		cmd->args[i] = expanded;
 		i++;
 	}
-	cmd->expanded = true;
 }
 
 bool	expand_redirs(t_command *cmd)

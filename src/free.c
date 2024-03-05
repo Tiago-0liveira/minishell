@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:57:32 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 14:57:09 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,8 @@ void	free_shell(char *err, int status, void (*cleanup_func)(void *),
 	if (free_arg != NULL && cleanup_func != NULL)
 		cleanup_func(free_arg);
 	reset_mini(m);
-	if (m->input.pip)
-	{
-		close(m->input.pip[0]);
-		close(m->input.pip[1]);
-	}
+	close(m->input.pip[0]);
+	close(m->input.pip[1]);
 	if (m->env_list)
 		ft_lstclear(&(m->env_list), free);
 	rl_clear_history();
