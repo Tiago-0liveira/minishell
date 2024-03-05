@@ -44,7 +44,7 @@ char	*get_env_var(t_list *env_list, char *var)
 **	@param is_entry: if the string to check should be a entry
 **	@return length of the name of the variable if valid,
 		-1 if invalid, if is_entry=true: 0 if there's no = and still valid name
- */
+*/
 int	valid_env_var_name(char *str, bool is_entry)
 {
 	int		namelen;
@@ -53,7 +53,7 @@ int	valid_env_var_name(char *str, bool is_entry)
 	namelen = ft_strlen_eq(str);
 	i = 0;
 	if ((!is_entry && str[namelen] == '=')
-		|| namelen == 0 || ft_isdigit(str[i]))
+		|| (!ft_isalpha(str[i]) && str[i] != '_'))
 		return (mini()->command_ret = 1, -1);
 	while (str[i])
 	{
@@ -62,11 +62,6 @@ int	valid_env_var_name(char *str, bool is_entry)
 		if (!valid_env_char(str[i]) || (!is_entry && str[i] == '='))
 			return (mini()->command_ret = 1, -1);
 		i++;
-	}
-	if (is_entry && str[namelen] != '=')
-	{
-		mini()->command_ret = 1;
-		return (0);
 	}
 	return (1);
 }

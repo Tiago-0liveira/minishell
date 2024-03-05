@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-int ft_contains_other_than(const char *str, char c)
+int	ft_contains_other_than(const char *str, char c)
 {
 	if (str == NULL)
-		return 0;
+		return (0);
 	while (*str)
 	{
 		if (*str != c)
@@ -25,24 +25,33 @@ int ft_contains_other_than(const char *str, char c)
 	return (0);
 }
 
+bool	flag_check(char **av, int *i)
+{
+	char	*tmp;
+	bool	flag_n;
+
+	flag_n = false;
+	while (av[*i] && !ft_strncmp(av[*i], ECHO_FLAG_N, 2))
+	{
+		tmp = av[*i] + 1;
+		if (ft_contains_other_than(tmp, 'n'))
+			return (flag_n);
+		flag_n = true;
+		(*i)++;
+	}
+	return (flag_n);
+}
+
 void	bi_echo(char **av)
 {
 	bool	flag_n;
 	int		i;
-	char	*tmp;
 
 	i = 1;
 	flag_n = false;
 	if (av[i])
 	{
-		while (av[i] && !ft_strncmp(av[i], ECHO_FLAG_N, 2))
-		{
-			tmp = av[i] + 1;
-			if (ft_contains_other_than(tmp, 'n'))
-				break ;
-			flag_n = true;
-			i++;
-		}
+		flag_n = flag_check(av, &i);
 		while (av[i])
 		{
 			ft_putstr_fd(av[i], STDOUT_FILENO);

@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 20:08:48 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:14:12 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ int	cd_start(char **av, char *oldpwd)
 	return (1);
 }
 
-// so aceita 1 argumento.
 void	bi_cd(t_mini *mini, char **av, int p)
 {
 	char	oldpwd[PATH_MAX + 1];

@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:56:01 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 21:09:28 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 21:30:55 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,10 @@ t_list	*sort_list(t_list *lst)
 	t_list	*tmp;
 
 	tmp = lst;
-	while(lst->next != NULL)
+	while (lst->next != NULL)
 	{
-		if (ft_strncmp(lst->content, lst->next->content, ft_strlen(lst->content) + 1) > 0)
+		if (ft_strncmp(lst->content, lst->next->content,
+				ft_strlen(lst->content) + 1) > 0)
 		{
 			swap = lst->content;
 			lst->content = lst->next->content;

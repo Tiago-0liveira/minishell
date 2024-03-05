@@ -47,20 +47,38 @@ void	delete_var(t_list **head, void *node_to_del)
 
 void	show_export(t_list *env_list, char **av)
 {
+	int		i;
 	t_list	*tmp;
+	char	*var;
+	char	*val;
+	char	*vall;
 
+	i = 0;
 	if (av[1])
 		return ;
 	tmp = env_list;
 	tmp = sort_list(tmp);
 	while (tmp)
 	{
-		printf("declare -x %s\n", (char *)tmp->content);
+		i = ft_strlen_eq(tmp->content);
+		var = ft_strdup((char *)tmp->content);
+		var[i] = '\0';
+		if (ft_strnstr(tmp->content, "=", ft_strlen(tmp->content)))
+		{
+			val = ft_strdup((char *)tmp->content);
+			vall = val;
+			vall += i + 1;
+			printf("declare -x %s=\"%s\"\n", var, vall);
+			free(val);
+		}
+		else
+			printf("declare -x %s\n", var);
+		free(var);
 		tmp = tmp->next;
 	}
 }
 
-void	delete_if_needed(t_list **env_list, char *var, int len)
+int	delete_if_needed(t_list **env_list, char *var, int len)
 {
 	t_list	*tmp;
 
@@ -69,16 +87,20 @@ void	delete_if_needed(t_list **env_list, char *var, int len)
 	{
 		if (!ft_strncmp(var, tmp->content, len))
 		{
+			if (!ft_strnstr(var, "=", ft_strlen(var)))
+				return (0);
 			delete_var(env_list, tmp->content);
-			return ;
+			break ;
 		}
 		tmp = tmp->next;
 	}
+	return (1);
 }
 
 void	bi_export(t_mini *mini, char **av, int j)
 {
 	int		i;
+	int		k;
 	int		res;
 	t_list	*exp;
 
@@ -92,10 +114,16 @@ void	bi_export(t_mini *mini, char **av, int j)
 		if (res == 0)
 			continue ;
 		else if (res == -1)
-			return ;
-		delete_if_needed(&mini->env_list, av[i], res);
-		exp = ft_lstnew(ft_strdup((char *)av[i]));
-		ft_lstadd_back(&mini->env_list, exp);
+		{
+			error_msg(NOT_VALID_IDENT, av[i]);
+			continue ;
+		}
+		k = delete_if_needed(&mini->env_list, av[i], res);
+		if (k)
+		{
+			exp = ft_lstnew(ft_strdup((char *)av[i]));
+			ft_lstadd_back(&mini->env_list, exp);
+		}
 	}
 	mini->command_ret = 0;
 }
