@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:13:48 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:54:58 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 03:35:41 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,10 @@ bool	bi_exit(t_mini *mini, char **args, bool has_next)
 	bool	valid;
 
 	status = 0;
-
-	if (!args[1])
-	{
-		if (has_next)
-			return (false);
+	if (!args[1] && !has_next)
 		free_shell(NULL, mini->command_ret, NULL, NULL);
-	}
+	else if (has_next)
+		return (false);
 	valid = str_is_num(args[1]);
 	if (!valid)
 	{

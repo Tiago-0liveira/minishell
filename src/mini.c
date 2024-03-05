@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/03 05:15:36 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 23:35:39 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	reset_mini(t_mini *mini)
 	mini->input.pipe_c = 0;
 	mini->exit_unavailability = 0;
 	mini->original_stdin_fd = 0;
+	mini->home_tmp = NULL;
 	if (mini->commands)
 	{
 		free_commands(mini->commands);

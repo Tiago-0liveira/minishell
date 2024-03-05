@@ -15,7 +15,6 @@
 
 #include "minishell.h"
 
-
 void	bi_env(t_list *env_list)
 {
 	while (env_list)

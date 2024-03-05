@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:58:33 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 03:27:14 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ typedef struct s_mini
 	int					hdfd;
 	int					exit_unavailability;
 	int					original_stdin_fd;
-	int					e_hd;
+	char				*home_tmp;
 }						t_mini;
 
 // main.c
@@ -173,6 +173,7 @@ bool					is_absolute_path(char *cmd);
 int						can_access_path(char *path);
 int						can_path_to(char *path);
 char					*get_env_value(t_list *envs, char *key);
+char					*if_relative_path(char *cmd, bool home_added);
 // mini.c
 t_mini					*mini(void);
 void					reset_mini(t_mini *mini);
@@ -184,7 +185,6 @@ bool					valid_env_char(char c);
 bool					quoted_str(char *str);
 bool					valid_cmd_arg(char *str);
 void					free_assign_null(void **ptr);
-void					print_command(t_command *command);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
@@ -198,6 +198,7 @@ size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(t_mini *mini);
 t_command				*construct_command(char **raw_commands, size_t end);
+void					construct_limiter(char **raw_commands, size_t i);
 //  \ parser_helpers.c
 size_t					redir_size(char *line);
 void					command_add_back(t_command *new_command);
@@ -235,33 +236,60 @@ void					execute_in_parent(t_mini *mini, t_command *cmd,
 							int has_next, int j);
 void					setup_redirections(t_command *cmd, bool isparent);
 void					wait_for_children(t_mini *mini);
+// \ execution_utils.c
+t_command				*ft_lstlast_mini(t_command *lst);
+int						heredoc_signs_set(t_mini *mini, t_command *cmd);
+void					bin_epe(t_mini *mini, t_command *cmd);
+void					fd_error(t_redir *redir, bool isparent);
+void					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
+void					set_execution(t_mini *mini, t_command *cmd, char **ev,
+							int has_next);
 // \ heredoc.c
 char					*heredoc(t_mini *mini);
+// \ heredoc_str_expander.c
+void					expand_vars_hd(char *str, char *expanded, int len);
+int						str_expander_len_hd(char *str);
+char					*str_expander_hd(char *str);
+char					*expand_input_hd(char *s);
 // b-ins
 // \ utils.c
 int						if_builtin(char *s);
 int						if_builtin_epe(char *s);
 void					built_in(t_mini *mini, t_command *cmd, int j);
-// \ cd
+// \ cd.c
 void					bi_cd(t_mini *mini, char **av, int p);
-// \ echo
+// \ cd2.c
+int						path_with_dots_2(char **pths, char *oldpwd, int *j, 
+								int p);
+void					non_dot_chdir(char **pths, char *oldpwd, int *j, int p);
+void					clean_until_dots(char **pths, int *j, int *p);
+void					clean_after_access(char *oldpwd, char **pths,
+								 char *t_oldpwd, int *i);
+int						dot_handler(char *t_oldpwd, char *oldpwd, char **pths,
+								int p);
+// \ cd3.c
+int						cd_noarg_tilde(int p, int *i);
+char					*delete_until_char(char *str, char c);
+void					env_update(t_mini *mini, char *oldpwd);
+char					*ft_strdup_oldpwd(const char *s, int *i);
+// \ echo.c
 void					bi_echo(char **av);
-// \ env
+// \ env.c
 void					bi_env(t_list *env_list);
 char					*get_env_var(t_list *env_list, char *var);
 int						valid_env_var_name(char *str, bool is_entry);
-// \ export
+// \ export.c
 int						ft_strlen_eq(char *s);
 void					delete_var(t_list **head, void *node_to_del);
 void					show_export(t_list *env_list, char **av);
 void					bi_export(t_mini *mini, char **av, int j);
-// \ pwd
+// \ pwd.c
 void					bi_pwd(void);
-// \ unset
+// \ unset.c
 void					bi_unset(t_mini *mini, char **av, int j);
-// \ exit
+// \ exit.c
 int						calculate_exit_code_from_string(const char *number);
 bool					str_is_num(const char *str);
 bool					bi_exit(t_mini *mini, char **args, bool has_next);

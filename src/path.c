@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:36:05 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/02 00:04:43 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 02:00:39 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,7 @@ char	*get_cmd_path(char *cmd)
 		home_added = true;
 	}
 	if (is_relative_path(cmd))
-	{
-		if (home_added)
-			free(cmd);
-		return (get_relative_path(cmd));
-	}
+		return (if_relative_path(cmd, home_added));
 	else if (is_absolute_path(cmd))
 		path = get_roa_path(cmd);
 	else

@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:00:03 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:31:41 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ t_command	*construct_command(char **raw_commands, size_t end)
 {
 	t_command	*command;
 	size_t		i;
-	char		*lim;
 
 	command = malloc(sizeof(t_command));
 	if (!command)
@@ -125,17 +124,7 @@ t_command	*construct_command(char **raw_commands, size_t end)
 		if (!update_command(command, raw_commands, &i, end))
 			return (free(command), NULL);
 		if ((int)i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
-		{
-			lim = ft_strdup(raw_commands[i]);
-			if (raw_commands[i][0] == QUOTE || raw_commands[i][0] == DQUOTE)
-			{
-				mini()->lim_q = 1;
-				lim[ft_strlen(lim) - 1] = '\0';
-				lim++;
-			}
-			mini()->hd_limiter = ft_strdup(lim);
-			free(lim);
-		}
+			construct_limiter(raw_commands, i);
 		i++;
 	}
 	if (command->args == NULL)

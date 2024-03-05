@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 23:58:14 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/05 02:09:57 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,4 +95,19 @@ bool	valid_section(char **sections, int *i,
 	}
 	*last_section = sections[*i];
 	return (true);
+}
+
+void	construct_limiter(char **raw_commands, size_t i)
+{
+	char	*lim;
+
+	lim = ft_strdup(raw_commands[i]);
+	if (raw_commands[i][0] == QUOTE || raw_commands[i][0] == DQUOTE)
+	{
+		mini()->lim_q = 1;
+		lim[ft_strlen(lim) - 1] = '\0';
+		lim++;
+	}
+	mini()->hd_limiter = ft_strdup(lim);
+	free(lim);
 }

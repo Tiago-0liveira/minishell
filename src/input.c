@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 04:59:43 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 05:13:28 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_input(bool prompt)
 	if (prompt)
 		update_prompt();
 	line = readline(mini()->output);
-	if (line && *line && mini()->e_hd == 0)
+	if (line && *line)
 	{
 		tmp = ft_strtrim(line, " \t\n");
 		free(line);
@@ -28,9 +28,8 @@ char	*get_input(bool prompt)
 			free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 		line = tmp;
 	}
-	else if (!line || mini()->e_hd == 1)
+	else if (!line)
 	{
-		mini()->e_hd = 1;
 		printf("exit\n");
 		line = ft_strdup("exit");
 	}

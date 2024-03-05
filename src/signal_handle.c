@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 04:25:22 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:10:34 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,14 @@ void	exec_sig(int signal)
 	}
 	else if (signal == SIGPIPE || signal == SIGINT)
 		mini()->command_ret = signal + SIG_BASE_RET;
+}
+
+char	*if_relative_path(char *cmd, bool home_added)
+{
+	char	*c;
+
+	if (home_added)
+		free(cmd);
+	c = get_relative_path(cmd);
+	return (c);
 }

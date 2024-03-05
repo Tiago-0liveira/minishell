@@ -15,7 +15,6 @@
 
 #include "minishell.h"
 
-
 void	bi_echo(char **av)
 {
 	bool	flag_n;

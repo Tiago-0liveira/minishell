@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:56:01 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/03 00:33:10 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/04 21:24:52 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	built_in(t_mini *mini, t_command *cmd, int j)
 		bi_pwd();
 	else if (!ft_strncmp(cmd->cmd_name, "unset", 5))
 		bi_unset(mini, cmd->args, j);
-	else if (!ft_strncmp(cmd->cmd_name, "exit", 4) && !mini->exit_unavailability)
+	else if (!ft_strncmp(cmd->cmd_name, "exit", 4)
+		&& !mini->exit_unavailability)
 		bi_exit(mini, cmd->args, cmd->next != NULL);
 }
