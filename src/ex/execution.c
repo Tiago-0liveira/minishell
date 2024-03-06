@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 15:06:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:53:21 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,13 @@ void	ft_execution(t_mini *mini, char **ev)
 			if (pipe(mini->input.pip) < 0)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
-		if (!expand_command(cmd, ev))
+		if (cmd->args[1] && ft_strncmp(cmd->args[1], "$vari", 6)
+			&& !expand_command(cmd, ev))
 		{
 			cmd = cmd->next;
 			continue ;
 		}
+		mini->if_cd = 0;
 		set_execution(mini, cmd, ev, has_next);
 		cmd = cmd->next;
 	}

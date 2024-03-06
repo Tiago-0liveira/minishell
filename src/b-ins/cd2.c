@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:14:55 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 20:09:07 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:38:51 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	dot_handler(char *t_oldpwd, char *oldpwd, char **pths, int p)
 		chdir(oldpwd);
 		free_list(pths);
 		free(t_oldpwd);
-		error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+		error_msg_ret(FD_NOT_FOUND, t_oldpwd, EXIT_FAILURE);
 		return (0);
 	}
 	if (!p)

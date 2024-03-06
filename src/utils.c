@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 21:10:17 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:51:22 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ bool	valid_cmd_arg(char *str)
 	int		l;
 
 	quoted = quoted_str(str);
+	if (!ft_strncmp(str, "$vari", 6) && mini()->if_cd)
+		quoted = true;
 	l = str_expander_len(str);
 	if (!quoted && l == 0)
 		return (false);

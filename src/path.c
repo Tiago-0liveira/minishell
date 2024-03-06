@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/29 14:36:05 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 02:00:39 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/05 23:40:05 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_roa_path(char *cmd)
 	if (res == -1)
 		return (error_msg_ret(CMD_INSUF_PERMS, cmd, CMD_INSUF_PERMS_RET), NULL);
 	else if (res == 0)
-		return (error_msg_ret(CMD_NOT_FOUND, cmd, CMD_NOT_FOUND_RET), NULL);
+		return (error_msg_ret(FD_NOT_FOUND, cmd, CMD_NOT_FOUND_RET), NULL);
 	return (cmd);
 }
 
@@ -114,13 +114,13 @@ char	*get_cmd_path(char *cmd)
 	}
 	if (is_relative_path(cmd))
 		return (if_relative_path(cmd, home_added));
-	else if (is_absolute_path(cmd))
+	else if (i)
 		path = get_roa_path(cmd);
 	else
 		path = get_envpath_cmd(cmd);
 	if (home_added)
 		free(cmd);
-	if (i)
+	if (i && path)
 		return (ft_strdup(path));
 	return (path);
 }

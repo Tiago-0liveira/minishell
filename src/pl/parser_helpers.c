@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_helpers.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 18:11:34 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:31:29 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ bool	update_command(t_command *command, char **raw_commands, size_t *i,
 	}
 	else
 	{
+		if (!ft_strncmp(raw_commands[*i], "cd", 3))
+			mini()->if_cd = 1;
 		ret = valid_cmd_arg(raw_commands[*i]);
 		if (!ret)
 		{

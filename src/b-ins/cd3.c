@@ -6,13 +6,13 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:16:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 03:33:11 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:58:08 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cd_noarg_tilde(int p, int *i)
+int	cd_noarg_tilde(char *av, int p, int *i)
 {
 	t_list	*tmp;
 
@@ -31,6 +31,8 @@ int	cd_noarg_tilde(int p, int *i)
 	}
 	if (!p)
 		chdir(mini()->home_tmp + 5);
+	if (!av || (av && !ft_strncmp(av, "$vari", 5)))
+		return (0);
 	*i = 1;
 	return (1);
 }

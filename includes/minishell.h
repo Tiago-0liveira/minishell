@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 21:09:59 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:30:50 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,7 @@ typedef struct s_mini
 	int					exit_unavailability;
 	int					original_stdin_fd;
 	char				*home_tmp;
+	int					if_cd;
 }						t_mini;
 
 // main.c
@@ -222,7 +223,7 @@ char					*str_expander_var_len(t_str_ex *ex, char *str);
 bool					str_starts_with_env_var(char *str);
 // \ str_expander_utils.c
 bool					expand_command(t_command *cmd, char **ev);
-void					expand_args(t_command *cmd);
+void						expand_args(t_command *cmd);
 bool					expand_redirs(t_command *cmd);
 // free.c
 void					free_commands(t_command *commands);
@@ -279,7 +280,7 @@ void					clean_after_access(char *oldpwd, char **pths,
 int						dot_handler(char *t_oldpwd, char *oldpwd, char **pths,
 							int p);
 // \ cd3.c
-int						cd_noarg_tilde(int p, int *i);
+int						cd_noarg_tilde(char *av, int p, int *i);
 char					*delete_until_char(char *str, char c);
 void					env_update(t_mini *mini, char *oldpwd);
 char					*ft_strdup_oldpwd(const char *s, int *i);

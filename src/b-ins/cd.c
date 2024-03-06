@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 21:14:12 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 02:58:21 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	good_old_cd(char *av, char *oldpwd, int j, int p)
 	{
 		if (access(av, F_OK | R_OK) == -1)
 		{
-			error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
+			error_msg_ret(FD_NOT_FOUND, av, EXIT_FAILURE);
 			return ;
 		}
 		if (!p)
@@ -92,9 +92,14 @@ void	bi_cd(t_mini *mini, char **av, int p)
 	i = -1;
 	if (!cd_start(av, oldpwd))
 		return ;
-	if (!av[1] || (av[1][0] == TILDE))
-		if (!cd_noarg_tilde(p, &i))
+	if (!av[1] || (av[1][0] == TILDE) || (!ft_strncmp(av[1], "$vari", 5))) // TODO: preciso que o $vari nao seja anulado algures no parsing
+		if (!cd_noarg_tilde(av[1], p, &i))
 			return ;
+	if (!ft_strncmp(av[1], "/", 2) || !ft_strncmp(av[1], "/$vari", 7))
+	{
+		chdir("/");
+		return ;
+	}
 	if (i == -1 || (av[1][0] == TILDE && av[1][1]))
 	{
 		if (!path_with_dots(av[1], oldpwd, p))
