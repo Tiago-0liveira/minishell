@@ -1,6 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g -fsanitize=address -static-libsan 
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g -fsanitize=address -static-libasan 
 
 SRC = main.c
 

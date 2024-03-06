@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 06:23:26 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 21:01:49 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,18 @@ bool	expand_command_gate(t_command *cmd)
 	while (cmd->args[++i])
 	{
 		if (!ft_strncmp(cmd->args[i], "\"\"", 3) 
-			|| !ft_strncmp(cmd->args[i],"\'\'", 3) 
-			|| !ft_strncmp(cmd->args[i], "..", 3))
+			|| !ft_strncmp(cmd->args[i],"\'\'", 3))
+		{
+			if (!i)
+				return (false);
+			else
+			{
+				free(cmd->args[i]);
+				cmd->args[i] = ft_strdup("");
+				return (true);
+			}
+		}
+		if (!ft_strncmp(cmd->args[i], "..", 3))
 			return (false);
 	}
 	if ((cmd->args && cmd->args[1] && !ft_strncmp(cmd->args[1], "$vari", 6)))
