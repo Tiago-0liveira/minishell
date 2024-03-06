@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 02:31:29 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 03:46:20 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ char	*get_redir(char **line)
 
 	i = redir_size(*line);
 	(*line) += i;
-	tmp = ft_substr(*line - i, 0,	i);
+	tmp = ft_substr(*line - i, 0, i);
 	if (redir_type(*line - i) == RED_OUT && *line && **line == PIPE)
 		(*line) += i;
 	return (tmp);

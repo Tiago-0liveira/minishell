@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 02:30:50 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 03:44:26 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,8 +222,8 @@ int						str_expander_len(char *str);
 char					*str_expander_var_len(t_str_ex *ex, char *str);
 bool					str_starts_with_env_var(char *str);
 // \ str_expander_utils.c
-bool					expand_command(t_command *cmd, char **ev);
-void						expand_args(t_command *cmd);
+bool					expand_command(t_command *cmd);
+void					expand_args(t_command *cmd);
 bool					expand_redirs(t_command *cmd);
 // free.c
 void					free_commands(t_command *commands);
@@ -295,6 +295,7 @@ int						ft_strlen_eq(char *s);
 void					delete_var(t_list **head, void *node_to_del);
 void					show_export(t_list *env_list, char **av);
 void					bi_export(t_mini *mini, char **av, int j);
+void					export_add(t_mini *mini, char *av);
 // \ pwd.c
 void					bi_pwd(void);
 // \ unset.c

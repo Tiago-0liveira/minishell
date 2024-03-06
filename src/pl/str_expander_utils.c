@@ -6,21 +6,22 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 02:34:28 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 03:46:45 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	expand_command(t_command *cmd, char **ev)
+bool	expand_command(t_command *cmd)
 {
+	if (cmd->args && cmd->args[1] && !ft_strncmp(cmd->args[1], "$vari", 6))
+		return (true);
 	expand_args(cmd);
 	if (!expand_redirs(cmd))
 	{
 		cmd->cmd_name = NULL;
 		return (false);
 	}
-	(void)ev;
 	if (cmd->args && cmd->args[0] != NULL)
 	{
 		if (ft_strlen(cmd->args[0]) == 0)
@@ -43,7 +44,7 @@ bool	expand_command(t_command *cmd, char **ev)
 void	expand_args(t_command *cmd)
 {
 	size_t	i;
-	//size_t	invalid_args;
+	//size_t invalid_args;
 	char	*expanded;
 
 	i = 0;
@@ -91,4 +92,3 @@ bool	expand_redirs(t_command *cmd)
 	}
 	return (true);
 }
-

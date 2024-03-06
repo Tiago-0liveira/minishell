@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 01:52:18 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 03:46:09 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ size_t	parse_size(char *line)
 	{
 		skip_spaces(&line);
 		section = get_next_section(&line);
-		
 		if (!section)
 			return (0);
 		free(section);
