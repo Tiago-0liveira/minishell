@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/05 14:57:50 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/06 06:56:40 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	heredoc_signs_set(t_mini *mini, t_command *cmd)
 		heredoc_fd = heredoc(mini);
 		mini->hdfd = open(heredoc_fd, O_RDONLY);
 		free(mini->hd_limiter);
+		unlink(heredoc_fd);
 		free(heredoc_fd);
 		if (mini->command_ret == 130)
 		{

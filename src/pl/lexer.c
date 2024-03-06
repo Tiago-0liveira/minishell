@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 18:05:28 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/06 06:08:07 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,24 @@ void	construct_limiter(char **raw_commands, size_t i)
 	}
 	mini()->hd_limiter = ft_strdup(lim);
 	free(lim);
+}
+
+bool	check_ambiguitity(t_redir *redir, t_command *command, char *file)
+{
+	char	*tmp;
+
+	tmp = file;
+	if (!ft_strncmp(file, "$", 2))
+		return (true);
+	file = str_expander(file);
+	if (!file)
+	{
+		error_msg(AMB_REDIR, tmp);
+		if (command->args)
+			free_list(command->args);
+		free(redir);
+		return (false);
+	}
+	free(file);
+	return (true);
 }

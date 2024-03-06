@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/06 03:24:03 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 04:17:27 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_execution(t_mini *mini, char **ev)
 			if (pipe(mini->input.pip) < 0)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
-		if (!expand_command(cmd))
+		if (cmd->args && !expand_command(cmd))
 		{
 			cmd = cmd->next;
 			continue ;

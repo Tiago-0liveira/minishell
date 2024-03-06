@@ -6,15 +6,32 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 03:46:45 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 06:23:26 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+bool	expand_command_gate(t_command *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (cmd->args[++i])
+	{
+		if (!ft_strncmp(cmd->args[i], "\"\"", 3) 
+			|| !ft_strncmp(cmd->args[i],"\'\'", 3) 
+			|| !ft_strncmp(cmd->args[i], "..", 3))
+			return (false);
+	}
+	if ((cmd->args && cmd->args[1] && !ft_strncmp(cmd->args[1], "$vari", 6)))
+		return (false);
+	return (true);
+}
+
 bool	expand_command(t_command *cmd)
 {
-	if (cmd->args && cmd->args[1] && !ft_strncmp(cmd->args[1], "$vari", 6))
+	if (!expand_command_gate(cmd))
 		return (true);
 	expand_args(cmd);
 	if (!expand_redirs(cmd))

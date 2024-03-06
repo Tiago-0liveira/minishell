@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 03:46:20 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 05:55:31 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ bool	assign_redir(t_command *command, char *redir_file,
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
+	if (!check_ambiguitity(redir, command, redir_file))
+		return (false);
 	redir->file = ft_strdup(redir_file);
 	if (!redir->file)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);

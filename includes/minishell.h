@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 03:44:26 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 07:03:21 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@
 # define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
 # define CMD_INSUF_PERMS "Permission denied: "
 # define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
+# define AMB_REDIR "ambiguous redirect: "
 
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
@@ -154,6 +155,7 @@ typedef struct s_mini
 	int					original_stdin_fd;
 	char				*home_tmp;
 	int					if_cd;
+	int					fd_for_hd;
 }						t_mini;
 
 // main.c
@@ -215,6 +217,8 @@ bool					update_command(t_command *command, char **raw_commands,
 							size_t *i, size_t end);
 bool					add_arg(t_command *command, char *section);
 char					*get_redir(char **line);
+bool					check_ambiguitity(t_redir *redir, t_command *command,
+							char *file);
 // \ str_expander.c
 char					*str_expander(char *str);
 void					expand_vars(char *str, char *expanded, int len);
