@@ -92,7 +92,7 @@ void	bi_cd(t_mini *mini, char **av, int p)
 	i = -1;
 	if (!cd_start(av, oldpwd))
 		return ;
-	if (!av[1] || (av[1][0] == TILDE) || (!ft_strncmp(av[1], "$vari", 5))) // TODO: preciso que o $vari nao seja anulado algures no parsing
+	if (!av[1] || (av[1][0] == TILDE) || (!ft_strncmp(av[1], "$vari", 5)))
 		if (!cd_noarg_tilde(av[1], p, &i))
 			return ;
 	if (!ft_strncmp(av[1], "/", 2) || !ft_strncmp(av[1], "/$vari", 7))
