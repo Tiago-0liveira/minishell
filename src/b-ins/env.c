@@ -16,6 +16,11 @@ void	bi_env(t_list *env_list)
 {
 	while (env_list)
 	{
+		if (ft_strlen(env_list->content + ft_strlen_eq(env_list->content)) == 0)
+		{
+			env_list = env_list->next;
+			continue ;
+		}
 		printf("%s\n", (char *)env_list->content);
 		env_list = env_list->next;
 	}
