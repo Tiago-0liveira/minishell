@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 05:01:07 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 02:19:08 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ t_command	*construct_command(char **raw_commands, size_t end)
 	{
 		if (!update_command(command, raw_commands, &i, end))
 			return (free(command), NULL);
-		if ((int)i - 1 >= 0 && redir_size(raw_commands[i - 1]) == RED_AIN)
+		if ((int)i - 1 >= 0 && redir_type(raw_commands[i - 1]) == RED_AIN)
 			construct_limiter(raw_commands, i);
 		i++;
 	}

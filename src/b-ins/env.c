@@ -31,6 +31,8 @@ char	*get_env_var(t_list *env_list, char *var)
 	i = ft_strlen(var);
 	while (env_list)
 	{
+		if (!ft_strncmp(var, "LESS", 4))
+			break ;
 		if (ft_strncmp((char *)env_list->content, var, i) == 0)
 			return (ft_strchr((char *)env_list->content, '=') + 1);
 		env_list = env_list->next;

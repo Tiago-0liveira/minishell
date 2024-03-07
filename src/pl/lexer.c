@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 06:08:07 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 02:28:50 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,13 @@ bool	semantic_checker(char **sections)
 		isvalid = valid_section(sections, &i, &last_section, &error);
 		i++;
 	}
+	if (sections[--i][0] == '|')
+	{
+		mini()->solo_pipe = 1;
+		return (false);
+	}
+	else
+		mini()->solo_pipe = 0;
 	if (error)
 		return (error_msg_ret(SYNTAX_ERROR, error, EXIT_FAILURE), false);
 	return (isvalid);

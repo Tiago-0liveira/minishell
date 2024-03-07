@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 21:03:53 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 02:22:11 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@
 # define SHELL_ERROR "minishell: %s %s\n"
 # define CMD_NOT_FOUND "command not found: "
 # define FD_NOT_FOUND "no such file or directory: "
-# define SYNTAX_ERROR "syntax error near unexpected token `"
-# define TOO_MANY_ARGS "too many arguments\n"
+# define SYNTAX_ERROR "syntax error near unexpected token "
+# define TOO_MANY_ARGS "too many arguments "
 # define NOT_VALID_IDENT "not a valid identifier: "
 # define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
 # define CMD_INSUF_PERMS "Permission denied: "
@@ -90,6 +90,8 @@
 # define FORK_ERROR "Fork error!\n"
 
 # define EXIT_STATUS_N 256
+
+extern int	sign_val;
 
 enum					e_redir_type
 {
@@ -155,7 +157,7 @@ typedef struct s_mini
 	int					original_stdin_fd;
 	char				*home_tmp;
 	int					if_cd;
-	int					fd_for_hd;
+	int					solo_pipe;
 }						t_mini;
 
 // main.c

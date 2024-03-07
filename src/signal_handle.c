@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 21:10:34 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/06 23:06:42 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	exec_sig(int signal)
 	if (signal == SIGQUIT)
 	{
 		ft_putstr_fd("Quit (core dumped)", 2);
-		mini()->command_ret = SIGQUIT;
+		mini()->command_ret = 131;
 	}
 	else if (signal == SIGPIPE || signal == SIGINT)
 		mini()->command_ret = signal + SIG_BASE_RET;

@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 21:01:49 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 00:48:53 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	expand_command_gate(t_command *cmd)
 		{
 			if (!i)
 				return (false);
-			else
+			else if (i)
 			{
 				free(cmd->args[i]);
 				cmd->args[i] = ft_strdup("");

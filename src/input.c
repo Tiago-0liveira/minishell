@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/04 05:13:28 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 02:29:46 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ char	*get_input(bool prompt)
 	else if (!line)
 	{
 		printf("exit\n");
+		mini()->command_ret = 0;
 		line = ft_strdup("exit");
 	}
 	return (line);
@@ -55,9 +56,11 @@ void	update_prompt(void)
 		color = GREEN;
 		chr = CHECK;
 	}
-	if (getcwd(dir, PATH_MAX))
+	if (getcwd(dir, PATH_MAX) && !mini()->solo_pipe)
 	{
 		tmp = ft_strnjoin(6, color, chr, CYAN " ", dir, RESET, PROMPT);
 		mini()->output = tmp;
 	}
+	else
+		mini()->output = ft_strdup("> ");
 }

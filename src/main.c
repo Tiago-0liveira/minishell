@@ -6,11 +6,13 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 05:25:28 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 01:15:31 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	sign_val = 0;
 
 int	main(int ac, char **av, char **env)
 {
