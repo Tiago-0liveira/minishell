@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 03:44:45 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:48:22 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@
 
 # define EXIT_STATUS_N 256
 
-extern int	sign_val;
+extern int	g_sign_val;
 
 enum					e_redir_type
 {
@@ -101,8 +101,6 @@ enum					e_redir_type
 	RED_OUT,
 	RED_AOUT
 };
-
-typedef void			(*t_cleanup_func)(void *);
 
 typedef struct s_str_ex
 {
@@ -192,12 +190,12 @@ t_list					*set_env(char **env);
 // utils.c
 enum e_redir_type		redir_type(char *line);
 bool					valid_env_char(char c);
-bool					quoted_str(char *str);
 bool					valid_cmd_arg(char *str);
 void					free_assign_null(void **ptr);
 // utils2.c
 bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
+bool					has_char_in_set(char *s, char *set);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
@@ -231,6 +229,8 @@ bool					str_starts_with_env_var(char *str);
 bool					expand_command(t_command *cmd);
 void					expand_args(t_command *cmd);
 bool					expand_redirs(t_command *cmd);
+void					shift_args(t_command *cmd, size_t invalid_args,
+							size_t len);
 // free.c
 void					free_commands(t_command *commands);
 void					free_redirs(t_redir *redirs);
@@ -277,7 +277,7 @@ t_list					*sort_list(t_list *lst);
 // \ cd.c
 void					bi_cd(t_mini *mini, char **av, int p);
 // \ cd2.c
-int						path_with_dots_2(char **pths, char *oldpwd, int *j, 
+int						path_with_dots_2(char **pths, char *oldpwd, int *j,
 							int p);
 void					non_dot_chdir(char **pths, char *oldpwd, int *j, int p);
 void					clean_until_dots(char **pths, int *j, int *p);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   str_expander_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 00:48:53 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:57:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,6 @@ bool	expand_command_gate(t_command *cmd)
 	i = -1;
 	while (cmd->args[++i])
 	{
-		if (!ft_strncmp(cmd->args[i], "\"\"", 3) 
-			|| !ft_strncmp(cmd->args[i],"\'\'", 3))
-		{
-			if (!i)
-				return (false);
-			else if (i)
-			{
-				free(cmd->args[i]);
-				cmd->args[i] = ft_strdup("");
-				return (true);
-			}
-		}
 		if (!ft_strncmp(cmd->args[i], "..", 3))
 			return (false);
 	}
@@ -71,28 +59,19 @@ bool	expand_command(t_command *cmd)
 void	expand_args(t_command *cmd)
 {
 	size_t	i;
-	//size_t invalid_args;
 	char	*expanded;
 
 	i = 0;
 	while (cmd->args && cmd->args[i])
 	{
 		if (cmd->args[i] && cmd->args[i][0] == '\0')
-		{
-			i++;
-			continue ;
-		}
+			goto continue_while;
 		expanded = str_expander(cmd->args[i]);
-		if (ft_strlen(expanded) == 0)
-		{
-			i++;
-			continue ;
-		}
 		free(cmd->args[i]);
 		cmd->args[i] = expanded;
-		i++;
+		continue_while:
+			i++;
 	}
-	//TODO: resize args function (we can check if cmd->args[i] is null)
 }
 
 bool	expand_redirs(t_command *cmd)

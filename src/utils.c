@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/06 02:51:22 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 18:50:17 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,12 @@ bool	valid_env_char(char c)
 	return (ft_isalnum(c) || c == '_');
 }
 
-bool	quoted_str(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str && str[i])
-	{
-		if (*str == '\'' || *str == '\"')
-			return (true);
-		i++;
-	}
-	return (false);
-}
-
 bool	valid_cmd_arg(char *str)
 {
 	bool	quoted;
 	int		l;
 
-	quoted = quoted_str(str);
+	quoted = has_char_in_set(str, "\"\'");
 	if (!ft_strncmp(str, "$vari", 6) && mini()->if_cd)
 		quoted = true;
 	l = str_expander_len(str);

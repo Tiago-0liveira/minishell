@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:05:11 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 00:23:18 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 19:14:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,8 @@
 
 bool	skip_spaces(char **line)
 {
-	if (**line == '|')
-	{
-		error_msg(SYNTAX_ERROR, "|");
-		return (NULL);
-	}
 	while (**line == ' ')
-	{
-		if (**line == '|')
-		{
-			error_msg(SYNTAX_ERROR, "|");
-			return (NULL);
-		}
 		(*line)++;
-	}
 	return (**line);
 }
 
@@ -42,4 +30,18 @@ size_t	redir_size(char *line)
 				|| *line == ' ')))
 		return (1);
 	return (0);
+}
+
+bool	has_char_in_set(char *s, char *set)
+{
+	int	i;
+
+	i = 0;
+	while (s && s[i])
+	{
+		if (ft_strchr(set, s[i]))
+			return (true);
+		i++;
+	}
+	return (false);
 }
