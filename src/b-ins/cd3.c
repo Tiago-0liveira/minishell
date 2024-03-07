@@ -6,13 +6,13 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:16:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/06 02:58:08 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 03:52:08 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cd_noarg_tilde(char *av, int p, int *i)
+int	cd_noarg_tilde(char *av, int p, char *oldpwd)
 {
 	t_list	*tmp;
 
@@ -23,17 +23,21 @@ int	cd_noarg_tilde(char *av, int p, int *i)
 			break ;
 		tmp = tmp->next;
 	}
-	mini()->home_tmp = (char *)tmp->content;
-	if (access(mini()->home_tmp + 5, F_OK | R_OK) == -1)
+	if (!tmp)
+		return (2);
+	mini()->home_tmp = tmp->content;
+	if (access(mini()->home_tmp + 5, F_OK | R_OK) == -1 || !mini()->home_tmp)
 	{
 		error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
 		return (0);
 	}
 	if (!p)
+	{
 		chdir(mini()->home_tmp + 5);
+		env_update(mini(), oldpwd);
+	}
 	if (!av || (av && !ft_strncmp(av, "$vari", 5)))
 		return (0);
-	*i = 1;
 	return (1);
 }
 
@@ -91,4 +95,19 @@ char	*ft_strdup_oldpwd(const char *s, int *i)
 	d[c] = '\0';
 	*i = 3;
 	return (d);
+}
+
+int	cd_noarg_return(char *av, int p, char *oldpwd)
+{
+	int	j;
+
+	j = cd_noarg_tilde(av, p, oldpwd);
+	if (!j)
+		return (0);
+	else if (j == 2)
+	{
+		error_msg("HOME not set: ", "cd");
+		return (0);
+	}
+	return (1);
 }

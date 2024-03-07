@@ -6,7 +6,7 @@
 /*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 02:22:11 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 03:44:45 by joaoribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -286,10 +286,11 @@ void					clean_after_access(char *oldpwd, char **pths,
 int						dot_handler(char *t_oldpwd, char *oldpwd, char **pths,
 							int p);
 // \ cd3.c
-int						cd_noarg_tilde(char *av, int p, int *i);
+int						cd_noarg_tilde(char *av, int p, char *oldpwd);
 char					*delete_until_char(char *str, char c);
 void					env_update(t_mini *mini, char *oldpwd);
 char					*ft_strdup_oldpwd(const char *s, int *i);
+int						cd_noarg_return(char *av, int p, char *oldpwd);
 // \ echo.c
 void					bi_echo(char **av);
 // \ env.c
