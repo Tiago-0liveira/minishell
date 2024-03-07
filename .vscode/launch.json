@@ -7,8 +7,7 @@
 			"request": "launch",
 			"program": "${workspaceFolder}/minishell",
 			"args": [
-				"<",
-				"test_files/shell_tester.txt"
+
 			],
 			"stopAtEntry": false,
 			"cwd": "${workspaceFolder}",

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 18:48:22 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:37:56 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,6 @@ typedef struct s_mini
 	t_command			*commands;
 	int					command_ret;
 	t_list				*env_list;
-	char				*hd_limiter;
 	int					lim_q;
 	char				*output;
 	int					hdfd;
@@ -196,6 +195,8 @@ void					free_assign_null(void **ptr);
 bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
 bool					has_char_in_set(char *s, char *set);
+char					*remove_quotes(char *file);
+int						remove_quotes_new_len(char *file);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
@@ -262,7 +263,7 @@ bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,
 							int has_next);
 // \ heredoc.c
-char					*heredoc(t_mini *mini);
+char					*heredoc(t_mini *mini, char *delim);
 // \ heredoc_str_expander.c
 void					expand_vars_hd(char *str, char *expanded, int len);
 int						str_expander_len_hd(char *str);

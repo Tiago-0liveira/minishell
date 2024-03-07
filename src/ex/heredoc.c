@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/06 07:08:25 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 20:30:56 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	heredoc_fd_set(char *file)
 	return (fd);
 }
 
-void	heredoc_pid_zero(t_mini *mini, char *input, char *file)
+void	heredoc_pid_zero(t_mini *mini, char *delim, char *input, char *file)
 {
 	int	fd;
 
@@ -34,7 +34,7 @@ void	heredoc_pid_zero(t_mini *mini, char *input, char *file)
 	while (1)
 	{
 		input = readline("> ");
-		if (!input || (!ft_strncmp(input, mini->hd_limiter,
+		if (!input || (!ft_strncmp(input, delim,
 					ft_strlen(input)) && input[0] != '\0'))
 		{
 			if (input)
@@ -58,7 +58,7 @@ void	heredoc_pid(t_mini *mini)
 		exit(0);
 }
 
-char	*heredoc(t_mini *mini)
+char	*heredoc(t_mini *mini, char *delim)
 {
 	pid_t			pid;
 	char			*file;
@@ -76,7 +76,7 @@ char	*heredoc(t_mini *mini)
 	if (pid < 0)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	if (pid == 0)
-		heredoc_pid_zero(mini, input, file);
+		heredoc_pid_zero(mini, delim, input, file);
 	else
 		heredoc_pid(mini);
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
