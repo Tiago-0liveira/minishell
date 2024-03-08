@@ -31,7 +31,7 @@ int	main(int ac, char **av, char **env)
 			continue ;
 		}
 		add_history(mini()->input.raw_line);
-		if (input_error_check(mini()) && parse_input(mini()))
+		if (input_error_check(mini()) && parse_input(mini()) && !mini()->solo_pipe)
 			ft_execution(mini(), env);
 		reset_mini(mini());
 	}
