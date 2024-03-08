@@ -57,15 +57,15 @@ bool	semantic_checker(char **sections)
 		isvalid = valid_section(sections, &i, &last_section, &error);
 		i++;
 	}
+	if (error && !(sections[i - 1][0] == '|'))
+		return (error_msg_ret(SYNTAX_ERROR, error, EXIT_FAILURE), false);
 	if (sections[--i][0] == '|')
 	{
 		mini()->solo_pipe = 1;
-		return (false);
+		return (true);
 	}
 	else
 		mini()->solo_pipe = 0;
-	if (error)
-		return (error_msg_ret(SYNTAX_ERROR, error, EXIT_FAILURE), false);
 	return (isvalid);
 }
 
