@@ -30,6 +30,15 @@ char	**build_solo_path(char *oldpwd, char *av)
 	return (s);
 }
 
+void	handle_bin(char **pth)
+{
+	if (!ft_strncmp(*pth, "bin", 4))
+	{
+		free(*pth);
+		*pth = ft_strjoin("/", "bin");
+	}
+}
+
 int	path_with_dots(char *av, char *oldpwd, int p)
 {
 	int		i;
@@ -43,6 +52,7 @@ int	path_with_dots(char *av, char *oldpwd, int p)
 		pths = ft_split(av, '/');
 	else
 		pths = build_solo_path(oldpwd, av);
+	handle_bin(&pths[0]);
 	if (!ft_strncmp(pths[0], "~", 1))
 	{
 		free(pths[0]);
@@ -55,21 +65,6 @@ int	path_with_dots(char *av, char *oldpwd, int p)
 	if (i == 2)
 		return (2);
 	return (1);
-}
-
-void	good_old_cd(char *av, char *oldpwd, int j, int p)
-{
-	if (j == 1)
-	{
-		if (access(av, F_OK | R_OK) == -1)
-		{
-			error_msg_ret(FD_NOT_FOUND, av, EXIT_FAILURE);
-			return ;
-		}
-		if (!p)
-			chdir(av);
-		env_update(mini(), oldpwd);
-	}
 }
 
 int	cd_start(char **av, char *oldpwd)
