@@ -31,6 +31,8 @@ char	*get_env_var(t_list *env_list, char *var)
 {
 	int	i;
 
+	if (ft_strlen(var) == 0)
+		return ("");
 	if (!ft_strncmp(var, "?", 1))
 		return (ft_itoa(mini()->command_ret));
 	i = ft_strlen(var);
