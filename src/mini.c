@@ -33,7 +33,7 @@ void	reset_mini(t_mini *mini)
 	mini->original_stdin_fd = 0;
 	mini->home_tmp = NULL;
 	mini->if_cd = 0;
-	if (mini->commands)
+	if (mini->commands && !mini->solo_pipe)
 	{
 		free_commands(mini->commands);
 		mini->commands = NULL;
@@ -43,7 +43,8 @@ void	reset_mini(t_mini *mini)
 		free(mini->output);
 		mini->output = NULL;
 	}
-	mini->commands = NULL;
+	if (!mini->solo_pipe)
+		mini->commands = NULL;
 }
 
 t_list	*set_env(char **env)
