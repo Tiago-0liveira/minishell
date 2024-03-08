@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:13:48 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/05 03:35:41 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/08 00:16:04 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	calculate_exit_code_from_string(const char *number)
 		i++;
 	}
 	if (isnegative)
-		result = EXIT_FAILURE - result;
+		result *= -1;
 	return (result);
 }
 
