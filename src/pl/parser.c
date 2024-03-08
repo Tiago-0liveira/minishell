@@ -24,6 +24,8 @@ bool	parse_input(t_mini *mini)
 	if (!semantic_checker(raw_commands))
 		return (free_list(raw_commands), false);
 	commands = ((int)mini->input.pipe_c) + 1;
+	if (mini->solo_pipe)
+		commands--;
 	i = 0;
 	j = 0;
 	while (commands > 0)
