@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handle.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/06 23:06:42 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/07 23:46:05 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	prmpt_ctrlc(int signal)
 {
-	(void)signal;
-	mini()->command_ret = 130;
+	mini()->command_ret = SIG_BASE_RET + signal;
 	write(1, "^C\n", 3);
 	rl_on_new_line();
 	rl_replace_line("", 0);
@@ -30,13 +29,10 @@ void	sig_init(void)
 
 void	exec_sig(int signal)
 {
+	write(1, "\n", 1);
+	mini()->command_ret = signal + SIG_BASE_RET;
 	if (signal == SIGQUIT)
-	{
 		ft_putstr_fd("Quit (core dumped)", 2);
-		mini()->command_ret = 131;
-	}
-	else if (signal == SIGPIPE || signal == SIGINT)
-		mini()->command_ret = signal + SIG_BASE_RET;
 }
 
 char	*if_relative_path(char *cmd, bool home_added)

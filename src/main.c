@@ -6,13 +6,11 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 16:07:57 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/08 00:18:24 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	g_sign_val = 0;
 
 int	main(int ac, char **av, char **env)
 {

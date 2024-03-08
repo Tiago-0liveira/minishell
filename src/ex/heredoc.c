@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 23:18:22 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/08 00:18:21 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	heredoc_pid_zero(t_mini *mini, char *delim, char *input, char *file)
 	while (1)
 	{
 		input = readline("> ");
-		if (!input || g_sign_val == SIGINT || (!ft_strncmp(input, delim,
+		if (!input || (!ft_strncmp(input, delim,
 					ft_strlen(input)) && input[0] != '\0'))
 		{
 			if (input)

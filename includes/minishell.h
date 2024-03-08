@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 20:37:56 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/08 00:18:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@
 # define FORK_ERROR "Fork error!\n"
 
 # define EXIT_STATUS_N 256
-
-extern int	g_sign_val;
 
 enum					e_redir_type
 {
