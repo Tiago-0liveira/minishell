@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 18:57:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:08:21 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,12 @@ bool	expand_command(t_command *cmd)
 		return (true);
 	expand_args(cmd);
 	if (!expand_redirs(cmd))
-	{
-		cmd->cmd_name = NULL;
-		return (false);
-	}
+		return (cmd->cmd_name = NULL, false);
 	if (cmd->args && cmd->args[0] != NULL)
 	{
 		if (ft_strlen(cmd->args[0]) == 0)
-			return (true);
+			return (error_msg_ret(CMD_NOT_FOUND, "''", CMD_NOT_FOUND_RET),
+				false);
 		cmd->expanded = true;
 		if (if_builtin(cmd->args[0]))
 		{
@@ -67,6 +65,12 @@ void	expand_args(t_command *cmd)
 		if (cmd->args[i] && cmd->args[i][0] == '\0')
 			goto continue_while;
 		expanded = str_expander(cmd->args[i]);
+		if (ft_strlen(expanded) < ft_strlen(cmd->args[i]))
+		{
+			ft_strlcpy(cmd->args[i], expanded, ft_strlen(expanded) + 1);
+			free(expanded);
+			goto continue_while;
+		}
 		free(cmd->args[i]);
 		cmd->args[i] = expanded;
 		continue_while:
