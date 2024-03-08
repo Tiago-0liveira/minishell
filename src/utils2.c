@@ -14,10 +14,23 @@
 
 bool	skip_spaces(char **line)
 {
+	if (**line == '|')
+	{
+		error_msg(SYNTAX_ERROR, "|");
+		return (NULL);
+	}
 	while (**line == ' ')
+	{
+		if (**line == '|')
+		{
+			error_msg(SYNTAX_ERROR, "|");
+			return (NULL);
+		}
 		(*line)++;
+	}
 	return (**line);
 }
+
 
 size_t	redir_size(char *line)
 {
