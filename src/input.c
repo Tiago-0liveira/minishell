@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 02:29:46 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:09:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	update_prompt(void)
 		chr = CHECK;
 	}
 	if (getcwd(dir, PATH_MAX) && !mini()->solo_pipe)
-	{
 		tmp = ft_strnjoin(6, color, chr, CYAN " ", dir, RESET, PROMPT);
-		mini()->output = tmp;
-	}
 	else
-		mini()->output = ft_strdup("> ");
+		tmp = ft_strdup("> ");
+	if (!tmp)
+		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+	mini()->output = tmp;
 }
