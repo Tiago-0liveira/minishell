@@ -21,7 +21,7 @@ int	path_with_dots_2(char **pths, char *oldpwd, int *j, int p)
 	while (pths[++(*j)])
 	{
 		getcwd(t_oldpwd, PATH_MAX);
-		if (pths[*j][0] == '.' && pths[*j][1] == '.')
+		if (pths[*j][0] == '.' && pths[*j][1] == '.' && pths[*j][2] == '/')
 		{
 			if (!dot_handler(t_oldpwd, oldpwd, pths, p))
 				return (0);
