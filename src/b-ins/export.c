@@ -79,7 +79,8 @@ int	delete_if_needed(t_list **env_list, char *var, int len)
 	tmp = *env_list;
 	while (tmp)
 	{
-		if (!ft_strncmp(var, tmp->content, len))
+		if (ft_strlen_eq(tmp->content) == len
+			&& !ft_strncmp(tmp->content, var, len))
 		{
 			if (!ft_strnstr(var, "=", ft_strlen(var)))
 				return (0);
