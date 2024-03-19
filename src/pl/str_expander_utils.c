@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/08 17:08:21 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:04:45 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,18 +63,21 @@ void	expand_args(t_command *cmd)
 	while (cmd->args && cmd->args[i])
 	{
 		if (cmd->args[i] && cmd->args[i][0] == '\0')
-			goto continue_while;
+		{
+			i++;
+			continue ;
+		}
 		expanded = str_expander(cmd->args[i]);
 		if (ft_strlen(expanded) < ft_strlen(cmd->args[i]))
 		{
 			ft_strlcpy(cmd->args[i], expanded, ft_strlen(expanded) + 1);
 			free(expanded);
-			goto continue_while;
+			i++;
+			continue ;
 		}
 		free(cmd->args[i]);
 		cmd->args[i] = expanded;
-		continue_while:
-			i++;
+		i++;
 	}
 }
 
