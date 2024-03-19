@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/08 00:18:21 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:30:55 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,7 @@ void	heredoc_pid_zero(t_mini *mini, char *delim, char *input, char *file)
 				free(input);
 			break ;
 		}
-		if (!mini->lim_q)
-			input = expand_input_hd(input);
+		input = expand_input_hd(input);
 		ft_putendl_fd(input, fd);
 		free(input);
 	}

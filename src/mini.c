@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 02:28:35 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:31:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	reset_mini(t_mini *mini)
 	mini->input.len = 0;
 	mini->input.pipe_c = 0;
 	mini->exit_unavailability = 0;
-	mini->original_stdin_fd = 0;
 	mini->home_tmp = NULL;
 	mini->if_cd = 0;
 	if (mini->commands && !mini->solo_pipe)

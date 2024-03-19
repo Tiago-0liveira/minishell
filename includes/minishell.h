@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/08 00:18:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:31:29 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,11 +145,9 @@ typedef struct s_mini
 	t_command			*commands;
 	int					command_ret;
 	t_list				*env_list;
-	int					lim_q;
 	char				*output;
 	int					hdfd;
 	int					exit_unavailability;
-	int					original_stdin_fd;
 	char				*home_tmp;
 	int					if_cd;
 	int					solo_pipe;
