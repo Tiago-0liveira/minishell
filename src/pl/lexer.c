@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/19 16:12:56 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:19:17 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ bool	input_error_check(t_mini *mini)
 		else if (*line_cursor == DQUOTE && !quotes)
 			dquotes = !dquotes;
 		else if (*line_cursor == PIPE && !quotes && !dquotes
-			&& ((line_cursor - 1) && redir_type(line_cursor - 1) != RED_OUT))
+			&& (line_cursor - 1 > mini->input.raw_line
+				&& redir_type(line_cursor - 1) != RED_OUT))
 			mini->input.pipe_c++;
 		line_cursor++;
 	}
