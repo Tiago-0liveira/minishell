@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:05:11 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 21:41:55 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:06:48 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,8 @@
 
 bool	skip_spaces(char **line)
 {
-	if (**line == '|')
-	{
-		error_msg(SYNTAX_ERROR, "|");
-		return (NULL);
-	}
 	while (**line == ' ')
-	{
-		if (**line == '|')
-		{
-			error_msg(SYNTAX_ERROR, "|");
-			return (NULL);
-		}
 		(*line)++;
-	}
 	return (**line);
 }
 

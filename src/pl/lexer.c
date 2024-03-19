@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 20:08:52 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/19 16:12:56 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ bool	semantic_checker(char **sections)
 		isvalid = valid_section(sections, &i, &last_section, &error);
 		i++;
 	}
-	if (error && !(sections[i - 1][0] == '|'))
+	if (error && !isvalid)
 		return (error_msg_ret(SYNTAX_ERROR, error, EXIT_FAILURE), false);
-	if (sections[--i][0] == '|')
+	if (isvalid && sections[--i][0] == '|')
 	{
 		mini()->solo_pipe = 1;
 		return (true);
@@ -76,8 +76,6 @@ bool	valid_section(char **sections, int *i,
 	{
 		if (!*last_section || (sections[*i + 1] && *sections[*i + 1] == PIPE))
 			return (*error = sections[*i], false);
-		else if (!sections[*i + 1])
-			return (*error = "newline'", false);
 	}
 	if (redir_type(*last_section) != RED_NULL)
 	{
