@@ -40,7 +40,8 @@ char	*get_env_var(t_list *env_list, char *var)
 	{
 		if (!ft_strncmp(var, "LESS", 4))
 			break ;
-		if (ft_strlen_eq(env_list->content) == i && !ft_strncmp(env_list->content, var, i))
+		if (ft_strlen_eq(env_list->content) == i
+			&& !ft_strncmp(env_list->content, var, i))
 			return (ft_strchr((char *)env_list->content, '=') + 1);
 		env_list = env_list->next;
 	}
