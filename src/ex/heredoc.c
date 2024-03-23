@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rprocopi <mailto:rprocopi@student.42lis    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/19 16:30:55 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/23 14:48:02 by rprocopi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,7 @@ void	heredoc_pid_zero(t_mini *mini, char *delim, char *input, char *file)
 	while (1)
 	{
 		input = readline("> ");
-		if (!input || (!ft_strncmp(input, delim,
-					ft_strlen(input)) && input[0] != '\0'))
+		if (!input || (!ft_strcmp(input, delim) && input[0] != '\0'))
 		{
 			if (input)
 				free(input);
@@ -66,7 +65,7 @@ char	*heredoc(t_mini *mini, char *delim)
 	struct termios	termios_backup;
 
 	input = NULL;
-	file = ft_strdup("/tmp/hd");
+	file = ft_strdup("/tmp/hd");//obs se hovuer o redirecionamento para um arquivo, o arquivo deve ser criado e o nome deve ser passado para a função
 	tcgetattr(STDIN_FILENO, &termios_backup);
 	termios = termios_backup;
 	termios.c_cc[VQUIT] = _POSIX_VDISABLE;
