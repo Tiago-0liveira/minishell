@@ -29,10 +29,11 @@ void	bi_env(t_list *env_list)
 
 char	*get_env_var(t_list *env_list, char *var)
 {
-	int	i;
+	int		i;
+	char	*tmp;
 
 	if (ft_strlen(var) == 0)
-		return ("");
+		return (ft_strdup(""));
 	if (!ft_strncmp(var, "?", 1))
 		return (ft_itoa(mini()->command_ret));
 	i = ft_strlen(var);
@@ -42,10 +43,16 @@ char	*get_env_var(t_list *env_list, char *var)
 			break ;
 		if (ft_strlen_eq(env_list->content) == i
 			&& !ft_strncmp(env_list->content, var, i))
-			return (ft_strchr((char *)env_list->content, '=') + 1);
+		{
+			tmp = ft_strchr((char *)env_list->content, '=') + 1;
+			tmp = ft_strtrim(tmp, " ");
+			if (!tmp)
+				free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+			return (tmp);
+		}
 		env_list = env_list->next;
 	}
-	return ("");
+	return (ft_strdup(""));
 }
 
 /*
