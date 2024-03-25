@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/19 17:38:48 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/25 14:30:07 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,17 @@ bool	valid_section(char **sections, int *i,
 bool	check_ambiguitity(t_redir *redir, t_command *command, char *file)
 {
 	char	*tmp;
+	char	*tmp2;
 
 	tmp = file;
 	if (!ft_strncmp(file, "$", 2))
 		return (true);
 	file = str_expander(file);
-	if (!file)
+	tmp2 = ft_strtrim(file, " \t\n");
+	free(file);
+	file = tmp2;
+	if (!file || (ft_strchr(file, SPACE) != NULL
+			&& ft_strlen(ft_strchr(file, SPACE)) > 0))
 	{
 		error_msg(AMB_REDIR, tmp);
 		if (command->args)
