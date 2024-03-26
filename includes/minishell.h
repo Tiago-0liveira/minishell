@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 19:43:34 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/26 20:32:38 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@
 
 # define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__);
 
-void	print_command(t_command *command);
+
 
 enum					e_redir_type
 {
@@ -196,6 +196,7 @@ enum e_redir_type		redir_type(char *line);
 bool					valid_env_char(char c);
 bool					valid_cmd_arg(char *str);
 void					free_assign_null(void **ptr);
+void					print_command(t_command *command);//TODO: remove 
 // utils2.c
 bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
