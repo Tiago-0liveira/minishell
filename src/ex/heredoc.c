@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rprocopi <mailto:rprocopi@student.42lis    +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/23 14:48:02 by rprocopi         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:48:24 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	heredoc_fd_set(char *file)
 void	heredoc_pid_zero(t_mini *mini, char *delim, char *input, char *file)
 {
 	int	fd;
+	(void)mini;
 
 	fd = heredoc_fd_set(file);
 	signal(SIGINT, SIG_DFL);
