@@ -1,8 +1,6 @@
 NAME = minishell
 CC = cc
-CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g -fsanitize=address -static-libasan 
-
-SRC = main.c
+CFLAGS = -Wall -Wextra -Werror $(INCLUDES) -g #-fsanitize=address -static-libasan
 
 includefolder = includes/
 LIBFT_DIR = libft/
@@ -21,7 +19,7 @@ EX_FILES = execute.c execution.c heredoc.c execution_utils.c		  \
 				heredoc_str_expander.c
 
 PARSER_LEXER_FILES = lexer.c parser.c parser_helpers.c str_expander.c \
-				str_expander_utils.c
+				str_expander_utils.c str_expander2.c command.c
 
 FILES = \
 	$(SRC_ROOT_FILES) \
