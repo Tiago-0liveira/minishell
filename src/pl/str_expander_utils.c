@@ -6,12 +6,13 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/19 16:04:45 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/26 18:18:09 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// TODO: check this
 bool	expand_command_gate(t_command *cmd)
 {
 	int	i;
@@ -22,15 +23,15 @@ bool	expand_command_gate(t_command *cmd)
 		if (!ft_strncmp(cmd->args[i], "..", 3))
 			return (false);
 	}
-	if ((cmd->args && cmd->args[1] && !ft_strncmp(cmd->args[1], "$vari", 6)))
+	if ((cmd->args && cmd->args[1]/* && !ft_strncmp(cmd->args[1], "$vari", 6)*/))
 		return (false);
 	return (true);
 }
 
 bool	expand_command(t_command *cmd)
 {
-	if (!expand_command_gate(cmd))
-		return (true);
+	/*if (!expand_command_gate(cmd))
+		return (true);*/
 	expand_args(cmd);
 	if (!expand_redirs(cmd))
 		return (cmd->cmd_name = NULL, false);

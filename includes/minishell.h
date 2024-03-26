@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/19 16:31:29 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:43:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@
 # define ECHO_FLAG_N "-n"
 
 # define MALLOC_ERROR "Malloc failed!\n"
+//# define MALLOC_ERROR ft_strnjoin(4, "Malloc failed!\n", __FILE__, ":", __LINE__)
+
 
 # define CHECK "\xE2\x9C\x93"
 # define X "\xE2\x9C\x97"
@@ -90,6 +92,12 @@
 # define FORK_ERROR "Fork error!\n"
 
 # define EXIT_STATUS_N 256
+
+//TODO: remove
+
+# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__);
+
+void	print_command(t_command *command);
 
 enum					e_redir_type
 {
@@ -132,6 +140,7 @@ typedef struct s_redir
 typedef struct s_command
 {
 	char				*cmd_name;
+	char				*raw_cmd;
 	char				**args;
 	t_redir				*redirs;
 	bool				expanded;
@@ -196,16 +205,18 @@ int						remove_quotes_new_len(char *file);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
+bool					syntax_check(char *input);
 bool					semantic_checker(char **raw_commands);
 bool					valid_section(char **sections, int *i,
 							char **last_section, char **error);
+//	\ command.c
+bool					command_parser(char *input);
+t_command				*init_command(char *input, int len);
+void					build_command(t_command *cmd);
 //  \ parser.c
-bool					parse_input(t_mini *mini);
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
-char					**parse(t_mini *mini);
-t_command				*construct_command(char **raw_commands, size_t end);
-void					construct_limiter(char **raw_commands, size_t i);
+char					**parse(char *input);
 //  \ parser_helpers.c
 void					command_add_back(t_command *new_command);
 bool					assign_redir(t_command *command, char *redir_file,
@@ -222,12 +233,14 @@ void					expand_vars(char *str, char *expanded, int len);
 int						str_expander_len(char *str);
 char					*str_expander_var_len(t_str_ex *ex, char *str);
 bool					str_starts_with_env_var(char *str);
+// \ str_expander2.c
+void					expand_vars_hd2(char *str, char *expanded, int len);
+int						str_expander_len_hd2(char *str);
+char					*str_expander_hd2(char *str);
 // \ str_expander_utils.c
 bool					expand_command(t_command *cmd);
 void					expand_args(t_command *cmd);
 bool					expand_redirs(t_command *cmd);
-void					shift_args(t_command *cmd, size_t invalid_args,
-							size_t len);
 // free.c
 void					free_commands(t_command *commands);
 void					free_redirs(t_redir *redirs);
