@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:45 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 19:38:40 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:28:14 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,27 +108,29 @@ bool	valid_section(char **sections, int *i,
 	return (true);
 }
 
-bool	check_ambiguitity(t_redir *redir, t_command *command, char *file)
+bool	check_ambiguitity(char *file)
 {
 	char	*tmp;
-	char	*tmp2;
+	bool	quotes;
+	bool	dquotes;
+	int		i;
 
-	tmp = file;
-	if (!ft_strncmp(file, "$", 2))
-		return (true);
-	file = str_expander(file);
-	tmp2 = ft_strtrim(file, " \t\n");
-	free(file);
-	file = tmp2;
-	if (!file || (ft_strchr(file, SPACE) != NULL
-			&& ft_strlen(ft_strchr(file, SPACE)) > 0))
+	tmp = str_expander_hd2(file);
+	if (!tmp)
+		return (error_msg_ret(AMB_REDIR, file, EXIT_FAILURE), false);
+	i = 0;
+	quotes = false;
+	dquotes = false;
+	while (tmp && tmp[i])
 	{
-		error_msg(AMB_REDIR, tmp);
-		if (command->args)
-			free_list(command->args);
-		free(redir);
-		return (false);
+		if (tmp[i] == QUOTE && !dquotes)
+			quotes = !quotes;
+		else if (tmp[i] == DQUOTE && !quotes)
+			dquotes = !dquotes;
+		else if (tmp[i] == SPACE && !quotes && !dquotes)
+			return (error_msg_ret(AMB_REDIR, file, EXIT_FAILURE), false);
+		i++;
 	}
-	free(file);
+	free(tmp);
 	return (true);
 }

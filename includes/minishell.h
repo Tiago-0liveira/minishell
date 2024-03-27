@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 20:32:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:37:36 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ bool					valid_section(char **sections, int *i,
 //	\ command.c
 bool					command_parser(char *input);
 t_command				*init_command(char *input, int len);
-void					build_command(t_command *cmd);
+bool					build_command(t_command *cmd);
 //  \ parser.c
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
@@ -226,8 +226,7 @@ bool					update_command(t_command *command, char **raw_commands,
 							size_t *i, size_t end);
 bool					add_arg(t_command *command, char *section);
 char					*get_redir(char **line);
-bool					check_ambiguitity(t_redir *redir, t_command *command,
-							char *file);
+bool					check_ambiguitity(char *file);
 // \ str_expander.c
 char					*str_expander(char *str);
 void					expand_vars(char *str, char *expanded, int len);
@@ -260,14 +259,13 @@ void					execute_in_child(t_command *cmd, char **ev,
 							int has_next);
 void					execute_in_parent(t_mini *mini, t_command *cmd,
 							int has_next, int j);
-void					setup_redirections(t_command *cmd, bool isparent);
 void					wait_for_children(t_mini *mini);
 // \ execution_utils.c
 t_command				*ft_lstlast_mini(t_command *lst);
 int						heredoc_signs_set(t_mini *mini, t_command *cmd);
 void					bin_epe(t_mini *mini, t_command *cmd);
 void					fd_error(t_redir *redir, bool isparent);
-void					setup_redirections(t_command *cmd, bool isparent);
+bool					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,

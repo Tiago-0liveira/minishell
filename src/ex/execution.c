@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/27 15:52:16 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:38:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,18 @@ void	ft_execution(t_mini *mini, char **ev)
 	cmd = mini->commands;
 	while (cmd)
 	{
-		build_command(cmd);
+		has_next = (cmd->next != NULL);
+		if (!build_command(cmd) || (cmd->args && !expand_command(cmd)))
+		{
+			cmd = cmd->next;
+			continue ;
+		}
 		if (!heredoc_signs_set(mini, cmd))
 			return ;
-		has_next = (cmd->next != NULL);
 		if (has_next)
 		{
 			if (pipe(mini->input.pip) < 0)
 				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
-		}
-		if (cmd->args && !expand_command(cmd))
-		{
-			cmd = cmd->next;
-			continue ;
 		}
 		mini->if_cd = 0;
 		set_execution(mini, cmd, ev, has_next);

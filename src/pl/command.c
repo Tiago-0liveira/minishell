@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:38:18 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/27 16:00:21 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:37:55 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_command	*init_command(char *input, int len)
 	return (command);
 }
 
-void	build_command(t_command *cmd)
+bool	build_command(t_command *cmd)
 {
 	char	**raw_commands;
 	char	*expanded;
@@ -68,7 +68,7 @@ void	build_command(t_command *cmd)
 	i = 0;
 	expanded = str_expander_hd2(cmd->raw_cmd);
 	if (!expanded)
-		return (cmd->cmd_name = ft_strdup(""), (void) NULL);
+		return (cmd->cmd_name = ft_strdup(""), false);
 	raw_commands = parse(expanded);
 	end = parse_size(expanded);
 	free(expanded);
@@ -76,12 +76,12 @@ void	build_command(t_command *cmd)
 	while (i < end)
 	{
 		if (!update_command(cmd, raw_commands, &i, end))
-			return (free(cmd));
+			return (free(cmd), false);
 		i++;
 	}
 	if (cmd->args == NULL)
 		cmd->cmd_name = "";
 	else
 		cmd->cmd_name = cmd->args[0];
-	free_list(raw_commands);
+	return (free_list(raw_commands), true);
 }
