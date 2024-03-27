@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 23:46:05 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:07:24 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,34 @@
 
 void	prmpt_ctrlc(int signal)
 {
-	mini()->command_ret = SIG_BASE_RET + signal;
+	g_signal = signal;
 	write(1, "^C\n", 3);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
+void	solopipe_handler(int signal)
+{
+	g_signal = signal;
+	write(1, "\n", 1);
+}
+
 void	sig_init(void)
 {
-	signal(SIGINT, prmpt_ctrlc);
-	signal(SIGQUIT, SIG_IGN);
+	struct sigaction	sa;
+
+	memset(&sa, 0, sizeof(sa));
+	if (mini()->solo_pipe)
+		sa.sa_handler = solopipe_handler;
+	else
+		sa.sa_handler = prmpt_ctrlc;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 void	exec_sig(int signal)
 {
 	write(1, "\n", 1);
-	mini()->command_ret = signal + SIG_BASE_RET;
 	if (signal == SIGQUIT)
 		ft_putstr_fd("Quit (core dumped)", 2);
 }

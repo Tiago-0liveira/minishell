@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/19 16:31:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 19:56:11 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ t_mini	*mini(void)
 
 void	reset_mini(t_mini *mini)
 {
+	if (mini->solo_pipe)
+		return ;
 	if (mini->input.raw_line)
 		free(mini->input.raw_line);
 	if (mini->input.cmd_input != STDIN_FILENO)
@@ -38,12 +40,8 @@ void	reset_mini(t_mini *mini)
 		mini->commands = NULL;
 	}
 	if (mini->output)
-	{
 		free(mini->output);
-		mini->output = NULL;
-	}
-	if (!mini->solo_pipe)
-		mini->commands = NULL;
+	mini->output = NULL;
 }
 
 t_list	*set_env(char **env)

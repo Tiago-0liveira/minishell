@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/27 16:37:36 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 20:25:28 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@
 # define CMD_INSUF_PERMS "Permission denied: "
 # define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
 # define AMB_REDIR "ambiguous redirect: "
+# define UNEXPECTED_EOF "syntax error: unexpected end of file"
 
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
@@ -98,6 +99,7 @@
 # define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__);
 
 
+extern int	g_signal;
 
 enum					e_redir_type
 {
@@ -167,6 +169,8 @@ int						main(int ac, char **av, char **env);
 
 // input.c
 char					*get_input(bool prompt);
+char					*read_input(void);
+char					*solo_pipe_read_input_error(void);
 void					update_prompt(void);
 
 // errors.c
