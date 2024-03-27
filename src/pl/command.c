@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:38:18 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 19:38:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:00:21 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,34 +14,29 @@
 
 bool	command_parser(char *input)
 {
-	bool		quotes;
-	bool		dquotes;
-	int			i;
+	t_str_ex	ex;
 	int			j;
 	t_command	*cmd;
 
-	quotes = false;
-	dquotes = false;
-	i = 0;
+	memset(&ex, 0, sizeof(t_str_ex));
 	j = 0;
 	while (1)
 	{
-		if (input[i] == QUOTE && !dquotes)
-			quotes = !quotes;
-		else if (input[i] == DQUOTE && !quotes)
-			dquotes = !dquotes;
-		else if ((input[i] == PIPE || !input[i]) && !quotes && !dquotes)
+		if (input[ex.i] == QUOTE && !ex.dquotes)
+			ex.quotes = !ex.quotes;
+		else if (input[ex.i] == DQUOTE && !ex.quotes)
+			ex.dquotes = !ex.dquotes;
+		else if ((input[ex.i] == PIPE || !input[ex.i])
+			&& !ex.quotes && !ex.dquotes)
 		{
-			cmd = init_command(input + j, i - j);
-			if (!cmd)
-				free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+			cmd = init_command(input + j, ex.i - j);
 			command_add_back(cmd);
-			if (!input[i])
+			if (!input[ex.i])
 				break ;
-			j = ++i;
+			j = ++ex.i;
 			continue ;
 		}
-		i++;
+		ex.i++;
 	}
 	return (true);
 }
@@ -52,7 +47,7 @@ t_command	*init_command(char *input, int len)
 
 	command = malloc(sizeof(t_command));
 	if (!command)
-		return (NULL);
+		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
 	command->cmd_name = NULL;
 	command->raw_cmd = ft_substr(input, 0, len);
 	command->args = NULL;
@@ -73,10 +68,7 @@ void	build_command(t_command *cmd)
 	i = 0;
 	expanded = str_expander_hd2(cmd->raw_cmd);
 	if (!expanded)
-	{
-		cmd->cmd_name = ft_strdup("");
-		return ;
-	}
+		return (cmd->cmd_name = ft_strdup(""), (void) NULL);
 	raw_commands = parse(expanded);
 	end = parse_size(expanded);
 	free(expanded);
@@ -93,6 +85,3 @@ void	build_command(t_command *cmd)
 		cmd->cmd_name = cmd->args[0];
 	free_list(raw_commands);
 }
-
-
-
