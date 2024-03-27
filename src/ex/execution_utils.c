@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 22:54:50 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:51:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	fd_error(t_redir *redir, bool isparent)
 	free_shell(NULL, 0, NULL, NULL);
 }
 
-void	setup_redirections(t_command *cmd, bool isparent)
+bool	setup_redirections(t_command *cmd, bool isparent)
 {
 	int		fd;
 	t_redir	*redir;
@@ -78,7 +78,7 @@ void	setup_redirections(t_command *cmd, bool isparent)
 		else if (redir->type == RED_AOUT)
 			fd = open(redir->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
 		if (fd < 0)
-			fd_error(redir, isparent);
+			return (fd_error(redir, isparent), false);
 		if (redir->type == RED_IN || redir->type == RED_AIN)
 			dup2(fd, STDIN_FILENO);
 		else if (redir->type == RED_OUT || redir->type == RED_AOUT)
@@ -86,4 +86,5 @@ void	setup_redirections(t_command *cmd, bool isparent)
 		close(fd);
 		redir = redir->next;
 	}
+	return (true);
 }

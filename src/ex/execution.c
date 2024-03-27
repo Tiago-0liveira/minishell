@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/26 19:45:45 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/27 15:52:16 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next, int j)
 	original_stdin = dup(STDIN_FILENO);
 	if (has_next)
 		dup2(mini->input.pip[1], STDOUT_FILENO);
-	setup_redirections(cmd, true);
-	built_in(mini, cmd, j);
+	if (setup_redirections(cmd, true))
+		built_in(mini, cmd, j);
 	dup2(original_stdin, STDIN_FILENO);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdin);
@@ -87,7 +87,8 @@ void	pid_zero(t_command *cmd, char **ev, int has_next)
 		dup2(mini()->input.pip[1], STDOUT_FILENO);
 		close(mini()->input.pip[1]);
 	}
-	setup_redirections(cmd, false);
+	if (!setup_redirections(cmd, false))
+		free_shell(NULL, 1, NULL, NULL);
 	if (cmd->cmd_name != NULL && ft_strlen(cmd->cmd_name) > 0)
 		if (!execution(cmd, ev))
 			free_shell(NULL, 1, NULL, NULL);
