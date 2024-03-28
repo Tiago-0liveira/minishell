@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 01:56:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:22:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,21 +111,7 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 		ex->var_len++;
 		ex->i++;
 	}
-	if (str[ex->i] == ENV_Q)
-		res = get_env_var(mini()->env_list, str + ex->i++);
-	else if (ex->var_len == 0)
-	{
-		if (str[ex->i] == QUOTE || str[ex->i] == DQUOTE)
-			res = ft_strdup("");
-		else
-			res = ft_strdup("$");
-	}
-	else if (str[ex->i] != ENV_Q)
-	{
-		tmp = ft_substr(str, ex->i - ex->var_len, ex->var_len);
-		res = get_env_var(mini()->env_list, tmp);
-		free(tmp);
-	}
+	res = str_expander_process_res(ex, str);
 	ex->var = res;
 	if (has_char_in_set(res, "><"))
 	{

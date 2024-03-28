@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 03:11:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:23:11 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ char					*str_expander_hd2(char *str);
 bool					expand_command(t_command *cmd);
 void					expand_args(t_command *cmd);
 bool					expand_redirs(t_command *cmd);
+char					*str_expander_process_res(t_str_ex *ex, char *str);
 // free.c
 void					free_commands(t_command *commands);
 void					free_redirs(t_redir *redirs);
