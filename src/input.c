@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 00:35:12 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:52:58 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*read_input(void)
 	char	*tmp2;
 	int		fds[2];
 
-	prepare_for_input(fds);
+	prepare_for_input(fds, solo_pipe_sigint_handler, mini()->output);
 	mini()->input.inputting = true;
 	tmp = get_next_line(mini()->input.stdin_cpy);
 	mini()->input.inputting = false;
@@ -82,16 +82,17 @@ char	*solo_pipe_read_input_error(void)
 	return (ft_strdup("exit"));
 }
 
-void	prepare_for_input(int fds[2])
+void	prepare_for_input(int fds[2], void(handler)(int), char *prompt)
 {
 	if (pipe(fds) == -1)
 		free_shell(PIPE_ERROR, STDERR_FILENO, NULL, NULL);
 	mini()->input.stdin_cpy = dup(STDIN_FILENO);
 	dup2(fds[0], STDIN_FILENO);
 	g_signal = 0;
-	signal(SIGINT, solo_pipe_sigint_handler);
-	signal(SIGQUIT, solo_pipe_sigint_handler);
-	write(1, mini()->output, ft_strlen(mini()->output));
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
+	if (prompt)
+		ft_putstr(prompt);
 }
 
 void	update_prompt(void)

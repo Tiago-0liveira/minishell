@@ -16,7 +16,7 @@ SRC_ROOT_FILES = main.c input.c mini.c utils.c utils2.c free.c signal_handle.c \
 B-INS_FILES = cd.c echo.c env.c export.c pwd.c unset.c utils.c exit.c \
 				cd2.c cd3.c
 EX_FILES = execute.c execution.c heredoc.c execution_utils.c		  \
-				heredoc_str_expander.c
+				heredoc_str_expander.c heredoc_utils.c
 
 PARSER_LEXER_FILES = lexer.c parser.c parser_helpers.c str_expander.c \
 				str_expander_utils.c str_expander2.c command.c

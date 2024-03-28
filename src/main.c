@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 00:16:04 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:19:05 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **env)
 		}
 		else if (mini()->input.raw_line && input_error_check(mini())
 			&& syntax_check(mini()->input.raw_line) && !mini()->solo_pipe
-			&& command_parser(mini()->input.raw_line))
+			&& command_parser(mini()->input.raw_line) && handle_heredocs(mini()->commands))
 		{
 			ft_execution(mini(), env);
 			add_history(mini()->input.raw_line);

@@ -6,34 +6,38 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 02:55:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:30:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	heredoc_read_input_to_file(char *delim, char *input, char *file)
+bool	heredoc_read_input_to_file(char *delim, char *input, char *file)
 {
-	int	fd;
+	int		fd;
+	int		fds[2];
+	int		ret;
 
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		error_msg(FD_NOT_FOUND, "heredoc");
-	signal(SIGINT, SIG_DFL);
-	while (1)
+	prepare_for_input(fds, solo_pipe_sigint_handler, NULL);
+	if (!mini()->input.hd_lines)
+		mini()->input.hd_lines = 1;
+	ret = 1;
+	while (ret)
 	{
-		input = readline("> ");
-		if (!input || (!ft_strcmp(input, delim) && input[0] != '\0'))
-		{
-			if (input)
-				free(input);
-			break ;
-		}
+		write(1, "> ", 2);
+		input = get_next_line(mini()->input.stdin_cpy);
+		ret = heredoc_process_input(&input, delim, fd, fds);
+		if (ret == -1)
+			return (false);
+		mini()->input.hd_lines++;
 		input = expand_input_hd(input);
 		ft_putendl_fd(input, fd);
 		free(input);
 	}
-	close(fd);
+	return (heredoc_cleanup(mini(), fd, fds), true);
 }
 
 char	*heredoc_get_new_file(t_mini *mini)
@@ -57,6 +61,7 @@ char	*heredoc(t_mini *mini, char *delim)
 	char			*input;
 	struct termios	termios;
 	struct termios	termios_backup;
+	bool			res;
 
 	input = NULL;
 	file = heredoc_get_new_file(mini);
@@ -64,9 +69,13 @@ char	*heredoc(t_mini *mini, char *delim)
 	termios = termios_backup;
 	termios.c_cc[VQUIT] = _POSIX_VDISABLE;
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios);
-	heredoc_read_input_to_file(delim, input, file);
-
+	if (!delim)
+		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
+	res = heredoc_read_input_to_file(delim, input, file);
+	free(delim);
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
+	if (!res)
+		return (free(file), NULL);
 	return (file);
 }
 

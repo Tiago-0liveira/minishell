@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 16:36:39 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/07 01:43:57 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:34:40 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	error_msg(char *cmd, char *msg)
 {
+	if (!ft_strncmp(cmd, HEREDOC_CTRD_WARNING, ft_strlen(HEREDOC_CTRD_WARNING)))
+		ft_putstr_fd("\n", STDERR_FILENO);
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	if (!ft_strncmp(cmd, NOT_VALID_IDENT, ft_strlen(NOT_VALID_IDENT) + 1)

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 15:23:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:21:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,9 @@
 # define AMB_REDIR "ambiguous redirect: "
 # define UNEXPECTED_EOF "syntax error: unexpected end of file"
 
+// heredoc defines
+# define HEREDOC_CTRD_WARNING "warning: here-document at line "
+
 # define CMD_NOT_FOUND_RET 127
 # define CMD_INSUF_PERMS_RET 126
 # define SIG_BASE_RET 128
@@ -139,6 +142,7 @@ typedef struct s_input
 	int					pip[2];
 	int					cmd_input;
 	int					stdin_cpy;
+	int					hd_lines;
 	bool				inputting;
 }						t_input;
 
@@ -155,6 +159,12 @@ typedef struct t_doc
 	char				*doc;
 	struct t_doc		*next;
 }						t_doc;
+
+typedef struct t_doc_parser
+{
+	struct t_doc		*docs;
+	bool				error;
+} t_doc_parser;
 
 typedef struct s_command
 {
@@ -189,7 +199,7 @@ int						main(int ac, char **av, char **env);
 char					*get_input();
 char					*read_input(void);
 char					*solo_pipe_read_input_error(void);
-void					prepare_for_input(int fds[2]);
+void					prepare_for_input(int fds[2], void(handler)(int), char *prompt);
 void					update_prompt(void);
 
 // errors.c
@@ -235,17 +245,18 @@ bool					valid_section(char **sections, int *i,
 							char **last_section, char **error);
 bool					check_ambiguitity(char *file);
 //	\ command.c
-bool					command_parser(char *input);
 t_command				*init_command(char *input, int len);
-bool					build_command(t_command *cmd);
-t_doc					*init_docs(char *input);
+t_doc_parser			*init_docs(char *input);
 void					doc_add_back(t_doc **docs, char *new_doc_file);
+bool					handle_heredocs(t_command *commands);
 //  \ hd_arg_expander.c
 
 //  \ parser.c
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(char *input);
+bool					command_parser(char *input);
+bool					build_command(t_command *cmd);
 //  \ parser_helpers.c
 bool					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
@@ -300,11 +311,15 @@ bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,
 							int has_next);
 // \ heredoc.c
-void					heredoc_read_input_to_file(char *delim, char *input, char *file);
+bool					heredoc_read_input_to_file(char *delim, char *input, char *file);
 char					*heredoc_get_new_file(t_mini *mini);
 char					*heredoc(t_mini *mini, char *delim);
 char					*sanitize_hd_delim(char *delim);
 int						sanitize_hd_delim_len(char *delim);
+// \ heredoc_utils.c
+char					*heredoc_ctrd_error(t_mini *mini, char *delim);
+void					heredoc_cleanup(t_mini *mini, int fd, int fds[2]);
+int						heredoc_process_input(char **input, char *delim, int fd, int fds[2]);
 // \ heredoc_str_expander.c
 void					expand_vars_hd(char *str, char *expanded, int len);
 int						str_expander_len_hd(char *str);

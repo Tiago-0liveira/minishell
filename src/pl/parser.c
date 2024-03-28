@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 19:38:16 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 16:07:32 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,62 @@ char	**parse(char *input)
 		i++;
 	}
 	return (s);
+}
+
+bool	command_parser(char *input)
+{
+	t_str_ex	ex;
+	int			j;
+	t_command	*cmd;
+
+	memset(&ex, 0, sizeof(t_str_ex));
+	j = 0;
+	while (1)
+	{
+		if (input[ex.i] == QUOTE && !ex.dquotes)
+			ex.quotes = !ex.quotes;
+		else if (input[ex.i] == DQUOTE && !ex.quotes)
+			ex.dquotes = !ex.dquotes;
+		else if ((input[ex.i] == PIPE || !input[ex.i])
+			&& !ex.quotes && !ex.dquotes)
+		{
+			cmd = init_command(input + j, ex.i - j);
+			command_add_back(cmd);
+			if (!input[ex.i])
+				break ;
+			j = ++ex.i;
+			continue ;
+		}
+		ex.i++;
+	}
+	return (true);
+}
+
+bool	build_command(t_command *cmd)
+{
+	char	**raw_commands;
+	char	*expanded;
+	size_t	i;
+	size_t	end;
+
+	i = 0;
+	expanded = str_expander_hd2(cmd->raw_cmd);
+	cmd->expanded = true;
+	if (!expanded)
+		return (cmd->cmd_name = ft_strdup(""), false);
+	raw_commands = parse(expanded);
+	end = parse_size(expanded);
+	free(expanded);
+	i = 0;
+	while (i < end)
+	{
+		if (!update_command(cmd, raw_commands, &i, end))
+			return (free(cmd), false);
+		i++;
+	}
+	if (cmd->args == NULL)
+		cmd->cmd_name = "";
+	else
+		cmd->cmd_name = cmd->args[0];
+	return (free_list(raw_commands), true);
 }
