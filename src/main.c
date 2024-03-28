@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/27 20:09:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 00:16:04 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		sig_init();
-		mini()->input.raw_line = get_input(true);
+		mini()->input.raw_line = get_input();
 		if (mini()->input.raw_line && ft_strlen(mini()->input.raw_line) == 0)
 		{
 			free(mini()->input.raw_line);

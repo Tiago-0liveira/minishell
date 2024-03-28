@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/27 20:25:28 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:24:43 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,17 @@
 # include <stdbool.h>
 # include <stdio.h>
 # include <errno.h>
-# include <sys/wait.h>
 # include <termios.h>
+# include <dirent.h>
+# include <fcntl.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/ioctl.h>
+# include <sys/file.h>
+# include <sys/ioctl.h>
+# include <sys/stat.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define PROMPT "$ "
 # define HEREDOC_PROMPT "heredoc>"
@@ -129,6 +138,8 @@ typedef struct s_input
 	size_t				pipe_c;
 	int					pip[2];
 	int					cmd_input;
+	int					stdin_cpy;
+	bool				inputting;
 }						t_input;
 
 typedef struct s_redir
@@ -168,9 +179,10 @@ typedef struct s_mini
 int						main(int ac, char **av, char **env);
 
 // input.c
-char					*get_input(bool prompt);
+char					*get_input();
 char					*read_input(void);
 char					*solo_pipe_read_input_error(void);
+void					prepare_for_input(int fds[2]);
 void					update_prompt(void);
 
 // errors.c
@@ -189,6 +201,7 @@ bool					is_absolute_path(char *cmd);
 int						can_access_path(char *path);
 int						can_path_to(char *path);
 char					*get_env_value(t_list *envs, char *key);
+// is located in utils.c (didn't fit)
 char					*if_relative_path(char *cmd, bool home_added);
 // mini.c
 t_mini					*mini(void);
@@ -253,8 +266,10 @@ void					free_shell(char *err, int status,
 							void (*cleanup_func)(void *), void *free_arg);
 void					free_commands_wrapper(void *arg);
 // signal_handle.c
-void					prmpt_ctrlc(int signal);
+void					prmpt_ctrlc(int sig);
+void					solopipe_handler(int sig, siginfo_t *info, void *ctx);
 void					sig_init(void);
+void					solo_pipe_sigint_handler(int sig);
 void					exec_sig(int signal);
 // ex
 // \ execution.c

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/25 17:43:32 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:22:36 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,16 @@ void	free_assign_null(void **ptr)
 	if (*ptr)
 		free(*ptr);
 	*ptr = NULL;
+}
+
+char	*if_relative_path(char *cmd, bool home_added)
+{
+	char	*c;
+
+	if (home_added)
+		free(cmd);
+	c = get_relative_path(cmd);
+	return (c);
 }
 
 void	print_command(t_command *command)

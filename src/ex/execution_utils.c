@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/27 15:51:34 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:14:02 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ int	heredoc_signs_set(t_mini *mini, t_command *cmd)
 	char	*heredoc_fd;
 	char	*tmp;
 
-	signal(SIGQUIT, exec_sig);
+	/*signal(SIGQUIT, exec_sig);
 	signal(SIGPIPE, exec_sig);
-	signal(SIGINT, exec_sig);
+	signal(SIGINT, exec_sig);*/
 	if (cmd->redirs && cmd->redirs->type == RED_AIN)
 	{
 		tmp = remove_quotes(cmd->redirs->file);
