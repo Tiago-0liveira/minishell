@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 19:21:39 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:56:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,12 @@ char	*str_expander_var_len(t_str_ex *ex, char *str)
 		free(tmp);
 	}
 	ex->var = res;
+	if (has_char_in_set(res, "><"))
+	{
+		tmp = res;
+		res = ft_strnjoin(3, "'", tmp, "'");
+		free(tmp);
+	}
 	return (ex->var_clen = ft_strlen(res), res);
 }
 
