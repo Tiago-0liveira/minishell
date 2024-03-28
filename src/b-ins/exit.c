@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 20:13:48 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/08 00:16:04 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:52:30 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ bool	bi_exit(t_mini *mini, char **args, bool has_next)
 	if (!valid)
 	{
 		mini->exit_unavailability = 1;
-		return (error_msg(EXIT_NUMERIR_ARG_REQ, args[1]),
-			mini->command_ret = 1, false);
+		error_msg(EXIT_NUMERIR_ARG_REQ, args[1]);
+		free_shell(NULL, status, NULL, NULL);
 	}
 	else if (args[2])
 	{
