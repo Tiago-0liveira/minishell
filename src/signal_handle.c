@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 19:21:29 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 23:02:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,7 @@ void	exec_sig(int signal)
 {
 	g_signal = signal;
 	if (!mini()->input.inputting)
-	{
-		printf("here\n");
 		return ;
-	}
 	if (signal == SIGQUIT)
 		ft_putstr_fd("Quit (core dumped)", STDERR_FILENO);
 	write(STDERR_FILENO, "\n", 1);
