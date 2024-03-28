@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/25 18:26:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 02:59:43 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	free_commands(t_command *commands)
 {
 	t_command	*tmp;
+	t_doc		*doctmp;
 
 	while (commands != NULL)
 	{
@@ -26,6 +27,13 @@ void	free_commands(t_command *commands)
 			free_redirs(commands->redirs);
 		if (commands->args)
 			free_list(commands->args);
+		while (commands->docs)
+		{
+			doctmp = commands->docs;
+			commands->docs = commands->docs->next;
+			free(doctmp->doc);
+			free(doctmp);
+		}
 		free(commands);
 		commands = tmp;
 	}

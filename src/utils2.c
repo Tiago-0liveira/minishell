@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:05:11 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/19 16:15:43 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 03:09:02 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,55 +46,21 @@ bool	has_char_in_set(char *s, char *set)
 	return (false);
 }
 
-char	*remove_quotes(char *file)
+void	command_add_back(t_command *new_command)
 {
-	char	*r;
-	bool	quotes;
-	bool	dquotes;
-	int		i;
-	int		j;
+	t_mini		*mi;
+	t_command	*last_command;
 
-	r = malloc(remove_quotes_new_len(file) + 1);
-	if (!r)
-		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
-	i = 0;
-	j = 0;
-	quotes = false;
-	dquotes = false;
-	while (file && file[i])
+	mi = mini();
+	if (mi->commands == NULL)
 	{
-		if (file[i] == QUOTE && !dquotes)
-			quotes = !quotes;
-		else if (file[i] == DQUOTE && !quotes)
-			dquotes = !dquotes;
-		else
-			r[j++] = file[i];
-		i++;
+		mi->commands = new_command;
+		return ;
 	}
-	r[j] = '\0';
-	return (r);
-}
-
-int	remove_quotes_new_len(char *file)
-{
-	bool	quotes;
-	bool	dquotes;
-	int		i;
-	int		len;
-
-	quotes = false;
-	dquotes = false;
-	i = 0;
-	len = 0;
-	while (file && file[i])
+	last_command = mi->commands;
+	while (last_command->next != NULL)
 	{
-		if (file[i] == QUOTE && !dquotes)
-			quotes = !quotes;
-		else if (file[i] == DQUOTE && !quotes)
-			dquotes = !dquotes;
-		else
-			len++;
-		i++;
+		last_command = last_command->next;
 	}
-	return (len);
+	last_command->next = new_command;
 }

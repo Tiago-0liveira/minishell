@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 01:24:43 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 03:11:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,12 @@ typedef struct s_redir
 	struct s_redir		*next;
 }						t_redir;
 
+typedef struct t_doc
+{
+	char				*doc;
+	struct t_doc		*next;
+}						t_doc;
+
 typedef struct s_command
 {
 	char				*cmd_name;
@@ -157,7 +163,7 @@ typedef struct s_command
 	char				**args;
 	t_redir				*redirs;
 	bool				expanded;
-	int					status;
+	t_doc				*docs;
 	struct s_command	*next;
 }						t_command;
 
@@ -173,6 +179,7 @@ typedef struct s_mini
 	char				*home_tmp;
 	int					if_cd;
 	int					solo_pipe;
+	int					doc_n;
 }						t_mini;
 
 // main.c
@@ -218,8 +225,7 @@ void					print_command(t_command *command);//TODO: remove
 bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
 bool					has_char_in_set(char *s, char *set);
-char					*remove_quotes(char *file);
-int						remove_quotes_new_len(char *file);
+void					command_add_back(t_command *new_command);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
@@ -227,23 +233,27 @@ bool					syntax_check(char *input);
 bool					semantic_checker(char **raw_commands);
 bool					valid_section(char **sections, int *i,
 							char **last_section, char **error);
+bool					check_ambiguitity(char *file);
 //	\ command.c
 bool					command_parser(char *input);
 t_command				*init_command(char *input, int len);
 bool					build_command(t_command *cmd);
+t_doc					*init_docs(char *input);
+void					doc_add_back(t_doc **docs, char *new_doc_file);
+//  \ hd_arg_expander.c
+
 //  \ parser.c
 size_t					parse_size(char *line);
 char					*get_next_section(char **line);
 char					**parse(char *input);
 //  \ parser_helpers.c
-void					command_add_back(t_command *new_command);
 bool					assign_redir(t_command *command, char *redir_file,
 							enum e_redir_type type);
 bool					update_command(t_command *command, char **raw_commands,
 							size_t *i, size_t end);
 bool					add_arg(t_command *command, char *section);
 char					*get_redir(char **line);
-bool					check_ambiguitity(char *file);
+char					*get_next_doc_file(t_doc **docs);
 // \ str_expander.c
 char					*str_expander(char *str);
 void					expand_vars(char *str, char *expanded, int len);
@@ -281,7 +291,6 @@ void					execute_in_parent(t_mini *mini, t_command *cmd,
 void					wait_for_children(t_mini *mini);
 // \ execution_utils.c
 t_command				*ft_lstlast_mini(t_command *lst);
-int						heredoc_signs_set(t_mini *mini, t_command *cmd);
 void					bin_epe(t_mini *mini, t_command *cmd);
 void					fd_error(t_redir *redir, bool isparent);
 bool					setup_redirections(t_command *cmd, bool isparent);
@@ -290,7 +299,11 @@ bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,
 							int has_next);
 // \ heredoc.c
+void					heredoc_read_input_to_file(char *delim, char *input, char *file);
+char					*heredoc_get_new_file(t_mini *mini);
 char					*heredoc(t_mini *mini, char *delim);
+char					*sanitize_hd_delim(char *delim);
+int						sanitize_hd_delim_len(char *delim);
 // \ heredoc_str_expander.c
 void					expand_vars_hd(char *str, char *expanded, int len);
 int						str_expander_len_hd(char *str);

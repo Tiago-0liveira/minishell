@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/27 15:54:58 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 03:13:04 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ bool	assign_redir(t_command *command, char *redir_file,
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
 	if (!check_ambiguitity(redir_file))
 		return (false);
-	redir->file = ft_strdup(redir_file);
+	if (type == RED_AIN)
+		redir->file = get_next_doc_file(&command->docs);
+	else
+		redir->file = ft_strdup(redir_file);
 	if (!redir->file)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
 	redir->type = type;
-	redir->next = NULL;
 	if (!command->redirs)
 		command->redirs = redir;
 	else
@@ -37,26 +39,7 @@ bool	assign_redir(t_command *command, char *redir_file,
 			last_redir = last_redir->next;
 		last_redir->next = redir;
 	}
-	return (true);
-}
-
-void	command_add_back(t_command *new_command)
-{
-	t_mini		*mi;
-	t_command	*last_command;
-
-	mi = mini();
-	if (mi->commands == NULL)
-	{
-		mi->commands = new_command;
-		return ;
-	}
-	last_command = mi->commands;
-	while (last_command->next != NULL)
-	{
-		last_command = last_command->next;
-	}
-	last_command->next = new_command;
+	return (redir->next = NULL, true);
 }
 
 bool	update_command(t_command *command, char **raw_commands, size_t *i,
@@ -126,4 +109,19 @@ char	*get_redir(char **line)
 	if (redir_type(*line - i) == RED_OUT && *line && **line == PIPE)
 		(*line) += i;
 	return (tmp);
+}
+
+char	*get_next_doc_file(t_doc **docs)
+{
+	t_doc	*tmp;
+	char	*doc;
+
+	if (!*docs)
+		return (NULL);
+	tmp = *docs;
+	doc = tmp->doc;
+	tmp->doc = NULL;
+	*docs = tmp->next;
+	free(tmp);
+	return (doc);
 }
