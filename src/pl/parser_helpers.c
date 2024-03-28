@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 03:13:04 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 18:26:30 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ bool	assign_redir(t_command *command, char *redir_file,
 	redir = malloc(sizeof(t_redir));
 	if (!redir)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free_commands_wrapper, command);
-	if (!check_ambiguitity(redir_file))
-		return (false);
 	if (type == RED_AIN)
 		redir->file = get_next_doc_file(&command->docs);
 	else
