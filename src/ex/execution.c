@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 03:04:48 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 19:19:20 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,8 +99,12 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 	pid_t	pid;
 
 	pid = fork();
+	signal(SIGINT, exec_sig);
+	signal(SIGQUIT, exec_sig);
 	if (pid == 0)
+	{
 		pid_zero(cmd, ev, has_next);
+	}
 	else if (pid < 0)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else

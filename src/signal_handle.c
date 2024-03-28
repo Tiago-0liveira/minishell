@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 01:22:31 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 19:21:29 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	sig_init(void)
 	sa.sa_flags = SA_SIGINFO;
 	sigaction(SIGCHLD, &sa, NULL);
 	signal(SIGINT, prmpt_ctrlc);
-	signal(SIGQUIT, exec_sig);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGTSTP, SIG_IGN);
 }
 
@@ -60,7 +60,12 @@ void	solo_pipe_sigint_handler(int sig)
 void	exec_sig(int signal)
 {
 	g_signal = signal;
+	if (!mini()->input.inputting)
+	{
+		printf("here\n");
+		return ;
+	}
 	if (signal == SIGQUIT)
-		ft_putstr_fd("Quit", 2);
-	write(1, "\n", 1);
+		ft_putstr_fd("Quit (core dumped)", STDERR_FILENO);
+	write(STDERR_FILENO, "\n", 1);
 }
