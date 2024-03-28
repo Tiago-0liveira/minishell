@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 18:18:09 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:28:48 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ bool	expand_command_gate(t_command *cmd)
 		if (!ft_strncmp(cmd->args[i], "..", 3))
 			return (false);
 	}
-	if ((cmd->args && cmd->args[1]/* && !ft_strncmp(cmd->args[1], "$vari", 6)*/))
+	if (cmd->args && cmd->args[1])
 		return (false);
 	return (true);
 }

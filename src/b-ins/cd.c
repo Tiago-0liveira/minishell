@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 03:57:11 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:28:28 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ void	bi_cd(t_mini *mini, char **av, int p)
 	i = -1;
 	if (!cd_start(av, oldpwd))
 		return ;
-	if (!av[1] || (av[1][0] == TILDE) || (!ft_strncmp(av[1], "$vari", 5)))
+	if (!av[1] || (av[1][0] == TILDE))
 	{
 		if (!cd_noarg_return(av[1], p, oldpwd))
 			return ;
 		else
 			i = 1;
 	}
-	if (!ft_strncmp(av[1], "/", 2) || !ft_strncmp(av[1], "/$vari", 7))
+	if (!ft_strncmp(av[1], "/", 2))
 	{
 		chdir("/");
 		env_update(mini, oldpwd);

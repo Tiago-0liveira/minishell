@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 01:22:36 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:28:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	valid_cmd_arg(char *str)
 	int		l;
 
 	quoted = has_char_in_set(str, "\"\'");
-	if (!ft_strncmp(str, "$vari", 6) && mini()->if_cd)
+	if (mini()->if_cd)
 		quoted = true;
 	l = str_expander_len(str);
 	if (!quoted && l == 0)

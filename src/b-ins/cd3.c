@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd3.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:16:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 03:52:08 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/28 01:28:40 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	cd_noarg_tilde(char *av, int p, char *oldpwd)
 		chdir(mini()->home_tmp + 5);
 		env_update(mini(), oldpwd);
 	}
-	if (!av || (av && !ft_strncmp(av, "$vari", 5)))
+	if (!av)
 		return (0);
 	return (1);
 }
