@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 01:28:28 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:59:32 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,12 @@ void	bi_cd(t_mini *mini, char **av, int p)
 {
 	char	oldpwd[PATH_MAX + 1];
 	int		i;
+	char	*tmp;
 
 	i = -1;
 	if (!cd_start(av, oldpwd))
 		return ;
-	if (!av[1] || (av[1][0] == TILDE))
+	if (!av[1] || (av[1][0] == TILDE) || !ft_strncmp(av[1], "--", 3))
 	{
 		if (!cd_noarg_return(av[1], p, oldpwd))
 			return ;
@@ -95,15 +96,12 @@ void	bi_cd(t_mini *mini, char **av, int p)
 			i = 1;
 	}
 	if (!ft_strncmp(av[1], "/", 2))
-	{
-		chdir("/");
-		env_update(mini, oldpwd);
-		return ;
-	}
+		return (chdir("/"), env_update(mini, oldpwd));
+	if (!ft_strncmp(av[1], "-", 2))
+		return (tmp = get_env_var(mini->env_list, "OLDPWD"), chdir(tmp),
+			free(tmp), env_update(mini, oldpwd));
 	if (i == -1 || (av[1][0] == TILDE && av[1][1]))
-	{
 		if (!path_with_dots(av[1], oldpwd, p))
 			return ;
-	}
 	mini->command_ret = 0;
 }
