@@ -6,17 +6,18 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 17:30:23 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:38:51 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool	heredoc_read_input_to_file(char *delim, char *input, char *file)
+bool	heredoc_read_input_to_file(char *delim, char *file)
 {
 	int		fd;
 	int		fds[2];
 	int		ret;
+	char	*input;
 
 	fd = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
@@ -58,12 +59,10 @@ char	*heredoc_get_new_file(t_mini *mini)
 char	*heredoc(t_mini *mini, char *delim)
 {
 	char			*file;
-	char			*input;
 	struct termios	termios;
 	struct termios	termios_backup;
 	bool			res;
 
-	input = NULL;
 	file = heredoc_get_new_file(mini);
 	tcgetattr(STDIN_FILENO, &termios_backup);
 	termios = termios_backup;
@@ -71,7 +70,7 @@ char	*heredoc(t_mini *mini, char *delim)
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios);
 	if (!delim)
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
-	res = heredoc_read_input_to_file(delim, input, file);
+	res = heredoc_read_input_to_file(delim, file);
 	free(delim);
 	tcsetattr(STDIN_FILENO, TCSANOW, &termios_backup);
 	if (!res)
