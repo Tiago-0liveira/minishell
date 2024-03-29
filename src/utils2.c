@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:05:11 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 03:09:02 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:08:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,17 @@ void	command_add_back(t_command *new_command)
 		last_command = last_command->next;
 	}
 	last_command->next = new_command;
+}
+
+void	prepare_for_input(int fds[2], void (*handler)(int), char *prompt)
+{
+	if (pipe(fds) == -1)
+		free_shell(PIPE_ERROR, STDERR_FILENO, NULL, NULL);
+	mini()->input.stdin_cpy = dup(STDIN_FILENO);
+	dup2(fds[0], STDIN_FILENO);
+	g_signal = 0;
+	signal(SIGINT, handler);
+	signal(SIGQUIT, handler);
+	if (prompt)
+		ft_putstr(prompt);
 }
