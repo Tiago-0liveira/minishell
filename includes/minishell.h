@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 16:20:54 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:28:03 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,7 +290,7 @@ bool					expand_redirs(t_command *cmd);
 char					*str_expander_process_res(t_str_ex *ex, char *str);
 // free.c
 void					free_commands(t_command *commands);
-void					free_redirs(t_redir *redirs);
+void					free_redirs_and_fds(t_command *command);
 void					free_list(char **list);
 void					free_shell(char *err, int status,
 							void (*cleanup_func)(void *), void *free_arg);
@@ -307,12 +307,13 @@ void					ft_execution(t_mini *mini, char **ev);
 void					execute_in_child(t_command *cmd, char **ev,
 							int has_next);
 void					execute_in_parent(t_mini *mini, t_command *cmd,
-							int has_next, int j);
+							int has_next);
 void					wait_for_children(t_mini *mini);
 // \ execution_utils.c
 t_command				*ft_lstlast_mini(t_command *lst);
 void					fd_error(t_redir *redir, bool isparent);
 bool					setup_redirections(t_command *cmd, bool isparent);
+void					handle_command_fail(t_command *cmd);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,
@@ -325,7 +326,7 @@ char					*sanitize_hd_delim(char *delim);
 int						sanitize_hd_delim_len(char *delim);
 // \ heredoc_utils.c
 char					*heredoc_ctrd_error(t_mini *mini, char *delim);
-void					heredoc_cleanup(t_mini *mini, int fd, int fds[2]);
+void					input_cleanup(t_mini *mini, int *fd, int fds[2]);
 int						heredoc_process_input(char **input, char *delim,
 							int fd, int fds[2]);
 // \ heredoc_str_expander.c
@@ -337,13 +338,13 @@ char					*expand_input_hd(char *s);
 // \ utils.c
 int						if_builtin(char *s);
 int						if_builtin_epe(char *s);
-void					built_in(t_mini *mini, t_command *cmd, int j);
+void					built_in(t_mini *mini, t_command *cmd);
 t_list					*sort_list(t_list *lst);
 // \ cd.c
-void					bi_cd(t_mini *mini, char **av, int p);
+void					bi_cd(t_mini *mini, t_command *cmd);
 // \ cd2.c
 int						path_with_dots_2(char **pths, char *oldpwd, int *j,
-							int p);
+							bool can_cd);
 void					non_dot_chdir(char **pths, char *oldpwd, int *j, int p);
 void					clean_until_dots(char **pths, int *j, int *p);
 void					clean_after_access(char *oldpwd, char **pths,
@@ -351,27 +352,27 @@ void					clean_after_access(char *oldpwd, char **pths,
 int						dot_handler(char *t_oldpwd, char *oldpwd, char **pths,
 							int p);
 // \ cd3.c
-int						cd_noarg_tilde(char *av, int p, char *oldpwd);
+int						cd_noarg_tilde(char *av, bool can_cd, char *oldpwd);
 char					*delete_until_char(char *str, char c);
 void					env_update(t_mini *mini, char *oldpwd);
 char					*ft_strdup_oldpwd(const char *s, int *i);
-int						cd_noarg_return(char *av, int p, char *oldpwd);
+int						cd_noarg_return(char *av, bool can_cd, char *oldpwd);
 // \ echo.c
 void					bi_echo(char **av);
 // \ env.c
 void					bi_env(t_list *env_list);
 char					*get_env_var(t_list *env_list, char *var);
 int						valid_env_var_name(char *str, bool is_entry);
+void					delete_var(t_list **head, void *node_to_del);
 // \ export.c
 int						ft_strlen_eq(char *s);
-void					delete_var(t_list **head, void *node_to_del);
 void					show_export(t_list *env_list, char **av);
 void					bi_export(t_mini *mini, char **av, int j);
 void					export_add(t_mini *mini, char *av);
 // \ pwd.c
 void					bi_pwd(void);
 // \ unset.c
-void					bi_unset(t_mini *mini, char **av, int j);
+void					bi_unset(t_mini *mini, t_command *cmd);
 // \ exit.c
 int						calculate_exit_code_from_string(const char *number);
 bool					str_is_num(const char *str);

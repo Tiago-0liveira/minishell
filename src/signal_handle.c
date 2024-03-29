@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 23:02:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:02:18 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	prmpt_ctrlc(int sig)
 {
 	g_signal = sig;
+	mini()->command_ret = SIG_BASE_RET + sig;
 	if (!mini()->input.inputting)
 		return ;
 	if (mini()->solo_pipe)
@@ -60,6 +61,11 @@ void	solo_pipe_sigint_handler(int sig)
 void	exec_sig(int signal)
 {
 	g_signal = signal;
+	if (signal == SIGPIPE)
+	{
+		ft_putstr_fd("SIGPIPE\n", STDERR_FILENO);
+		return ;
+	}
 	if (!mini()->input.inputting)
 		return ;
 	if (signal == SIGQUIT)
