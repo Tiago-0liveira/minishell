@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 17:21:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:49:51 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,12 @@
 
 /* Last command exit status
 	?
- */
+*/
 # define ENV_Q 63
 
 # define ECHO_FLAG_N "-n"
 
 # define MALLOC_ERROR "Malloc failed!\n"
-//# define MALLOC_ERROR ft_strnjoin(4, "Malloc failed!\n", __FILE__, ":", __LINE__)
-
 
 # define CHECK "\xE2\x9C\x93"
 # define X "\xE2\x9C\x97"
@@ -106,10 +104,11 @@
 
 # define EXIT_STATUS_N 256
 
-//TODO: remove
+//# define DETAILED_INPUT_PROMPT
 
-# define DEBUG_MSG(fmt, ...) printf("[%s::%s::%d]:" fmt, __FILE__, __func__, __LINE__, ##__VA_ARGS__);
-
+# ifndef DETAILED_INPUT_PROMPT
+#  define MINISHELL_BASIC_PROMPT "$> "
+# endif
 
 extern int	g_signal;
 
@@ -164,7 +163,7 @@ typedef struct t_doc_parser
 {
 	struct t_doc		*docs;
 	bool				error;
-} t_doc_parser;
+}						t_doc_parser;
 
 typedef struct s_command
 {
@@ -194,13 +193,18 @@ typedef struct s_mini
 
 // main.c
 int						main(int ac, char **av, char **env);
+void					init_main(t_mini *mini, int ac, char **av, char **env);
 
 // input.c
-char					*get_input();
+char					*get_input(void);
+# ifdef DETAILED_INPUT_PROMPT
+
+void					update_prompt(void);
+
+# endif
+
 char					*read_input(void);
 char					*solo_pipe_read_input_error(void);
-void					prepare_for_input(int fds[2], void(handler)(int), char *prompt);
-void					update_prompt(void);
 
 // errors.c
 void					error_msg(char *cmd, char *msg);
@@ -236,6 +240,8 @@ bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
 bool					has_char_in_set(char *s, char *set);
 void					command_add_back(t_command *new_command);
+void					prepare_for_input(int fds[2], void(*handler)(int),
+							char *prompt);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
@@ -311,7 +317,7 @@ bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,
 							int has_next);
 // \ heredoc.c
-bool					heredoc_read_input_to_file(char *delim, char *input, char *file);
+bool					heredoc_read_input_to_file(char *delim, char *file);
 char					*heredoc_get_new_file(t_mini *mini);
 char					*heredoc(t_mini *mini, char *delim);
 char					*sanitize_hd_delim(char *delim);
@@ -319,7 +325,8 @@ int						sanitize_hd_delim_len(char *delim);
 // \ heredoc_utils.c
 char					*heredoc_ctrd_error(t_mini *mini, char *delim);
 void					heredoc_cleanup(t_mini *mini, int fd, int fds[2]);
-int						heredoc_process_input(char **input, char *delim, int fd, int fds[2]);
+int						heredoc_process_input(char **input, char *delim,
+							int fd, int fds[2]);
 // \ heredoc_str_expander.c
 void					expand_vars_hd(char *str, char *expanded, int len);
 int						str_expander_len_hd(char *str);
