@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:30:50 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 17:24:37 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:42:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,11 @@ char	*heredoc_ctrd_error(t_mini *mini, char *delim)
 	line_count = ft_itoa(mini->input.hd_lines);
 	if (!line_count)
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
-	err = ft_strnjoin(5, HEREDOC_CTRD_WARNING, line_count, " delimited by end-of-file (wanted `", delim, "')");
+	err = ft_strnjoin(5, HEREDOC_CTRD_WARNING, line_count,
+			" delimited by end-of-file (wanted `", delim, "')");
 	free(line_count);
 	if (!err)
-		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);	
+		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
 	return (err);
 }
 
@@ -52,7 +53,7 @@ int	heredoc_process_input(char **input, char *delim, int fd, int fds[2])
 		*input = tmp;
 	}
 	if (*input && (!ft_strcmp(*input, delim) && (*input)[0] != '\0'))
-		return (free(tmp), heredoc_cleanup(mini(), fd, fds), 0);
+		return (heredoc_cleanup(mini(), fd, fds), 0);
 	if (!*input)
 	{
 		if (g_signal != SIGINT)
