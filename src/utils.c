@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 17:13:51 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 01:28:35 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 00:08:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,45 +61,4 @@ char	*if_relative_path(char *cmd, bool home_added)
 		free(cmd);
 	c = get_relative_path(cmd);
 	return (c);
-}
-
-void	print_command(t_command *command)
-{
-	size_t		i;
-	t_redir		*redir;
-	t_command	*tmp;
-	i = 0;
-	if (ft_strlen(command->cmd_name) != 0)
-		DEBUG_MSG("print_command: ");
-	while (command->args && command->args[i])
-	{
-		printf("|%s| ", command->args[i]);
-		i++;
-	}
-	if (ft_strlen(command->cmd_name) != 0)
-		printf("\n");
-	tmp = command;
-	while (tmp)
-	{
-		redir = command->redirs;
-		while (redir)
-		{
-			DEBUG_MSG("redir:|%s| type:", redir->file);
-			if (redir->type)
-			{
-				if (redir->type == RED_IN)
-					printf("RED_IN\n");
-				else if (redir->type == RED_AIN)
-					printf("RED_AIN\n");
-				else if (redir->type == RED_OUT)
-					printf("RED_OUT\n");
-				else if (redir->type == RED_AOUT)
-					printf("RED_AOUT\n");
-			}
-			redir = redir->next;
-		}
-		tmp = tmp->next;
-		if (tmp)
-			DEBUG_MSG("output will be piped to:\n");
-	}
 }
