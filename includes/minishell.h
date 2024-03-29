@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 00:49:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 01:05:55 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -193,7 +193,7 @@ typedef struct s_mini
 
 // main.c
 int						main(int ac, char **av, char **env);
-void					init_main(t_mini *mini, int ac, char **av, char **env);
+void					init_main(int ac, char **av, char **env);
 
 // input.c
 char					*get_input(void);
@@ -240,7 +240,7 @@ bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
 bool					has_char_in_set(char *s, char *set);
 void					command_add_back(t_command *new_command);
-void					prepare_for_input(int fds[2], void(*handler)(int),
+void					prepare_for_input(int fds[2], void (*handler)(int),
 							char *prompt);
 // pl
 //  \ lexer.c

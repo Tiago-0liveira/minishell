@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:38:18 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 17:29:20 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 01:02:17 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,9 @@ bool	handle_heredocs(t_command *commands)
 t_doc_parser	*init_docs(char *input)
 {
 	t_doc_parser	*docs_parser;
-	char	**raw_commands;
-	char	*tmp;
-	int		i;
+	char			**raw_commands;
+	char			*tmp;
+	int				i;
 
 	raw_commands = parse(input);
 	docs_parser = malloc(sizeof(t_doc_parser));
@@ -85,7 +85,8 @@ t_doc_parser	*init_docs(char *input)
 			tmp = heredoc(mini(), sanitize_hd_delim(raw_commands[i + 1]));
 			doc_add_back(&docs_parser->docs, tmp);
 			if (!tmp)
-				return (free_list(raw_commands), docs_parser->error = true, docs_parser);
+				return (free_list(raw_commands),
+					docs_parser->error = true, docs_parser);
 		}
 		i++;
 	}
