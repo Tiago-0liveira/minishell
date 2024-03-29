@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 00:10:07 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/29 03:04:58 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@ bool	execution(t_command *cmd, char **ev)
 {
 	if (execve(cmd->cmd_name, cmd->args, ev) < 0)
 	{
+		cmd->failed = true;
 		error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, CMD_NOT_FOUND_RET);
 		return (false);
 	}
 	return (true);
 }
 
-void	set_execution(t_mini *mini, t_command *cmd, char **ev, int has_next)
+void	set_execution(t_mini *mini, t_command *cmd, char **ev, bool last_failed)
 {
 	int			i;
 	int			j;
@@ -39,10 +40,10 @@ void	set_execution(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	else if (j || !j || cmd == lst || cmd != lst)
 	{
 		if (i)
-			execute_in_parent(mini, cmd, has_next, j);
+			execute_in_parent(mini, cmd, j);
 		else if (!i)
-			execute_in_child(cmd, ev, has_next);
-		if (has_next)
+			execute_in_child(cmd, ev, last_failed);
+		if (cmd->next)
 		{
 			close(mini->input.pip[1]);
 			mini->input.cmd_input = mini->input.pip[0];

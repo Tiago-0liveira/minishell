@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 01:08:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 03:04:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ bool	expand_command(t_command *cmd)
 	if (cmd->args && cmd->args[0] != NULL)
 	{
 		if (ft_strlen(cmd->args[0]) == 0)
-			return (error_msg_ret(CMD_NOT_FOUND, "''", CMD_NOT_FOUND_RET),
-				false);
+			return (cmd->failed = true,
+				error_msg_ret(CMD_NOT_FOUND, "''", CMD_NOT_FOUND_RET), false);
 		cmd->expanded = true;
 		if (if_builtin(cmd->args[0]))
 		{
@@ -32,7 +32,11 @@ bool	expand_command(t_command *cmd)
 		}
 		cmd->cmd_name = get_cmd_path(cmd->args[0]);
 		if (cmd->cmd_name == NULL)
+		{
+			if (mini()->command_ret == CMD_NOT_FOUND_RET)
+				cmd->failed = true;
 			return (false);
+		}
 	}
 	return (true);
 }

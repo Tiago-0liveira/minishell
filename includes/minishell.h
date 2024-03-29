@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 01:05:55 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 01:51:46 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ typedef struct s_command
 	char				**args;
 	t_redir				*redirs;
 	bool				expanded;
+	bool				failed;
 	t_doc				*docs;
 	struct s_command	*next;
 }						t_command;
@@ -302,10 +303,8 @@ void					exec_sig(int signal);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini, char **ev);
-void					execute_in_child(t_command *cmd, char **ev,
-							int has_next);
-void					execute_in_parent(t_mini *mini, t_command *cmd,
-							int has_next, int j);
+void					execute_in_child(t_command *cmd, char **ev, bool last_failed);
+void					execute_in_parent(t_mini *mini, t_command *cmd, int j);
 void					wait_for_children(t_mini *mini);
 // \ execution_utils.c
 t_command				*ft_lstlast_mini(t_command *lst);
@@ -315,7 +314,7 @@ bool					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c
 bool					execution(t_command *cmd, char **ev);
 void					set_execution(t_mini *mini, t_command *cmd, char **ev,
-							int has_next);
+							bool last_failed);
 // \ heredoc.c
 bool					heredoc_read_input_to_file(char *delim, char *file);
 char					*heredoc_get_new_file(t_mini *mini);
