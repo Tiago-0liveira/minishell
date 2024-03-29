@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:38:18 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 01:02:17 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:04:12 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,12 @@ t_command	*init_command(char *input, int len)
 	command->redirs = NULL;
 	command->expanded = false;
 	command->docs = NULL;
+	command->stds[0] = -1;
+	command->stds[1] = -1;
+	command->fds[0] = -1;
+	command->fds[1] = -1;
 	command->next = NULL;
+	command->prev = NULL;
 	return (command);
 }
 

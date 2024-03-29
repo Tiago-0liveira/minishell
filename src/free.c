@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 02:59:43 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:49:19 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ void	free_commands(t_command *commands)
 			free_redirs(commands->redirs);
 		if (commands->args)
 			free_list(commands->args);
+		if (commands->fds[0] != -1)
+			close(commands->fds[0]);
+		if (commands->fds[1] != -1)
+			close(commands->fds[1]);
+		if (commands->stds[0] != -1)
+			close(commands->stds[0]);
+		if (commands->stds[1] != -1)
+			close(commands->stds[1]);
 		while (commands->docs)
 		{
 			doctmp = commands->docs;
@@ -80,8 +88,6 @@ void	free_shell(char *err, int status, void (*cleanup_func)(void *),
 	if (free_arg != NULL && cleanup_func != NULL)
 		cleanup_func(free_arg);
 	reset_mini(m);
-	close(m->input.pip[0]);
-	close(m->input.pip[1]);
 	if (m->env_list)
 		ft_lstclear(&(m->env_list), free);
 	rl_clear_history();

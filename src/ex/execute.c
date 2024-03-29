@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 00:10:07 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:32:57 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,21 +31,16 @@ void	set_execution(t_mini *mini, t_command *cmd, char **ev, int has_next)
 	lst = ft_lstlast_mini(mini->commands);
 	j = mini->input.pipe_c;
 	i = if_builtin(cmd->cmd_name);
-	if (j && (if_builtin_epe(cmd->cmd_name))
-		&& cmd == lst && !cmd->redirs)
-		bin_epe(mini, cmd);
-	else if (j && i && cmd == lst && !cmd->redirs)
-		return ;
-	else if (j || !j || cmd == lst || cmd != lst)
+	if (j || !j || cmd == lst || cmd != lst)
 	{
 		if (i)
 			execute_in_parent(mini, cmd, has_next, j);
 		else if (!i)
 			execute_in_child(cmd, ev, has_next);
-		if (has_next)
+		if (cmd->fds[1] != -1)
 		{
-			close(mini->input.pip[1]);
-			mini->input.cmd_input = mini->input.pip[0];
+			close(cmd->fds[1]);
+			cmd->fds[1] = -1;
 		}
 	}
 }

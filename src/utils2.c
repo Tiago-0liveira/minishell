@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 18:05:11 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 00:08:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:10:29 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	command_add_back(t_command *new_command)
 		last_command = last_command->next;
 	}
 	last_command->next = new_command;
+	new_command->prev = last_command;
 }
 
 void	prepare_for_input(int fds[2], void (*handler)(int), char *prompt)

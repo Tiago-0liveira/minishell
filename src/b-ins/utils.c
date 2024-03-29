@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:56:01 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/06 03:44:51 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:27:43 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	if_builtin(char *s)
 {
 	if (!ft_strncmp(s, "cd", 3) || !ft_strncmp(s, "echo", 5)
 		|| !ft_strncmp(s, "env", 4) || !ft_strncmp(s, "exit", 5)
-		|| !ft_strncmp(s, "export", 7) || !ft_strncmp(s, "pwd", 5)
+		|| !ft_strncmp(s, "export", 7) || !ft_strncmp(s, "pwd", 4)
 		|| !ft_strncmp(s, "unset", 6) || !ft_strncmp(s, "exit", 5))
 		return (1);
 	return (0);
@@ -25,7 +25,7 @@ int	if_builtin(char *s)
 int	if_builtin_epe(char *s)
 {
 	if (!ft_strncmp(s, "echo", 5) || !ft_strncmp(s, "env", 4)
-		|| !ft_strncmp(s, "pwd", 5))
+		|| !ft_strncmp(s, "pwd", 4))
 		return (1);
 	return (0);
 }

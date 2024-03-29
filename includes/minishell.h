@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 01:05:55 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:20:54 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ typedef struct s_input
 	size_t				len;
 	size_t				pipe_c;
 	int					pip[2];
-	int					cmd_input;
 	int					stdin_cpy;
 	int					hd_lines;
 	bool				inputting;
@@ -173,6 +172,9 @@ typedef struct s_command
 	t_redir				*redirs;
 	bool				expanded;
 	t_doc				*docs;
+	int					fds[2];
+	int					stds[2];
+	struct s_command	*prev;
 	struct s_command	*next;
 }						t_command;
 
@@ -309,7 +311,6 @@ void					execute_in_parent(t_mini *mini, t_command *cmd,
 void					wait_for_children(t_mini *mini);
 // \ execution_utils.c
 t_command				*ft_lstlast_mini(t_command *lst);
-void					bin_epe(t_mini *mini, t_command *cmd);
 void					fd_error(t_redir *redir, bool isparent);
 bool					setup_redirections(t_command *cmd, bool isparent);
 // \ execute.c

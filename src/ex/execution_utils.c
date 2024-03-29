@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 03:07:37 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 15:34:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,6 @@ t_command	*ft_lstlast_mini(t_command *lst)
 	while (lst->next)
 		lst = lst->next;
 	return (lst);
-}
-
-void	bin_epe(t_mini *mini, t_command *cmd)
-{
-	close(mini->input.pip[0]);
-	built_in(mini, cmd, 0);
 }
 
 void	fd_error(t_redir *redir, bool isparent)

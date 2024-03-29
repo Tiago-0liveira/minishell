@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 19:19:20 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:21:59 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,22 @@ void	ft_execution(t_mini *mini, char **ev)
 	while (cmd)
 	{
 		has_next = (cmd->next != NULL);
+		if (pipe(cmd->fds) == -1)
+			free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		if (!build_command(cmd) || (cmd->args && !expand_command(cmd)))
 		{
+			if (cmd->prev && cmd->prev->fds[0] != -1)
+			{
+				close(cmd->prev->fds[0]);
+				cmd->prev->fds[0] = -1;
+			}
+			if (cmd->prev && cmd->fds[1] != -1)
+			{
+				close(cmd->fds[1]);
+				cmd->fds[1] = -1;
+			}
 			cmd = cmd->next;
 			continue ;
-		}
-		if (has_next)
-		{
-			if (pipe(mini->input.pip) < 0)
-				free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		}
 		mini->if_cd = 0;
 		set_execution(mini, cmd, ev, has_next);
@@ -61,8 +68,15 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next, int j)
 
 	original_stdout = dup(STDOUT_FILENO);
 	original_stdin = dup(STDIN_FILENO);
+	if (original_stdout == -1 || original_stdin == -1)
+		free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
+	if (!ft_strncmp(cmd->cmd_name, "exit", 4))
+	{
+		cmd->stds[0] = original_stdin;
+		cmd->stds[1] = original_stdout;
+	}
 	if (has_next)
-		dup2(mini->input.pip[1], STDOUT_FILENO);
+		dup2(cmd->fds[1], STDOUT_FILENO);
 	if (setup_redirections(cmd, true))
 		built_in(mini, cmd, j);
 	dup2(original_stdin, STDIN_FILENO);
@@ -73,24 +87,23 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next, int j)
 
 void	pid_zero(t_command *cmd, char **ev, int has_next)
 {
-	if (mini()->input.cmd_input != STDIN_FILENO)
+	if (cmd->prev && cmd->prev->fds[0] != -1)
 	{
-		dup2(mini()->input.cmd_input, STDIN_FILENO);
-		close(mini()->input.cmd_input);
+		dup2(cmd->prev->fds[0], STDIN_FILENO);
+		close(cmd->prev->fds[0]);
+		cmd->prev->fds[0] = -1;
 	}
-	if (has_next)
+	if (has_next && cmd->fds[1] != -1)
 	{
-		close(mini()->input.pip[0]);
-		dup2(mini()->input.pip[1], STDOUT_FILENO);
-		close(mini()->input.pip[1]);
+		dup2(cmd->fds[1], STDOUT_FILENO);
+		close(cmd->fds[1]);
+		cmd->fds[1] = -1;
 	}
 	if (!setup_redirections(cmd, false))
 		free_shell(NULL, 1, NULL, NULL);
 	if (cmd->cmd_name != NULL && ft_strlen(cmd->cmd_name) > 0)
 		if (!execution(cmd, ev))
 			free_shell(NULL, 1, NULL, NULL);
-	if (cmd->redirs && cmd->redirs->type == RED_AIN)
-		dup2(mini()->input.pip[0], STDIN_FILENO);
 	free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 }
 
@@ -109,10 +122,11 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else
 	{
-		if (has_next)
-			close(mini()->input.pip[1]);
-		if (mini()->input.cmd_input != STDIN_FILENO)
-			close(mini()->input.cmd_input);
+		if (has_next && cmd->prev && cmd->prev->fds[1] != -1)
+		{
+			close(cmd->prev->fds[1]);
+			cmd->prev->fds[1] = -1;
+		}
 		if (!has_next)
 			waitpid(pid, &mini()->command_ret, 0);
 		if (WIFEXITED(mini()->command_ret))
