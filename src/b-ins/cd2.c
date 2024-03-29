@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd2.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:14:55 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/07 01:35:11 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:42:25 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	path_with_dots_2(char **pths, char *oldpwd, int *j, int p)
+int	path_with_dots_2(char **pths, char *oldpwd, int *j, bool can_cd)
 {
 	int		i;
 	char	*t_oldpwd;
@@ -23,7 +23,7 @@ int	path_with_dots_2(char **pths, char *oldpwd, int *j, int p)
 		getcwd(t_oldpwd, PATH_MAX);
 		if (pths[*j][0] == '.' && pths[*j][1] == '.' && pths[*j][2] == '/')
 		{
-			if (!dot_handler(t_oldpwd, oldpwd, pths, p))
+			if (!dot_handler(t_oldpwd, oldpwd, pths, can_cd))
 				return (0);
 			clean_until_dots(pths, j, &i);
 		}
@@ -34,7 +34,7 @@ int	path_with_dots_2(char **pths, char *oldpwd, int *j, int p)
 				clean_after_access(oldpwd, pths, t_oldpwd, &i);
 				return (0);
 			}
-			non_dot_chdir(pths, oldpwd, j, p);
+			non_dot_chdir(pths, oldpwd, j, can_cd);
 		}
 	}
 	free(t_oldpwd);

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 00:38:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:28:03 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	heredoc_read_input_to_file(char *delim, char *file)
 		ft_putendl_fd(input, fd);
 		free(input);
 	}
-	return (heredoc_cleanup(mini(), fd, fds), true);
+	return (input_cleanup(mini(), &fd, fds), true);
 }
 
 char	*heredoc_get_new_file(t_mini *mini)
@@ -86,9 +86,9 @@ char	*sanitize_hd_delim(char *delim)
 
 	len = sanitize_hd_delim_len(delim);
 	expanded = malloc(len + 1);
-	memset(expanded, 0, len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+	memset(expanded, 0, len + 1);
 	memset(&ex, 0, sizeof(t_str_ex));
 	while (delim[ex.i])
 	{

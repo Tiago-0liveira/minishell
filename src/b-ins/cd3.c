@@ -6,13 +6,13 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:16:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 01:28:40 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:55:03 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	cd_noarg_tilde(char *av, int p, char *oldpwd)
+int	cd_noarg_tilde(char *av, bool can_cd, char *oldpwd)
 {
 	t_list	*tmp;
 
@@ -31,7 +31,7 @@ int	cd_noarg_tilde(char *av, int p, char *oldpwd)
 		error_msg_ret(FD_NOT_FOUND, "cd", EXIT_FAILURE);
 		return (0);
 	}
-	if (!p)
+	if (!can_cd)
 	{
 		chdir(mini()->home_tmp + 5);
 		env_update(mini(), oldpwd);
@@ -97,11 +97,11 @@ char	*ft_strdup_oldpwd(const char *s, int *i)
 	return (d);
 }
 
-int	cd_noarg_return(char *av, int p, char *oldpwd)
+int	cd_noarg_return(char *av, bool can_cd, char *oldpwd)
 {
 	int	j;
 
-	j = cd_noarg_tilde(av, p, oldpwd);
+	j = cd_noarg_tilde(av, can_cd, oldpwd);
 	if (!j)
 		return (0);
 	else if (j == 2)

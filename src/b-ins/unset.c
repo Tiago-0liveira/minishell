@@ -28,7 +28,7 @@ int	ft_strncmp_unset(const char *s1, const char *s2, size_t n)
 	return (0);
 }
 
-void	bi_unset(t_mini *mini, char **av, int j)
+void	bi_unset(t_mini *mini, t_command *cmd)
 {
 	int		i;
 	size_t	len;
@@ -36,15 +36,15 @@ void	bi_unset(t_mini *mini, char **av, int j)
 
 	i = 0;
 	tmp = mini->env_list;
-	if (j)
+	if (cmd->prev || cmd->next)
 		return ;
-	while (av[++i])
+	while (cmd->args[++i])
 	{
-		len = ft_strlen(av[i]);
+		len = ft_strlen(cmd->args[i]);
 		tmp = mini->env_list;
 		while (tmp)
 		{
-			if (!ft_strncmp_unset(av[i], tmp->content, len))
+			if (!ft_strncmp_unset(cmd->args[i], tmp->content, len))
 			{
 				delete_var(&(mini->env_list), tmp->content);
 				break ;

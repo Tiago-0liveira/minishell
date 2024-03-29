@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/28 17:59:32 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:14:30 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	**build_solo_path(char *oldpwd, char *av)
 	char	*tmp;
 
 	s = malloc(2 * sizeof(char *));
+	if (!s)
+		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
 	if (ft_strncmp(av, "/home", 5))
 	{
 		tmp = ft_strjoin(oldpwd, "/");
@@ -39,7 +41,7 @@ void	handle_bin(char **pth)
 	}
 }
 
-int	path_with_dots(char *av, char *oldpwd, int p)
+int	path_with_dots(char *av, char *oldpwd, bool can_cd)
 {
 	int		i;
 	int		j;
@@ -58,7 +60,7 @@ int	path_with_dots(char *av, char *oldpwd, int p)
 		free(pths[0]);
 		pths[0] = ft_strdup(mini()->home_tmp + 5);
 	}
-	i = path_with_dots_2(pths, oldpwd, &j, p);
+	i = path_with_dots_2(pths, oldpwd, &j, can_cd);
 	if (!i)
 		return (0);
 	free_list(pths);
@@ -79,29 +81,30 @@ int	cd_start(char **av, char *oldpwd)
 	return (1);
 }
 
-void	bi_cd(t_mini *mini, char **av, int p)
+void	bi_cd(t_mini *mini, t_command *cmd)
 {
 	char	oldpwd[PATH_MAX + 1];
 	int		i;
 	char	*tmp;
 
 	i = -1;
-	if (!cd_start(av, oldpwd))
+	if (!cd_start(cmd->args, oldpwd))
 		return ;
-	if (!av[1] || (av[1][0] == TILDE) || !ft_strncmp(av[1], "--", 3))
+	if (!cmd->args[1] || (cmd->args[1][0] == TILDE) ||
+		!ft_strncmp(cmd->args[1], "--", 3))
 	{
-		if (!cd_noarg_return(av[1], p, oldpwd))
+		if (!cd_noarg_return(cmd->args[1], cmd->prev || cmd->next, oldpwd))
 			return ;
 		else
 			i = 1;
 	}
-	if (!ft_strncmp(av[1], "/", 2))
+	if (!ft_strncmp(cmd->args[1], "/", 2))
 		return (chdir("/"), env_update(mini, oldpwd));
-	if (!ft_strncmp(av[1], "-", 2))
+	if (!ft_strncmp(cmd->args[1], "-", 2))
 		return (tmp = get_env_var(mini->env_list, "OLDPWD"), chdir(tmp),
 			free(tmp), env_update(mini, oldpwd));
-	if (i == -1 || (av[1][0] == TILDE && av[1][1]))
-		if (!path_with_dots(av[1], oldpwd, p))
+	if (i == -1 || (cmd->args[1][0] == TILDE && cmd->args[1][1]))
+		if (!path_with_dots(cmd->args[1], oldpwd, cmd->prev || cmd->next))
 			return ;
 	mini->command_ret = 0;
 }

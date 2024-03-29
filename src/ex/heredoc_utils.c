@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 15:30:50 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 00:42:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:28:58 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,18 @@ char	*heredoc_ctrd_error(t_mini *mini, char *delim)
 	return (err);
 }
 
-void	heredoc_cleanup(t_mini *mini, int fd, int fds[2])
+void	input_cleanup(t_mini *mini, int *fd, int fds[2])
 {
 	if (mini->input.stdin_cpy != -1)
 	{
 		dup2(mini->input.stdin_cpy, STDIN_FILENO);
 		close(mini->input.stdin_cpy);
 		mini->input.stdin_cpy = -1;
-		close(fds[0]);
 	}
-	close(fd);
+	close(fds[0]);
+	close(fds[1]);
+	if (fd)
+		close(*fd);
 }
 
 int	heredoc_process_input(char **input, char *delim, int fd, int fds[2])
@@ -53,16 +55,16 @@ int	heredoc_process_input(char **input, char *delim, int fd, int fds[2])
 		*input = tmp;
 	}
 	if (*input && (!ft_strcmp(*input, delim) && (*input)[0] != '\0'))
-		return (heredoc_cleanup(mini(), fd, fds), 0);
+		return (input_cleanup(mini(), &fd, fds), 0);
 	if (!*input)
 	{
 		if (g_signal != SIGINT)
 		{
 			tmp = heredoc_ctrd_error(mini(), delim);
 			error_msg(tmp, NULL);
-			return (free(tmp), heredoc_cleanup(mini(), fd, fds), -1);
+			return (free(tmp), input_cleanup(mini(), &fd, fds), -1);
 		}
-		return (heredoc_cleanup(mini(), fd, fds), -1);
+		return (input_cleanup(mini(), &fd, fds), -1);
 	}
 	return (1);
 }

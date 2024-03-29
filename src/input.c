@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:36:06 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 00:11:07 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:30:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,13 +112,7 @@ char	*read_input(void)
 	mini()->input.inputting = true;
 	tmp = get_next_line(mini()->input.stdin_cpy);
 	mini()->input.inputting = false;
-	if (mini()->input.stdin_cpy != -1)
-	{
-		dup2(mini()->input.stdin_cpy, STDIN_FILENO);
-		close(mini()->input.stdin_cpy);
-		mini()->input.stdin_cpy = -1;
-		close(fds[0]);
-	}
+	input_cleanup(mini(), NULL, fds);
 	if (!tmp)
 		return (solo_pipe_read_input_error());
 	if (!mini()->input.raw_line)
@@ -126,9 +120,8 @@ char	*read_input(void)
 	tmp2 = ft_strtrim(tmp, " \t\n");
 	if (!tmp2)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, free, tmp);
-	free(tmp);
-	return (tmp = tmp2, tmp2 = ft_strnjoin(3, mini()->input.raw_line, " ", tmp),
-		free(tmp), free(mini()->input.raw_line), tmp2);
+	return (free(tmp), tmp = tmp2, tmp2 = ft_strnjoin(3, mini()->input.raw_line,
+			" ", tmp), free(tmp), free(mini()->input.raw_line), tmp2);
 }
 
 char	*solo_pipe_read_input_error(void)

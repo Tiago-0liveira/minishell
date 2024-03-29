@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 15:34:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:16:14 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,18 @@ bool	setup_redirections(t_command *cmd, bool isparent)
 		redir = redir->next;
 	}
 	return (true);
+}
+
+void	handle_command_fail(t_command *cmd)
+{
+	if (cmd->prev && cmd->prev->fds[0] != -1)
+	{
+		close(cmd->prev->fds[0]);
+		cmd->prev->fds[0] = -1;
+	}
+	if (cmd->prev && cmd->fds[1] != -1)
+	{
+		close(cmd->fds[1]);
+		cmd->fds[1] = -1;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 18:22:28 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 15:49:19 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:13:32 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,9 @@ void	free_commands(t_command *commands)
 		free(commands->raw_cmd);
 		if (commands->cmd_name && commands->expanded)
 			free(commands->cmd_name);
-		if (commands->redirs)
-			free_redirs(commands->redirs);
 		if (commands->args)
 			free_list(commands->args);
-		if (commands->fds[0] != -1)
-			close(commands->fds[0]);
-		if (commands->fds[1] != -1)
-			close(commands->fds[1]);
-		if (commands->stds[0] != -1)
-			close(commands->stds[0]);
-		if (commands->stds[1] != -1)
-			close(commands->stds[1]);
+		free_redirs_and_fds(commands);
 		while (commands->docs)
 		{
 			doctmp = commands->docs;
@@ -47,17 +38,27 @@ void	free_commands(t_command *commands)
 	}
 }
 
-void	free_redirs(t_redir *redirs)
+void	free_redirs_and_fds(t_command *command)
 {
 	t_redir	*tmp;
 
-	while (redirs != NULL)
+	if (command->fds[0] != -1)
+		close(command->fds[0]);
+	if (command->fds[1] != -1)
+		close(command->fds[1]);
+	if (command->stds[0] != -1)
+		close(command->stds[0]);
+	if (command->stds[1] != -1)
+		close(command->stds[1]);
+	if (!command->redirs)
+		return ;
+	while (command->redirs != NULL)
 	{
-		tmp = redirs->next;
-		if (redirs->file)
-			free(redirs->file);
-		free(redirs);
-		redirs = tmp;
+		tmp = command->redirs->next;
+		if (command->redirs->file)
+			free(command->redirs->file);
+		free(command->redirs);
+		command->redirs = tmp;
 	}
 }
 
@@ -78,7 +79,6 @@ void	free_list(char **list)
 		free(list);
 }
 
-// mudei a funcao para podermos dar free de alguma variavel que tenhamos alocado
 void	free_shell(char *err, int status, void (*cleanup_func)(void *),
 		void *free_arg)
 {

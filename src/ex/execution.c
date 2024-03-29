@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 16:21:59 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 19:07:23 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,7 @@ void	ft_execution(t_mini *mini, char **ev)
 			free_shell(PIPE_ERROR, EXIT_FAILURE, NULL, NULL);
 		if (!build_command(cmd) || (cmd->args && !expand_command(cmd)))
 		{
-			if (cmd->prev && cmd->prev->fds[0] != -1)
-			{
-				close(cmd->prev->fds[0]);
-				cmd->prev->fds[0] = -1;
-			}
-			if (cmd->prev && cmd->fds[1] != -1)
-			{
-				close(cmd->fds[1]);
-				cmd->fds[1] = -1;
-			}
+			handle_command_fail(cmd);
 			cmd = cmd->next;
 			continue ;
 		}
@@ -61,7 +52,7 @@ void	wait_for_children(t_mini *mini)
 	}
 }
 
-void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next, int j)
+void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
 {
 	int	original_stdout;
 	int	original_stdin;
@@ -78,7 +69,7 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next, int j)
 	if (has_next)
 		dup2(cmd->fds[1], STDOUT_FILENO);
 	if (setup_redirections(cmd, true))
-		built_in(mini, cmd, j);
+		built_in(mini, cmd);
 	dup2(original_stdin, STDIN_FILENO);
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdin);
@@ -127,8 +118,12 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 			close(cmd->prev->fds[1]);
 			cmd->prev->fds[1] = -1;
 		}
-		if (!has_next)
-			waitpid(pid, &mini()->command_ret, 0);
+		if (cmd->prev && cmd->prev->fds[1] != -1)
+		{
+			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+			close(cmd->prev->fds[1]);
+			cmd->prev->fds[1] = -1;
+		}
 		if (WIFEXITED(mini()->command_ret))
 			mini()->command_ret = WEXITSTATUS(mini()->command_ret);
 		else if (WIFSIGNALED(mini()->command_ret))

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:56:01 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 16:27:43 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/29 16:53:21 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ int	if_builtin_epe(char *s)
 	return (0);
 }
 
-void	built_in(t_mini *mini, t_command *cmd, int j)
+void	built_in(t_mini *mini, t_command *cmd)
 {
 	if (!ft_strncmp(cmd->cmd_name, "cd", 2))
-		bi_cd(mini, cmd->args, j);
+		bi_cd(mini, cmd);
 	else if (!ft_strncmp(cmd->cmd_name, "echo", 4))
 		bi_echo(cmd->args);
 	else if (!ft_strncmp(cmd->cmd_name, "env", 3))
 		bi_env(mini->env_list);
 	else if (!ft_strncmp(cmd->cmd_name, "export", 6))
-		bi_export(mini, cmd->args, j);
+		bi_export(mini, cmd->args, cmd->prev || cmd->next);
 	else if (!ft_strncmp(cmd->cmd_name, "pwd", 3))
 		bi_pwd();
 	else if (!ft_strncmp(cmd->cmd_name, "unset", 5))
-		bi_unset(mini, cmd->args, j);
+		bi_unset(mini, cmd);
 	else if (!ft_strncmp(cmd->cmd_name, "exit", 4)
 		&& !mini->exit_unavailability)
 		bi_exit(mini, cmd->args, cmd->next != NULL);
