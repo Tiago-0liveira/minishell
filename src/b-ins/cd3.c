@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:16:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 14:35:16 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 15:07:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ int	cd_noarg_tilde(char *av, bool can_cd, char *oldpwd)
 		return (2);
 	mini()->home_tmp = tmp->content;
 	if (access(mini()->home_tmp + 5, F_OK | R_OK) == -1 || !mini()->home_tmp)
-		return (error_msg_ret(FD_NOT_FOUND, mini()->home_tmp + 5, EXIT_FAILURE), 0);
+		return (error_msg_ret(FD_NOT_FOUND,
+				mini()->home_tmp + 5, EXIT_FAILURE), 0);
 	if (!is_dir(mini()->home_tmp + 5))
 		return (error_msg_ret(NOT_A_DIR, "cd", EXIT_FAILURE), 0);
 	if (!can_cd)

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 14:38:29 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 15:08:15 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,7 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 
 	pid = fork();
 	if (pid == 0)
-	{
 		pid_zero(cmd, ev, has_next);
-	}
 	else if (pid < 0)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else
@@ -123,9 +121,9 @@ void	execute_in_child(t_command *cmd, char **ev, int has_next)
 		}
 		if (cmd->prev && cmd->prev->fds[1] != -1)
 		{
-            close(cmd->prev->fds[1]);
-            cmd->prev->fds[1] = -1;
-        }
+			close(cmd->prev->fds[1]);
+			cmd->prev->fds[1] = -1;
+		}
 		if (WIFEXITED(mini()->command_ret))
 			mini()->command_ret = WEXITSTATUS(mini()->command_ret);
 		else if (WIFSIGNALED(mini()->command_ret))
