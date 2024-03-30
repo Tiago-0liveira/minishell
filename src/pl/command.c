@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:38:18 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 14:38:56 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_command	*init_command(char *input, int len)
 	command = malloc(sizeof(t_command));
 	if (!command)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	command->cmd_name = NULL;
+	ft_memset(command, 0, sizeof(t_command));
 	tmp = ft_substr(input, 0, len);
 	if (!tmp)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
@@ -28,16 +28,10 @@ t_command	*init_command(char *input, int len)
 	free(tmp);
 	if (!command->raw_cmd)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	command->args = NULL;
-	command->redirs = NULL;
-	command->expanded = false;
-	command->docs = NULL;
 	command->stds[0] = -1;
 	command->stds[1] = -1;
 	command->fds[0] = -1;
 	command->fds[1] = -1;
-	command->next = NULL;
-	command->prev = NULL;
 	return (command);
 }
 

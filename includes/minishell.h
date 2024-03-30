@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 17:28:03 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 14:29:49 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@
 # define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
 # define AMB_REDIR "ambiguous redirect: "
 # define UNEXPECTED_EOF "syntax error: unexpected end of file"
+# define NOT_A_DIR "cd: Not a directory: "
 
 // heredoc defines
 # define HEREDOC_CTRD_WARNING "warning: here-document at line "
@@ -297,7 +298,6 @@ void					free_shell(char *err, int status,
 void					free_commands_wrapper(void *arg);
 // signal_handle.c
 void					prmpt_ctrlc(int sig);
-void					solopipe_handler(int sig, siginfo_t *info, void *ctx);
 void					sig_init(void);
 void					solo_pipe_sigint_handler(int sig);
 void					exec_sig(int signal);
@@ -349,8 +349,7 @@ void					non_dot_chdir(char **pths, char *oldpwd, int *j, int p);
 void					clean_until_dots(char **pths, int *j, int *p);
 void					clean_after_access(char *oldpwd, char **pths,
 							char *t_oldpwd, int *i);
-int						dot_handler(char *t_oldpwd, char *oldpwd, char **pths,
-							int p);
+bool					is_dir(const char *path);
 // \ cd3.c
 int						cd_noarg_tilde(char *av, bool can_cd, char *oldpwd);
 char					*delete_until_char(char *str, char c);

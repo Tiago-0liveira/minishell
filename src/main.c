@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 13:01:26 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	g_signal = 0;
 int	main(int ac, char **av, char **env)
 {
 	init_main(ac, av, env);
-	printf("pid:%d\n", getpid());
 	while (1)
 	{
 		sig_init();

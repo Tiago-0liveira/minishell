@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:14:55 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 16:42:25 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 14:31:48 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,19 @@ int	path_with_dots_2(char **pths, char *oldpwd, int *j, bool can_cd)
 	while (pths[++(*j)])
 	{
 		getcwd(t_oldpwd, PATH_MAX);
-		if (pths[*j][0] == '.' && pths[*j][1] == '.' && pths[*j][2] == '/')
+		if (access(pths[*j], F_OK | R_OK) == -1)
 		{
-			if (!dot_handler(t_oldpwd, oldpwd, pths, can_cd))
-				return (0);
-			clean_until_dots(pths, j, &i);
+			clean_after_access(oldpwd, pths, t_oldpwd, &i);
+			error_msg_ret(FD_NOT_FOUND, mini()->commands->args[1], EXIT_FAILURE);
+			return (0);
 		}
-		else
+		if (!is_dir(pths[*j]))
 		{
-			if (access(pths[*j], F_OK | R_OK) == -1)
-			{
-				clean_after_access(oldpwd, pths, t_oldpwd, &i);
-				return (0);
-			}
-			non_dot_chdir(pths, oldpwd, j, can_cd);
+			clean_after_access(oldpwd, pths, t_oldpwd, &i);
+			error_msg_ret(NOT_A_DIR, mini()->commands->args[1], EXIT_FAILURE);
+			return (0);
 		}
+		non_dot_chdir(pths, oldpwd, j, can_cd);
 	}
 	free(t_oldpwd);
 	return (i);
@@ -69,22 +67,12 @@ void	clean_after_access(char *oldpwd, char **pths, char *t_oldpwd, int *i)
 	chdir(oldpwd);
 	free_list(pths);
 	free(t_oldpwd);
-	error_msg_ret(FD_NOT_FOUND, mini()->commands->args[1], EXIT_FAILURE);
 }
 
-int	dot_handler(char *t_oldpwd, char *oldpwd, char **pths, int p)
+bool	is_dir(const char *path)
 {
-	t_oldpwd = delete_until_char(t_oldpwd, '/');
-	if (access(t_oldpwd, F_OK | R_OK) == -1)
-	{
-		chdir(oldpwd);
-		free_list(pths);
-		free(t_oldpwd);
-		error_msg_ret(FD_NOT_FOUND, t_oldpwd, EXIT_FAILURE);
-		return (0);
-	}
-	if (!p)
-		chdir(t_oldpwd);
-	env_update(mini(), oldpwd);
-	return (1);
+	struct stat path_stat;
+	if (stat(path, &path_stat) == 0)
+		return S_ISDIR(path_stat.st_mode);
+	return false;
 }
