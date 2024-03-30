@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 17:03:17 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/26 19:43:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	expand_vars_hd2(char *str, char *expanded, int len)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if (str[ex.i] == QUOTE && !ex.dquotes)
@@ -42,7 +42,7 @@ int	str_expander_len_hd2(char *str)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if (str[ex.i] == QUOTE && !ex.dquotes)
@@ -75,7 +75,7 @@ char	*str_expander_hd2(char *str)
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	memset(expanded, 0, final_len + 1);
+	ft_memset(expanded, 0, final_len + 1);
 	expand_vars_hd2(str, expanded, final_len);
 	return (expanded);
 }

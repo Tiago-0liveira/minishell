@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 02:29:00 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 17:28:03 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ char	*sanitize_hd_delim(char *delim)
 	expanded = malloc(len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	memset(expanded, 0, len + 1);
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(expanded, 0, len + 1);
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (delim[ex.i])
 	{
 		if ((delim[ex.i] == QUOTE && ex.dquotes) || (delim[ex.i] == DQUOTE
@@ -111,7 +111,7 @@ int	sanitize_hd_delim_len(char *delim)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (delim[ex.i])
 	{
 		if ((delim[ex.i] == QUOTE && ex.quotes && !ex.dquotes)

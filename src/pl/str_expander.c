@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 02:23:27 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 15:22:35 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*str_expander(char *str)
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	memset(expanded, 0, final_len + 1);
+	ft_memset(expanded, 0, final_len + 1);
 	expand_vars(str, expanded, final_len);
 	return (expanded);
 }
@@ -43,7 +43,7 @@ void	expand_vars(char *str, char *expanded, int len)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if ((str[ex.i] == QUOTE && ex.dquotes) || (str[ex.i] == DQUOTE
@@ -71,7 +71,7 @@ int	str_expander_len(char *str)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if ((str[ex.i] == QUOTE && ex.quotes && !ex.dquotes)

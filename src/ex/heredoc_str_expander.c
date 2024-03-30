@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_str_expander.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: joaoribe <joaoribe@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:34:19 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/04 21:36:11 by joaoribe         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	expand_vars_hd(char *str, char *expanded, int len)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if (str[ex.i] == ENV_VAR)
@@ -36,7 +36,7 @@ int	str_expander_len_hd(char *str)
 {
 	t_str_ex	ex;
 
-	memset(&ex, 0, sizeof(t_str_ex));
+	ft_memset(&ex, 0, sizeof(t_str_ex));
 	while (str[ex.i])
 	{
 		if (str[ex.i] == ENV_VAR)
@@ -63,7 +63,7 @@ char	*str_expander_hd(char *str)
 	expanded = malloc(final_len + 1);
 	if (!expanded)
 		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
-	memset(expanded, 0, final_len + 1);
+	ft_memset(expanded, 0, final_len + 1);
 	expand_vars_hd(str, expanded, final_len);
 	return (expanded);
 }

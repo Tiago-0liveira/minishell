@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 19:38:18 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 16:04:12 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_doc_parser	*init_docs(char *input)
 	docs_parser = malloc(sizeof(t_doc_parser));
 	if (!docs_parser)
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
-	memset(docs_parser, 0, sizeof(t_doc_parser));
+	ft_memset(docs_parser, 0, sizeof(t_doc_parser));
 	i = 0;
 	while (raw_commands && raw_commands[i])
 	{
