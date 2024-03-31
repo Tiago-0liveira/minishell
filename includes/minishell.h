@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/30 14:29:49 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/03/30 23:44:20 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@
 # define SYNTAX_ERROR "syntax error near unexpected token "
 # define TOO_MANY_ARGS "too many arguments "
 # define NOT_VALID_IDENT "not a valid identifier: "
-# define OPEN_QUOTES_ERROR "open quotes are not supported!\n"
+# define OPEN_QUOTES_ERROR "open quotes are not supported!"
 # define CMD_INSUF_PERMS "Permission denied: "
 # define EXIT_NUMERIR_ARG_REQ "exit: numeric argument required: "
 # define AMB_REDIR "ambiguous redirect: "
