@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 02:29:23 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 00:04:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:55:48 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	execution(t_command *cmd, char **ev)
 {
 	if (execve(cmd->cmd_name, cmd->args, ev) < 0)
 	{
-		error_msg_ret(CMD_NOT_FOUND, cmd->cmd_name, CMD_NOT_FOUND_RET);
+		error_msg_ret(CANNOT_EXECUTE_FILE, cmd->cmd_name, CMD_NOT_FOUND_RET);
 		return (false);
 	}
 	return (true);

@@ -88,6 +88,7 @@
 # define AMB_REDIR "ambiguous redirect: "
 # define UNEXPECTED_EOF "syntax error: unexpected end of file"
 # define NOT_A_DIR "cd: Not a directory: "
+# define CANNOT_EXECUTE_FILE "cannot execute file: "
 
 // heredoc defines
 # define HEREDOC_CTRD_WARNING "warning: here-document at line "
