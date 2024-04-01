@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/04/01 14:21:27 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:27:16 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sig_quit_handler(int sig)
 	(void)sig;
 	if (mini()->input.inputting)
 		return ;
-	ft_putstr_fd("\nQuit (core dumped)\n", STDERR_FILENO);
+	ft_putstr_fd("Quit (core dumped)\n", STDERR_FILENO);
 }
 
 void	sig_init(void)
