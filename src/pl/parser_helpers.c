@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 16:09:31 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/28 18:26:30 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/01 11:49:33 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,8 @@ bool	add_arg(t_command *command, char *section)
 		i++;
 	}
 	new_args[i] = ft_strdup(section);
-	if (!new_args[k])
-		return (false);
+	if (!new_args[i])
+		return (free(command->args), false);
 	new_args[k + 1] = NULL;
 	free(command->args);
 	command->args = new_args;
