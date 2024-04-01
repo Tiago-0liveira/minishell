@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:47 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/30 00:07:42 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/01 12:22:58 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,8 @@ bool	build_command(t_command *cmd)
 
 	i = 0;
 	expanded = str_expander_hd2(cmd->raw_cmd);
-	cmd->expanded = true;
 	if (!expanded)
-		return (cmd->cmd_name = ft_strdup(""), false);
+		return (false);
 	raw_commands = parse(expanded);
 	end = parse_size(expanded);
 	free(expanded);
