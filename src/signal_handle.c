@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/10 02:42:06 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 14:37:39 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/01 14:21:27 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,18 @@ void	prmpt_ctrlc(int sig)
 	rl_redisplay();
 }
 
+void	sig_quit_handler(int sig)
+{
+	(void)sig;
+	if (mini()->input.inputting)
+		return ;
+	ft_putstr_fd("\nQuit (core dumped)\n", STDERR_FILENO);
+}
+
 void	sig_init(void)
 {
 	signal(SIGINT, prmpt_ctrlc);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, sig_quit_handler);
 	signal(SIGTSTP, SIG_IGN);
 }
 
