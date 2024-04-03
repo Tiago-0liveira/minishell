@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/04/03 19:08:01 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:14:35 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	bi_cd(t_mini *mini, t_command *cmd)
 			i = 1;
 	}
 	if (!ft_strncmp(cmd->args[1], "/", 2))
-		return (printf("here1\n"), chdir("/"), env_update(mini, oldpwd));
+		return (chdir("/"), env_update(mini, oldpwd));
 	if (!ft_strncmp(cmd->args[1], "-", 2))
 		return (tmp = get_env_var(mini->env_list, "OLDPWD"), chdir(tmp),
 			free(tmp), env_update(mini, oldpwd));
