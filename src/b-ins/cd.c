@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 03:21:49 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/29 17:14:30 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:08:01 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,20 @@ char	**build_solo_path(char *oldpwd, char *av)
 	return (s);
 }
 
-void	handle_bin(char **pth)
+bool	handle_bin(char **pth, char *oldpwd)
 {
+	if (!*pth)
+	{
+		chdir("/");
+		env_update(mini(), oldpwd);
+		return (false);
+	}
 	if (!ft_strncmp(*pth, "bin", 4))
 	{
 		free(*pth);
 		*pth = ft_strjoin("/", "bin");
 	}
+	return (true);
 }
 
 int	path_with_dots(char *av, char *oldpwd, bool can_cd)
@@ -54,7 +61,8 @@ int	path_with_dots(char *av, char *oldpwd, bool can_cd)
 		pths = ft_split(av, '/');
 	else
 		pths = build_solo_path(oldpwd, av);
-	handle_bin(&pths[0]);
+	if (!handle_bin(&pths[0], oldpwd))
+		return (free_list(pths), 0);
 	if (!ft_strncmp(pths[0], "~", 1))
 	{
 		free(pths[0]);
@@ -99,7 +107,7 @@ void	bi_cd(t_mini *mini, t_command *cmd)
 			i = 1;
 	}
 	if (!ft_strncmp(cmd->args[1], "/", 2))
-		return (chdir("/"), env_update(mini, oldpwd));
+		return (printf("here1\n"), chdir("/"), env_update(mini, oldpwd));
 	if (!ft_strncmp(cmd->args[1], "-", 2))
 		return (tmp = get_env_var(mini->env_list, "OLDPWD"), chdir(tmp),
 			free(tmp), env_update(mini, oldpwd));
