@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:14:55 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 15:07:09 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:51:34 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,6 @@ void	non_dot_chdir(char **pths, char *oldpwd, int *j, int p)
 	if (!p)
 		chdir(pths[*j]);
 	env_update(mini(), oldpwd);
-}
-
-void	clean_until_dots(char **pths, int *j, int *p)
-{
-	int	i;
-
-	i = -1;
-	while (pths[++i])
-	{
-		if (!ft_strncmp(pths[*j], "..", 3))
-			break ;
-		free(pths[i]);
-		pths[i] = NULL;
-	}
-	*p = 2;
 }
 
 void	clean_after_access(char *oldpwd, char **pths, char *t_oldpwd, int *i)

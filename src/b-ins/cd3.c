@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/05 03:16:07 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 15:07:34 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:51:01 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,21 +39,6 @@ int	cd_noarg_tilde(char *av, bool can_cd, char *oldpwd)
 	if (!av)
 		return (0);
 	return (1);
-}
-
-char	*delete_until_char(char *str, char c)
-{
-	char	*ptr;
-
-	if (!str)
-		return (NULL);
-	ptr = str + ft_strlen(str) - 1;
-	while (ptr >= str && *ptr != c)
-		ptr--;
-	if (*ptr == c)
-		ptr++;
-	*ptr = '\0';
-	return (str);
 }
 
 void	env_update(t_mini *mini, char *oldpwd)

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/30 23:44:20 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:51:37 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -347,13 +347,11 @@ void					bi_cd(t_mini *mini, t_command *cmd);
 int						path_with_dots_2(char **pths, char *oldpwd, int *j,
 							bool can_cd);
 void					non_dot_chdir(char **pths, char *oldpwd, int *j, int p);
-void					clean_until_dots(char **pths, int *j, int *p);
 void					clean_after_access(char *oldpwd, char **pths,
 							char *t_oldpwd, int *i);
 bool					is_dir(const char *path);
 // \ cd3.c
 int						cd_noarg_tilde(char *av, bool can_cd, char *oldpwd);
-char					*delete_until_char(char *str, char c);
 void					env_update(t_mini *mini, char *oldpwd);
 char					*ft_strdup_oldpwd(const char *s, int *i);
 int						cd_noarg_return(char *av, bool can_cd, char *oldpwd);
