@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/04 14:51:37 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 13:42:55 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ typedef struct s_mini
 
 // main.c
 int						main(int ac, char **av, char **env);
-void					init_main(int ac, char **av, char **env);
+void					init_main(char **env);
 
 // input.c
 char					*get_input(void);
@@ -365,6 +365,7 @@ void					delete_var(t_list **head, void *node_to_del);
 // \ export.c
 int						ft_strlen_eq(char *s);
 void					show_export(t_list *env_list, char **av);
+int						delete_if_needed(t_list **env_list, char *var, int len);
 void					bi_export(t_mini *mini, char **av, int j);
 void					export_add(t_mini *mini, char *av);
 // \ pwd.c

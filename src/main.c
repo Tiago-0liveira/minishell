@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/30 13:01:26 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 13:42:50 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	g_signal = 0;
 
 int	main(int ac, char **av, char **env)
 {
-	init_main(ac, av, env);
+	(void)av;
+	(void)ac;
+	init_main(env);
 	while (1)
 	{
 		sig_init();
@@ -39,13 +41,29 @@ int	main(int ac, char **av, char **env)
 	free_shell(NULL, 0, NULL, NULL);
 }
 
-void	init_main(int ac, char **av, char **env)
+void	init_main(char **env)
 {
-	(void)av;
-	(void)ac;
+	char	*tmp;
+	char	dir[PATH_MAX + 1];
+	int		shlvl;
+
+	rl_catch_signals = 0;
 	ft_memset(mini(), 0, sizeof(t_mini));
 	mini()->env_list = set_env(env);
-	rl_catch_signals = 0;
-	if (!mini()->env_list)
-		free_shell(MALLOC_ERROR, STDERR_FILENO, NULL, NULL);
+	delete_if_needed(&mini()->env_list, "PWD=", 3);
+	if (!getcwd(dir, PATH_MAX))
+		free_shell(FAILURE_GETTING_PATH, EXIT_FAILURE, NULL, NULL);
+	tmp = ft_strnjoin(3, "PWD=", dir, "");
+	export_add(mini(), tmp);
+	tmp = get_env_var(mini()->env_list, "SHLVL");
+	if (tmp)
+	{
+		shlvl = ft_atoi(tmp);
+		shlvl++;
+	}
+	else
+		shlvl = 1;
+	delete_if_needed(&mini()->env_list, "SHLVL=", 5);
+	tmp = ft_itoa(shlvl);
+	tmp2 = ft_strnjoin(3, "SHLVL=", tmp, "");
 }
