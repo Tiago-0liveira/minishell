@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:58:12 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:13:47 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:26:10 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	set_PWD(t_list **env_list)
 	tmp = ft_strnjoin(3, "PWD=", dir, "");
 	if (!tmp)
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
-	export_add(*env_list, tmp);
+	export_add(env_list, tmp);
 	free(tmp);	
 }
 
@@ -47,7 +47,7 @@ void	set_SHLVL(t_list **env_list)
 	free(tmp2);
 	if (!tmp)
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
-	export_add(*env_list, tmp);
+	export_add(env_list, tmp);
 	free(tmp);
 }
 

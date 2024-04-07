@@ -114,7 +114,7 @@ void	bi_export(t_mini *mini, char **av, int j)
 		}
 		k = delete_if_needed(&mini->env_list, av[i], res);
 		if (k)
-			export_add(mini->env_list, av[i]);
+			export_add(&mini->env_list, av[i]);
 	}
 	mini->command_ret = 0;
 }

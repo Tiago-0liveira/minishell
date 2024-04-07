@@ -22,10 +22,10 @@ void	bi_pwd(void)
 	mini()->command_ret = 0;
 }
 
-void	export_add(t_list *env_list, char *av)
+void	export_add(t_list **env_list, char *av)
 {
 	t_list	*exp;
 
 	exp = ft_lstnew(ft_strdup((char *)av));
-	ft_lstadd_back(&env_list, exp);
+	ft_lstadd_back(env_list, exp);
 }

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:13:32 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:26:38 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -370,7 +370,7 @@ int						ft_strlen_eq(char *s);
 void					show_export(t_list *env_list, char **av);
 int						delete_if_needed(t_list **env_list, char *var, int len);
 void					bi_export(t_mini *mini, char **av, int j);
-void					export_add(t_list *env_list, char *av);
+void					export_add(t_list **env_list, char *av);
 // \ pwd.c
 void					bi_pwd(void);
 // \ unset.c
