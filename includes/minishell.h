@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 13:42:55 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:13:32 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,6 @@ typedef struct s_mini
 
 // main.c
 int						main(int ac, char **av, char **env);
-void					init_main(char **env);
 
 // input.c
 char					*get_input(void);
@@ -246,6 +245,10 @@ bool					has_char_in_set(char *s, char *set);
 void					command_add_back(t_command *new_command);
 void					prepare_for_input(int fds[2], void (*handler)(int),
 							char *prompt);
+// env_vars.c
+void					set_PWD(t_list **env_list);
+void					set_SHLVL(t_list **env_list);
+char					**get_env_from_ll(t_list *env_list);
 // pl
 //  \ lexer.c
 bool					input_error_check(t_mini *mini);
@@ -367,7 +370,7 @@ int						ft_strlen_eq(char *s);
 void					show_export(t_list *env_list, char **av);
 int						delete_if_needed(t_list **env_list, char *var, int len);
 void					bi_export(t_mini *mini, char **av, int j);
-void					export_add(t_mini *mini, char *av);
+void					export_add(t_list *env_list, char *av);
 // \ pwd.c
 void					bi_pwd(void);
 // \ unset.c
