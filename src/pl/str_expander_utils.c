@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 17:13:17 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:21:22 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,8 @@ bool	expand_redirs(t_command *cmd)
 		expanded = str_expander(redir->file);
 		free(redir->file);
 		redir->file = expanded;
-		if (redir->type == RED_IN)
-		{
-			if (access(redir->file, F_OK | R_OK) != 0)
-				return (cmd->were_checked = true,
-					error_msg_ret(FD_NOT_FOUND, redir->file, EXIT_FAILURE), false);
-		}
-		else if ((redir->type == RED_OUT || redir->type == RED_AOUT) && !create_redirs(redir))
+		if (redir->type != RED_AIN && redir->type != RED_NULL
+			&& !create_redirs(redir))
 			return (cmd->were_checked = true, false);
 		redir = redir->next;
 	}

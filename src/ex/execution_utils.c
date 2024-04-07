@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 21:19:38 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/04/07 17:16:33 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:22:42 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,13 @@ bool	create_redirs(t_redir *redir)
 	int	fd;
 
 	fd = 0;
-	if (redir->type == RED_OUT)
+	if (redir->type == RED_IN)
+	{
+		if (access(redir->file, F_OK | R_OK) != 0)
+			return (fd_error(redir, true), false);
+		return (true);
+	}
+	else if (redir->type == RED_OUT)
 		fd = open(redir->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (redir->type == RED_AOUT)
 		fd = open(redir->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
