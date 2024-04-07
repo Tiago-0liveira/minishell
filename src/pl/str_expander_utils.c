@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:21:41 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/03/29 01:08:11 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:13:17 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,18 @@ bool	expand_command(t_command *cmd)
 		if (ft_strlen(cmd->args[0]) == 0)
 			return (error_msg_ret(CMD_NOT_FOUND, "''", CMD_NOT_FOUND_RET),
 				false);
-		cmd->expanded = true;
 		if (if_builtin(cmd->args[0]))
 		{
 			cmd->cmd_name = ft_strdup(cmd->args[0]);
 			if (!cmd->cmd_name)
 				free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
+			cmd->expanded = true;
 			return (true);
 		}
 		cmd->cmd_name = get_cmd_path(cmd->args[0]);
 		if (cmd->cmd_name == NULL)
 			return (false);
+		cmd->expanded = true;
 	}
 	return (true);
 }
@@ -81,9 +82,13 @@ bool	expand_redirs(t_command *cmd)
 		free(redir->file);
 		redir->file = expanded;
 		if (redir->type == RED_IN)
+		{
 			if (access(redir->file, F_OK | R_OK) != 0)
-				return (error_msg_ret(FD_NOT_FOUND, redir->file, EXIT_FAILURE),
-					false);
+				return (cmd->were_checked = true,
+					error_msg_ret(FD_NOT_FOUND, redir->file, EXIT_FAILURE), false);
+		}
+		else if ((redir->type == RED_OUT || redir->type == RED_AOUT) && !create_redirs(redir))
+			return (cmd->were_checked = true, false);
 		redir = redir->next;
 	}
 	return (true);

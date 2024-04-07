@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/04/07 16:31:51 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:59:06 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	ft_execution(t_mini *mini)
 		if (!build_command(cmd) || (cmd->args && !expand_command(cmd)))
 		{
 			handle_command_fail(cmd);
+			if (!cmd->were_checked)
+				setup_redirections(cmd, true, false);
 			cmd = cmd->next;
 			continue ;
 		}
@@ -68,7 +70,7 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
 	}
 	if (has_next)
 		dup2(cmd->fds[1], STDOUT_FILENO);
-	if (setup_redirections(cmd, true))
+	if (setup_redirections(cmd, true, true))
 		built_in(mini, cmd);
 	dup2(original_stdin, STDIN_FILENO);
 	dup2(original_stdout, STDOUT_FILENO);
@@ -95,7 +97,7 @@ void	pid_zero(t_command *cmd, int has_next)
 		close(cmd->fds[1]);
 		cmd->fds[1] = -1;
 	}
-	if (!setup_redirections(cmd, false))
+	if (!setup_redirections(cmd, false, true))
 		free_shell(NULL, 1, NULL, NULL);
 	if (cmd->cmd_name != NULL && ft_strlen(cmd->cmd_name) > 0)
 		if (!execution(cmd))

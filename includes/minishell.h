@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:37:22 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 17:07:58 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ typedef struct s_command
 	char				*raw_cmd;
 	char				**args;
 	t_redir				*redirs;
+	bool				were_checked;
 	bool				expanded;
 	t_doc				*docs;
 	int					fds[2];
@@ -303,7 +304,6 @@ void					free_commands_wrapper(void *arg);
 void					prmpt_ctrlc(int sig);
 void					sig_init(void);
 void					solo_pipe_sigint_handler(int sig);
-void					exec_sig(int signal);
 // ex
 // \ execution.c
 void					ft_execution(t_mini *mini);
@@ -314,8 +314,10 @@ void					wait_for_children(t_mini *mini);
 // \ execution_utils.c
 t_command				*ft_lstlast_mini(t_command *lst);
 void					fd_error(t_redir *redir, bool isparent);
-bool					setup_redirections(t_command *cmd, bool isparent);
+bool					setup_redirections(t_command *cmd, bool isparent,
+							bool dup);
 void					handle_command_fail(t_command *cmd);
+bool					create_redirs(t_redir *redir);
 // \ execute.c
 bool					execution(t_command *cmd);
 void					set_execution(t_mini *mini, t_command *cmd,
