@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:27:57 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:26:38 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:37:22 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,6 @@ enum e_redir_type		redir_type(char *line);
 bool					valid_env_char(char c);
 bool					valid_cmd_arg(char *str);
 void					free_assign_null(void **ptr);
-void					print_command(t_command *command);//TODO: remove 
 // utils2.c
 bool					skip_spaces(char **line);
 size_t					redir_size(char *line);
@@ -246,8 +245,8 @@ void					command_add_back(t_command *new_command);
 void					prepare_for_input(int fds[2], void (*handler)(int),
 							char *prompt);
 // env_vars.c
-void					set_PWD(t_list **env_list);
-void					set_SHLVL(t_list **env_list);
+void					set_default_pwd(t_list **env_list);
+void					set_default_shlvl(t_list **env_list);
 char					**get_env_from_ll(t_list *env_list);
 // pl
 //  \ lexer.c
@@ -307,9 +306,8 @@ void					solo_pipe_sigint_handler(int sig);
 void					exec_sig(int signal);
 // ex
 // \ execution.c
-void					ft_execution(t_mini *mini, char **ev);
-void					execute_in_child(t_command *cmd, char **ev,
-							int has_next);
+void					ft_execution(t_mini *mini);
+void					execute_in_child(t_command *cmd, int has_next);
 void					execute_in_parent(t_mini *mini, t_command *cmd,
 							int has_next);
 void					wait_for_children(t_mini *mini);
@@ -319,8 +317,8 @@ void					fd_error(t_redir *redir, bool isparent);
 bool					setup_redirections(t_command *cmd, bool isparent);
 void					handle_command_fail(t_command *cmd);
 // \ execute.c
-bool					execution(t_command *cmd, char **ev);
-void					set_execution(t_mini *mini, t_command *cmd, char **ev,
+bool					execution(t_command *cmd);
+void					set_execution(t_mini *mini, t_command *cmd,
 							int has_next);
 // \ heredoc.c
 bool					heredoc_read_input_to_file(char *delim, char *file);

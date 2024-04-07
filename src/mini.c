@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/07 14:44:32 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:12:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:34:25 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_list	*set_env(char **env)
 		}
 		ft_lstadd_back(&env_list, new_node);
 	}
-	set_PWD(&env_list);
-	set_SHLVL(&env_list);
+	set_default_pwd(&env_list);
+	set_default_shlvl(&env_list);
 	return (env_list);
 }

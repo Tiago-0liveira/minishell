@@ -6,13 +6,13 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 22:27:57 by joaoribe          #+#    #+#             */
-/*   Updated: 2024/03/30 15:08:15 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:31:51 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_execution(t_mini *mini, char **ev)
+void	ft_execution(t_mini *mini)
 {
 	t_command	*cmd;
 	int			has_next;
@@ -30,7 +30,7 @@ void	ft_execution(t_mini *mini, char **ev)
 			continue ;
 		}
 		mini->if_cd = 0;
-		set_execution(mini, cmd, ev, has_next);
+		set_execution(mini, cmd, has_next);
 		cmd = cmd->next;
 	}
 	wait_for_children(mini);
@@ -76,7 +76,7 @@ void	execute_in_parent(t_mini *mini, t_command *cmd, int has_next)
 	close(original_stdout);
 }
 
-void	pid_zero(t_command *cmd, char **ev, int has_next)
+void	pid_zero(t_command *cmd, int has_next)
 {
 	if (cmd->fds[0] != -1)
 	{
@@ -98,18 +98,18 @@ void	pid_zero(t_command *cmd, char **ev, int has_next)
 	if (!setup_redirections(cmd, false))
 		free_shell(NULL, 1, NULL, NULL);
 	if (cmd->cmd_name != NULL && ft_strlen(cmd->cmd_name) > 0)
-		if (!execution(cmd, ev))
+		if (!execution(cmd))
 			free_shell(NULL, 1, NULL, NULL);
 	free_shell(NULL, EXIT_SUCCESS, NULL, NULL);
 }
 
-void	execute_in_child(t_command *cmd, char **ev, int has_next)
+void	execute_in_child(t_command *cmd, int has_next)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
-		pid_zero(cmd, ev, has_next);
+		pid_zero(cmd, has_next);
 	else if (pid < 0)
 		free_shell(FORK_ERROR, EXIT_FAILURE, NULL, NULL);
 	else

@@ -6,7 +6,7 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 20:28:37 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:02:25 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:31:00 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	main(int ac, char **av, char **env)
 			&& command_parser(mini()->input.raw_line)
 			&& handle_heredocs(mini()->commands))
 		{
-			ft_execution(mini(), env);
+			ft_execution(mini());
 			add_history(mini()->input.raw_line);
 		}
 		reset_mini(mini());

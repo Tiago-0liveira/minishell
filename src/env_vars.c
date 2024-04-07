@@ -6,13 +6,13 @@
 /*   By: tiagoliv <tiagoliv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/07 15:58:12 by tiagoliv          #+#    #+#             */
-/*   Updated: 2024/04/07 16:26:10 by tiagoliv         ###   ########.fr       */
+/*   Updated: 2024/04/07 16:35:07 by tiagoliv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	set_PWD(t_list **env_list)
+void	set_default_pwd(t_list **env_list)
 {
 	char	dir[PATH_MAX + 1];
 	char	*tmp;
@@ -24,10 +24,10 @@ void	set_PWD(t_list **env_list)
 	if (!tmp)
 		free_shell(MALLOC_ERROR, EXIT_FAILURE, NULL, NULL);
 	export_add(env_list, tmp);
-	free(tmp);	
+	free(tmp);
 }
 
-void	set_SHLVL(t_list **env_list)
+void	set_default_shlvl(t_list **env_list)
 {
 	char	*tmp;
 	char	*tmp2;
@@ -72,9 +72,9 @@ char	**get_env_from_ll(t_list *env_list)
 	i = 0;
 	while (tmp)
 	{
-		env[i] = tmp->content;
+		env[i] = (char *)tmp->content;
 		i++;
 		tmp = tmp->next;
 	}
-	return env;
+	return (env);
 }
