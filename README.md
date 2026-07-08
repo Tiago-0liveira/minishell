@@ -40,6 +40,11 @@ Custom lexer & parser · pipelines · redirections · heredocs · builtins · si
 | Expansion | Wildcard / glob expansion | ✗ |
 | Jobs | Job control (background jobs, suspend/resume) | ✗ |
 
+### Detailed prompt
+
+Building with `make detailed` swaps the plain `$>` prompt for one showing the current directory and the exit status of the last command — a green check on success, a red cross on failure:
+
+<p align="center"><img src="assets/detailed-prompt.png" alt="minishell detailed prompt showing a green checkmark and current directory" width="360"></p>
 
 ## Getting started
 
@@ -54,7 +59,7 @@ make
 
 Cloned without `--recurse-submodules`? Run `git submodule update --init --recursive` before `make`.
 
-Other targets: `make clean` · `make fclean` · `make re`.
+Other targets: `make clean` · `make fclean` · `make re` · `make detailed` (see [Detailed prompt](#detailed-prompt)).
 
 ## In action
 

@@ -45,6 +45,9 @@ MSG3 = @echo ${ICyan}"Cleaned ${NAME} Successfully ✔︎"${Color_Off}
 
 all: $(NAME)
 
+detailed: CFLAGS += -DDETAILED_INPUT_PROMPT
+detailed: fclean all
+
 $(NAME): $(LIBFT) $(OBJS)
 	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME) $(LINK_FLAGS)
 	$(MSG1)
